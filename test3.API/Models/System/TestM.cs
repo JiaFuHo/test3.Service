@@ -1,4 +1,4 @@
-namespace test3.Api.Models
+namespace test3.API.Models.System
 {
     public class TestM
     {

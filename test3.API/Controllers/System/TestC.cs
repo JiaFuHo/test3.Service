@@ -1,8 +1,8 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using test3.Api.Models;
+using test3.API.Models.System;
 
-namespace test3.API.Controllers
+namespace test3.API.Controllers.System
 {
     [ApiController]
     [Authorize]

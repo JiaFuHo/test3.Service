@@ -11,28 +11,33 @@ namespace test3.API
         {
             var builder = WebApplication.CreateBuilder(args);
 
+            #region DAL
+
+            #endregion
+
+            #region API
+            builder.Services.AddScoped<BLL.test3L>();
             builder.Services.AddControllers();
             builder.Services.AddOpenApi(options =>
             {
                 options.AddDocumentTransformer((document, context, cancellationToken) =>
                 {
-                    document.Components ??= new Microsoft.OpenApi.Models.OpenApiComponents();
-                    document.Components.SecuritySchemes.Add("Bearer", new Microsoft.OpenApi.Models.OpenApiSecurityScheme
+                    document.Components ??= new Microsoft.OpenApi.OpenApiComponents();
+
+                    document.Components.SecuritySchemes ??= new Dictionary<string, Microsoft.OpenApi.IOpenApiSecurityScheme>();
+                    document.Components.SecuritySchemes.Add("Bearer", new Microsoft.OpenApi.OpenApiSecurityScheme
                     {
-                        Type = Microsoft.OpenApi.Models.SecuritySchemeType.Http,
+                        Type = Microsoft.OpenApi.SecuritySchemeType.Http,
                         Scheme = "bearer",
                         BearerFormat = "JWT"
-                    });
-                    document.SecurityRequirements ??= new List<Microsoft.OpenApi.Models.OpenApiSecurityRequirement>();
-                    document.SecurityRequirements.Add(new Microsoft.OpenApi.Models.OpenApiSecurityRequirement
-                    {
-                        [new Microsoft.OpenApi.Models.OpenApiSecurityScheme { Reference = new Microsoft.OpenApi.Models.OpenApiReference { Type = Microsoft.OpenApi.Models.ReferenceType.SecurityScheme, Id = "Bearer" } }] = Array.Empty<string>()
                     });
 
                     return Task.CompletedTask;
                 });
             });
+            #endregion
 
+            #region JWT
             var jwt = builder.Configuration.GetSection("JwtSettings");
             var SK = jwt["SK"] ?? "JFH^260608#test3.Service/JFH^260608#test3.Service/JFH^260608#test3.Service/";
 
@@ -51,6 +56,7 @@ namespace test3.API
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(SK))
                 };
             });
+            #endregion
 
             var app = builder.Build();
 

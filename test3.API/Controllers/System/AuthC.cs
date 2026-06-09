@@ -3,9 +3,9 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using test3.Api.Models;
+using test3.API.Models.System;
 
-namespace test3.Api.Controllers
+namespace test3.API.Controllers.System
 {
     [ApiController]
     [Route("auth")]
