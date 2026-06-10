@@ -1,13 +1,21 @@
-﻿namespace test3.API.Models.System
+﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
+
+namespace test3.API.Models.System
 {
     public class AuthReq
     {
-        public string UserAcc { get; set; } = "";
-        public string UserPwd { get; set; } = "";
+        [Required]
+        [DefaultValue("admin")]
+        public string? UserAcc { get; set; }
+
+        [Required]
+        [DefaultValue("test123")]
+        public string? UserPwd { get; set; }
     }
 
     public class AuthRes
     {
-        public required string Token { get; set; }
+        public string? Token { get; set; }
     }
 }
