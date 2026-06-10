@@ -32,6 +32,23 @@ namespace test3.API
                         BearerFormat = "JWT"
                     });
 
+                    if (document.Paths != null)
+                    {
+                        foreach (var path in document.Paths.Values)
+                        {
+                            if (path.Operations == null) { continue; }
+
+                            foreach (var operation in path.Operations.Values)
+                            {
+                                operation.Security ??= new List<Microsoft.OpenApi.OpenApiSecurityRequirement>();
+                                operation.Security.Add(new Microsoft.OpenApi.OpenApiSecurityRequirement
+                                {
+                                    [new Microsoft.OpenApi.OpenApiSecuritySchemeReference("Bearer", document)] = new List<string>()
+                                });
+                            }
+                        }
+                    }
+
                     return Task.CompletedTask;
                 });
             });
