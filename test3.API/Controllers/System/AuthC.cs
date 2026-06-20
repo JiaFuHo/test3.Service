@@ -8,7 +8,7 @@ using test3.API.Models.System;
 namespace test3.API.Controllers.System
 {
     [ApiController]
-    [Route("auth")]
+    [Route("sys")]
     public class AuthC : ControllerBase
     {
         #region Fields
@@ -20,7 +20,7 @@ namespace test3.API.Controllers.System
         #endregion
 
         #region Actions
-        [HttpPost("login")]
+        [HttpPost("auth")]
         public ActionResult<AuthRes> Login([FromBody] AuthReq model)
         {
             if (model.UserAcc != "admin" || model.UserPwd != "test123") { return Unauthorized(new { Message = "登入失敗" }); }

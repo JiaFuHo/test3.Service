@@ -1,6 +1,9 @@
+using test3.Common;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Scalar.AspNetCore;
+using Serilog;
+using Serilog.Events;
 using System.Text;
 
 namespace test3.API
@@ -11,12 +14,59 @@ namespace test3.API
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            #region DAL
+            #region Serilog
+            var logPath = builder.Configuration["LogPath"] ?? "C:\\JiaFuHo - GF66\\Programs\\Others\\test3\\test3.Logs";
 
+            Log.Logger = new LoggerConfiguration()
+                                   .WriteTo.Console(
+                                       outputTemplate: "{Timestamp:HH:mm} [{Level:u3}] {Message:lj}{NewLine}{Exception}",
+                                       restrictedToMinimumLevel: Serilog.Events.LogEventLevel.Information
+                                   )
+                                   .WriteTo.Async(x => x.File(
+                                       outputTemplate: "{Timestamp:HH:mm} [{Level:u3}] {Message:lj}{NewLine}{Exception}",
+                                       path: logPath,
+                                       retainedFileCountLimit: null,
+                                       rollingInterval: RollingInterval.Day,
+                                       shared: true
+                                   ))
+                                   .MinimumLevel.Verbose()
+                                   .MinimumLevel.Override("Microsoft", Serilog.Events.LogEventLevel.Warning)
+                                   .MinimumLevel.Override("System", Serilog.Events.LogEventLevel.Warning)
+                                   .CreateLogger();
+
+            builder.Host.UseSerilog();
+
+            _loggerX.Decorator = new LoggerConfiguration()
+                                                   .WriteTo.Console(
+                                                        outputTemplate: "{Message:lj}{NewLine}",
+                                                        restrictedToMinimumLevel: LogEventLevel.Information
+                                                    )
+                                                  .WriteTo.File(
+                                                       outputTemplate: "{Message:lj}{NewLine}",
+                                                       path: logPath,
+                                                       retainedFileCountLimit: null,
+                                                       rollingInterval: RollingInterval.Day,
+                                                       shared: true
+                                                   )
+                                                  .MinimumLevel.Verbose()
+                                                  .CreateLogger();
+            #endregion
+
+            #region DAL
+            //var HIS3 = builder.Configuration.GetConnectionString("HIS3") ?? throw new Exception("System Para Error: HIS3 ConnStr");
+
+            // builder.Services.ConnDB(HIS3);
+            #endregion
+
+            #region Cache
+            builder.Services.AddMemoryCache();
+            #endregion
+
+            #region BLL
+            builder.Services.AddScoped<BLL.test3L>();
             #endregion
 
             #region API
-            builder.Services.AddScoped<BLL.test3L>();
             builder.Services.AddControllers();
             builder.Services.AddOpenApi(options =>
             {
@@ -77,6 +127,9 @@ namespace test3.API
 
             var app = builder.Build();
 
+            #region Middleware
+            app.UseSerilogRequestLogging();
+
             if (app.Environment.IsDevelopment())
             {
                 app.MapOpenApi();
@@ -87,6 +140,8 @@ namespace test3.API
             app.UseAuthentication();
             app.UseAuthorization();
             app.MapControllers();
+            #endregion
+
             app.Run();
         }
     }
