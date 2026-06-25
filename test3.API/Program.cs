@@ -1,10 +1,11 @@
-using test3.Common;
+using test3.API.Providers.System;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Scalar.AspNetCore;
 using Serilog;
 using Serilog.Events;
 using System.Text;
+using test3.Common;
 
 namespace test3.API
 {
@@ -13,6 +14,23 @@ namespace test3.API
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+
+            #region CORS
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("test3_CORS", policy =>
+                {
+                    policy.AllowAnyOrigin()
+                              // .WithOrigins("URL")
+                              .AllowAnyMethod()
+                              .AllowAnyHeader();
+                });
+            });
+            #endregion
+
+            #region Cache
+            builder.Services.AddMemoryCache();
+            #endregion
 
             #region Serilog
             var logPath = builder.Configuration["LogPath"] ?? "C:\\JiaFuHo - GF66\\Programs\\Others\\test3\\test3.Logs";
@@ -52,18 +70,40 @@ namespace test3.API
                                                   .CreateLogger();
             #endregion
 
+            #region Providers
+            builder.Services.AddScoped<IAuthP, AuthP>();
+            #endregion
+
+            #region BLL
+            builder.Services.AddScoped<BLL.test3L>();
+            #endregion
+
             #region DAL
             //var HIS3 = builder.Configuration.GetConnectionString("HIS3") ?? throw new Exception("System Para Error: HIS3 ConnStr");
 
             // builder.Services.ConnDB(HIS3);
             #endregion
 
-            #region Cache
-            builder.Services.AddMemoryCache();
-            #endregion
+            #region JWT
+            var JWT = builder.Configuration.GetSection("JWT");
 
-            #region BLL
-            builder.Services.AddScoped<BLL.test3L>();
+            var SK = JWT["SK"] ?? throw new Exception("System Para Error: JWT.SK");
+
+            builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            .AddJwtBearer(options =>
+            {
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidateLifetime = true,
+                    ValidateIssuerSigningKey = true,
+
+                    ValidIssuer = JWT["Issuer"] ?? throw new Exception("System Para Error: JWT.Issuer"),
+                    ValidAudience = JWT["Audience"] ?? throw new Exception("System Para Error: JWT.Audience"),
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(SK))
+                };
+            });
             #endregion
 
             #region API
@@ -104,27 +144,6 @@ namespace test3.API
             });
             #endregion
 
-            #region JWT
-            var jwt = builder.Configuration.GetSection("JwtSettings");
-            var SK = jwt["SK"] ?? "JFH^260608#test3.Service/JFH^260608#test3.Service/JFH^260608#test3.Service/";
-
-            builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-            .AddJwtBearer(options =>
-            {
-                options.TokenValidationParameters = new TokenValidationParameters
-                {
-                    ValidateIssuer = true,
-                    ValidateAudience = true,
-                    ValidateLifetime = true,
-                    ValidateIssuerSigningKey = true,
-
-                    ValidIssuer = jwt["Issuer"] ?? "LaJiaGer",
-                    ValidAudience = jwt["Audience"] ?? "Guest",
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(SK))
-                };
-            });
-            #endregion
-
             var app = builder.Build();
 
             #region Middleware
@@ -137,6 +156,7 @@ namespace test3.API
             }
 
             app.UseHttpsRedirection();
+            app.UseCors("test3_CORS");
             app.UseAuthentication();
             app.UseAuthorization();
             app.MapControllers();

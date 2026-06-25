@@ -1,9 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.IdentityModel.Tokens;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
 using test3.API.Models.System;
+using test3.API.Providers.System;
+using test3.BLL;
+using test3.Common;
 
 namespace test3.API.Controllers.System
 {
@@ -12,43 +11,41 @@ namespace test3.API.Controllers.System
     public class AuthC : ControllerBase
     {
         #region Fields
-        private readonly IConfiguration _config;
+        private readonly IAuthP _auth;
+        private readonly ILogger<test3L> _loggerO;
         #endregion
 
         #region Constructor
-        public AuthC(IConfiguration config) { _config = config; }
+        public AuthC(IAuthP authP, ILogger<test3L> logger)
+        {
+            _auth = authP;
+            _loggerO = logger;
+        }
         #endregion
 
         #region Actions
         [HttpPost("auth")]
         public ActionResult<AuthRes> Login([FromBody] AuthReq model)
         {
-            if (model.UserAcc != "admin" || model.UserPwd != "test123") { return Unauthorized(new { Message = "登入失敗" }); }
+            _loggerX.L1();
+            _loggerO.LogInformation("API驗證開始");
 
-            var jwt = _config.GetSection("JwtSettings");
-            var SK = jwt["SK"];
+            var (status, token, message) = _auth.LoginAuth(model);
 
-            var claims = new List<Claim>
+            if (status)
             {
-                new Claim(JwtRegisteredClaimNames.Sub, model.UserAcc),
-                new Claim(ClaimTypes.Role, "Admin")
-            };
+                _loggerX.L2();
+                _loggerO.LogInformation($"{message}");
 
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(SK!));
-            var sign = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-
-            var tokenDsc = new SecurityTokenDescriptor
+                return Ok(new AuthRes { Token = token });
+            }
+            else
             {
-                Subject = new ClaimsIdentity(claims),
-                Expires = DateTime.UtcNow.AddHours(2),
-                Issuer = jwt["Issuer"],
-                Audience = jwt["Audience"],
-                SigningCredentials = sign
-            };
-            var tokenHdl = new JwtSecurityTokenHandler();
-            var tokenStr = tokenHdl.WriteToken(tokenHdl.CreateToken(tokenDsc));
+                _loggerX.L2();
+                _loggerO.LogError($"{message}");
 
-            return Ok(new AuthRes { Token = tokenStr });
+                return Unauthorized(new { Message = message });
+            }
         }
         #endregion
     }
