@@ -8,7 +8,7 @@ namespace test3.API.Providers.System
 {
     public interface IAuthP
     {
-        (bool status, string? token, string message) LoginAuth(AuthReq model);
+        (Boolean status, String? token, String message) LoginAuth(AuthReq model);
     }
 
     public class AuthP : IAuthP
@@ -22,7 +22,7 @@ namespace test3.API.Providers.System
         #endregion
 
         #region Methods
-        public (bool status, string? token, string message) LoginAuth(AuthReq model)
+        public (Boolean status, String? token, String message) LoginAuth(AuthReq model)
         {
             var JWT = _config.GetSection("JWT");
 
@@ -33,10 +33,10 @@ namespace test3.API.Providers.System
             if (model.UserAcc != Acc || model.UserPwd != Pwd) { return (false, null, "API驗證失敗"); }
 
             var claims = new List<Claim>
-    {
-        new Claim(JwtRegisteredClaimNames.Sub, model.UserAcc!),
-        new Claim(ClaimTypes.Role, "Admin"),
-    };
+            {
+                new Claim(JwtRegisteredClaimNames.Sub, model.UserAcc!),
+                new Claim(ClaimTypes.Role, "Admin"),
+            };
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(SK!));
             var sign = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);

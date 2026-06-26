@@ -55,19 +55,19 @@ namespace test3.API
             builder.Host.UseSerilog();
 
             _loggerX.Decorator = new LoggerConfiguration()
-                                                   .WriteTo.Console(
-                                                        outputTemplate: "{Message:lj}{NewLine}",
-                                                        restrictedToMinimumLevel: LogEventLevel.Information
-                                                    )
-                                                  .WriteTo.File(
-                                                       outputTemplate: "{Message:lj}{NewLine}",
-                                                       path: logPath,
-                                                       retainedFileCountLimit: null,
-                                                       rollingInterval: RollingInterval.Day,
-                                                       shared: true
-                                                   )
-                                                  .MinimumLevel.Verbose()
-                                                  .CreateLogger();
+                                                .WriteTo.Console(
+                                                     outputTemplate: "{Message:lj}{NewLine}",
+                                                     restrictedToMinimumLevel: LogEventLevel.Information
+                                                )
+                                                .WriteTo.File(
+                                                     outputTemplate: "{Message:lj}{NewLine}",
+                                                     path: logPath,
+                                                     retainedFileCountLimit: null,
+                                                     rollingInterval: RollingInterval.Day,
+                                                     shared: true
+                                                )
+                                                .MinimumLevel.Verbose()
+                                                .CreateLogger();
             #endregion
 
             #region Providers
@@ -100,7 +100,7 @@ namespace test3.API
                     ValidateIssuerSigningKey = true,
 
                     ValidIssuer = JWT["Issuer"] ?? throw new Exception("System Para Error: JWT.Issuer"),
-                    ValidAudience = JWT["Audience"] ?? throw new Exception("System Para Error: JWT.Audience"),
+                    ValidAudience = JWT["Audience"] ?? throw new Exception("System ParaError:JWT.Audience"),
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(SK))
                 };
             });
