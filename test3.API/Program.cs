@@ -84,10 +84,19 @@ namespace test3.API
             // builder.Services.ConnDB(HIS3);
             #endregion
 
+            #region AES
+            var AES = builder.Configuration.GetSection("AES");
+
+            var ASK = AES["SK"] ?? throw new Exception("System Para Error: AES.SK");
+            var AIV = AES["IV"] ?? throw new Exception("System Para Error: AES.IV");
+
+            test3.Common.AESHelper.Init(ASK, AIV);
+            #endregion
+
             #region JWT
             var JWT = builder.Configuration.GetSection("JWT");
 
-            var SK = JWT["SK"] ?? throw new Exception("System Para Error: JWT.SK");
+            var JSK = JWT["SK"] ?? throw new Exception("System Para Error: JWT.SK");
 
             builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             .AddJwtBearer(options =>
@@ -101,7 +110,7 @@ namespace test3.API
 
                     ValidIssuer = JWT["Issuer"] ?? throw new Exception("System Para Error: JWT.Issuer"),
                     ValidAudience = JWT["Audience"] ?? throw new Exception("System ParaError:JWT.Audience"),
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(SK))
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(JSK))
                 };
             });
             #endregion
