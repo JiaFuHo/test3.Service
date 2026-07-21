@@ -21,7 +21,7 @@ namespace test3.Common
 
         public static String Decrypt(String cipherText)
         {
-            if (String.IsNullOrEmpty(cipherText)) { return cipherText; }
+            if (String.IsNullOrWhiteSpace(cipherText)) { return cipherText; }
 
             try
             {
@@ -46,7 +46,7 @@ namespace test3.Common
 
         public static String Encrypt(String plainText)
         {
-            if (String.IsNullOrEmpty(plainText)) { return plainText; }
+            if (String.IsNullOrWhiteSpace(plainText)) { return plainText; }
 
             try
             {
@@ -85,7 +85,7 @@ namespace test3.Common
         {
             var cipherText = reader.GetString();
 
-            if (String.IsNullOrEmpty(cipherText)) { return cipherText; }
+            if (String.IsNullOrWhiteSpace(cipherText)) { return cipherText; }
 
             return AESHelper.Decrypt(cipherText);
         }
