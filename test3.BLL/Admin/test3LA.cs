@@ -1,10 +1,8 @@
-﻿using test3.Common;
-using test3.DAL.test3.Models;
-using test3.Dto.Admin;
-using Microsoft.Extensions.Caching.Memory;
+﻿using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using System.Text;
+using test3.DAL.test3.Context;
+using test3.Dto.Admin;
 
 namespace test3.BLL.Admin
 {
@@ -14,15 +12,16 @@ namespace test3.BLL.Admin
         private readonly IConfiguration _config;
         private readonly ILogger<test3LA> _loggerO;
         private readonly IMemoryCache _cache;
-        // db
+        private readonly test3Context _db;
         #endregion
 
         #region Constructor
-        public test3LA(IConfiguration config, IMemoryCache cache, ILogger<test3LA> logger)
+        public test3LA(IConfiguration config, ILogger<test3LA> logger, IMemoryCache cache, test3Context db)
         {
             _config = config;
             _loggerO = logger;
             _cache = cache;
+            _db = db;
         }
         #endregion
 
@@ -31,6 +30,10 @@ namespace test3.BLL.Admin
         #region
 
         #endregion
+
+        #endregion
+
+        #region Aux Methods
 
         #endregion
     }

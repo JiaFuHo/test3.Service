@@ -6,11 +6,13 @@
 
     #region Collection
     public class CollectionQueryReq { }
-    public class CollectionQueryRes { }
+
+    public class CollectionQueryRes : QueryResBase { }
     #endregion
 
     #region Search
     public class SearchQueryReq { }
-    public class SearchQueryRes { }
+
+    public class SearchQueryRes : QueryResBase { }
     #endregion
 }

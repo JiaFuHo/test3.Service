@@ -45,11 +45,29 @@ namespace test3.API.Controllers.Portal
 
         #region Search
         [HttpGet("search")]
-        public ActionResult<SearchQueryRes> GetBookInfo()
+        public ActionResult<SearchQueryRes> GetBookInfo([FromBody] SearchQueryReq model)
         {
             var Res = new SearchQueryRes();
 
+            var (validation, Req, statusCode, message) = SearchReqValid(model);
 
+            if (!validation)
+            {
+                Res.Status = false; Res.StatusCode = statusCode!; Res.Message = message!;
+
+                return Ok(Res);
+            }
+
+            try
+            {
+                Res = _logic.QueryBookInfo(Req!);
+
+                if (Res.Status) { }
+            }
+            catch (Exception ex)
+            {
+                Res.Status = false; Res.StatusCode = "5001"; Res.Message = $"Service Error: {ex.Message}";
+            }
 
             return Ok(Res);
         }
@@ -58,6 +76,27 @@ namespace test3.API.Controllers.Portal
         #endregion
 
         #region Methods
+
+        #region Home
+
+        #endregion
+
+        #region Collection
+
+        #endregion
+
+        #region Search
+        // Validation
+        private (Boolean validation, SearchQueryReq? ReqModel, String? statusCode, String? message) SearchReqValid(SearchQueryReq model)
+        {
+            var modelX = new SearchQueryReq
+            {
+
+            };
+
+            return (true, modelX, null, null);
+        }
+        #endregion
 
         #endregion
     }
