@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using test3.API.Models.System;
 using test3.API.Providers.System;
-using test3.BLL;
+using test3.BLL.Guest;
 using test3.Common;
 
 namespace test3.API.Controllers.System
@@ -12,11 +12,11 @@ namespace test3.API.Controllers.System
     {
         #region Fields
         private readonly IAuthP _auth;
-        private readonly ILogger<test3L> _loggerO;
+        private readonly ILogger<AuthC> _loggerO;
         #endregion
 
         #region Constructor
-        public AuthC(IAuthP authP, ILogger<test3L> logger)
+        public AuthC(IAuthP authP, ILogger<AuthC> logger)
         {
             _auth = authP;
             _loggerO = logger;

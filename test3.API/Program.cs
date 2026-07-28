@@ -1,17 +1,20 @@
-using test3.API.Providers.System;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Scalar.AspNetCore;
 using Serilog;
 using Serilog.Events;
 using System.Text;
+using test3.API.Providers.System;
+using test3.BLL.Admin;
+using test3.BLL.Guest;
 using test3.Common;
+using test3.DAL;
 
 namespace test3.API
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static void Main(String[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
 
@@ -38,7 +41,7 @@ namespace test3.API
             Log.Logger = new LoggerConfiguration()
                                    .WriteTo.Console(
                                        outputTemplate: "{Timestamp:HH:mm} [{Level:u3}] {Message:lj}{NewLine}{Exception}",
-                                       restrictedToMinimumLevel: Serilog.Events.LogEventLevel.Information
+                                       restrictedToMinimumLevel: LogEventLevel.Information
                                    )
                                    .WriteTo.Async(x => x.File(
                                        outputTemplate: "{Timestamp:HH:mm} [{Level:u3}] {Message:lj}{NewLine}{Exception}",
@@ -48,8 +51,8 @@ namespace test3.API
                                        shared: true
                                    ))
                                    .MinimumLevel.Verbose()
-                                   .MinimumLevel.Override("Microsoft", Serilog.Events.LogEventLevel.Warning)
-                                   .MinimumLevel.Override("System", Serilog.Events.LogEventLevel.Warning)
+                                   .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
+                                   .MinimumLevel.Override("System", LogEventLevel.Warning)
                                    .CreateLogger();
 
             builder.Host.UseSerilog();
@@ -75,13 +78,14 @@ namespace test3.API
             #endregion
 
             #region BLL
-            builder.Services.AddScoped<BLL.test3L>();
+            builder.Services.AddScoped<test3LA>();
+            builder.Services.AddScoped<test3LG>();
             #endregion
 
             #region DAL
-            //var HIS3 = builder.Configuration.GetConnectionString("HIS3") ?? throw new Exception("System Para Error: HIS3 ConnStr");
+            var test3 = builder.Configuration.GetConnectionString("test3") ?? throw new Exception("System Para Error: test3 ConnStr");
 
-            // builder.Services.ConnDB(HIS3);
+            builder.Services.ConnDB(test3);
             #endregion
 
             #region AES
@@ -90,7 +94,7 @@ namespace test3.API
             var ASK = AES["SK"] ?? throw new Exception("System Para Error: AES.SK");
             var AIV = AES["IV"] ?? throw new Exception("System Para Error: AES.IV");
 
-            test3.Common.AESHelper.Init(ASK, AIV);
+            AESHelper.Init(ASK, AIV);
             #endregion
 
             #region JWT
@@ -123,7 +127,7 @@ namespace test3.API
                 {
                     document.Components ??= new Microsoft.OpenApi.OpenApiComponents();
 
-                    document.Components.SecuritySchemes ??= new Dictionary<string, Microsoft.OpenApi.IOpenApiSecurityScheme>();
+                    document.Components.SecuritySchemes ??= new Dictionary<String, Microsoft.OpenApi.IOpenApiSecurityScheme>();
                     document.Components.SecuritySchemes.Add("Bearer", new Microsoft.OpenApi.OpenApiSecurityScheme
                     {
                         Type = Microsoft.OpenApi.SecuritySchemeType.Http,
@@ -142,7 +146,7 @@ namespace test3.API
                                 operation.Security ??= new List<Microsoft.OpenApi.OpenApiSecurityRequirement>();
                                 operation.Security.Add(new Microsoft.OpenApi.OpenApiSecurityRequirement
                                 {
-                                    [new Microsoft.OpenApi.OpenApiSecuritySchemeReference("Bearer", document)] = new List<string>()
+                                    [new Microsoft.OpenApi.OpenApiSecuritySchemeReference("Bearer", document)] = new List<String>()
                                 });
                             }
                         }

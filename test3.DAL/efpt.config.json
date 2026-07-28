@@ -1,0 +1,114 @@
+﻿{
+   "CodeGenerationMode": 6,
+   "ContextClassName": "test3Context",
+   "ContextNamespace": null,
+   "FilterSchemas": false,
+   "IncludeConnectionString": false,
+   "IrregularWords": null,
+   "MinimumProductVersion": "2.6.1604",
+   "ModelNamespace": null,
+   "OutputContextPath": "test3\\Context",
+   "OutputPath": "test3\\Models",
+   "PluralRules": null,
+   "PreserveCasingWithRegex": true,
+   "ProjectRootNamespace": "test3.DAL",
+   "Schemas": null,
+   "SelectedHandlebarsLanguage": 2,
+   "SelectedToBeGenerated": 0,
+   "SingularRules": null,
+   "T4TemplatePath": null,
+   "Tables": [
+      {
+         "Name": "[dbo].[Author]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Book]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[BookStatus]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Borrow]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[BorrowStatus]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Client]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Collection]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Favorite]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[History]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Language]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[MapCA]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Notification]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Reservation]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[ReservationStatus]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[SystemTime]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Type]",
+         "ObjectType": 0
+      }
+   ],
+   "UiHInt32": null,
+   "UncountableWords": null,
+   "UseAsyncStoredProcedureCalls": true,
+   "UseBoolPropertiesWithoutDefaultSql": false,
+   "UseDatabaseNames": false,
+   "UseDatabaseNamesForRoutines": true,
+   "UseDateOnlyTimeOnly": true,
+   "UseDbContextSplitting": false,
+   "UseDecimalDataAnnotationForSprocResult": true,
+   "UseFluentApiOnly": true,
+   "UseHandleBars": false,
+   "UseHierarchyId": false,
+   "UseInflector": true,
+   "UseInternalAccessModifiersForSprocsAndFunctions": false,
+   "UseLegacyPluralizer": false,
+   "UseManyToManyEntity": false,
+   "UseNoDefaultConstructor": false,
+   "UseNoNavigations": false,
+   "UseNoObjectFilter": false,
+   "UseNodaTime": false,
+   "UseNullableReferences": true,
+   "UsePrefixNavigationNaming": false,
+   "UseSchemaFolders": false,
+   "UseSchemaNamespaces": false,
+   "UseSpatial": false,
+   "UseT4": false,
+   "UseT4Split": false,
+   "UseTypedTvpParameters": true
+}

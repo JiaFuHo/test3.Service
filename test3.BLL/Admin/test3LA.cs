@@ -6,19 +6,19 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using System.Text;
 
-namespace test3.BLL
+namespace test3.BLL.Admin
 {
-    public class test3L
+    public class test3LA
     {
         #region Fields
         private readonly IConfiguration _config;
-        private readonly ILogger<test3L> _loggerO;
+        private readonly ILogger<test3LA> _loggerO;
         private readonly IMemoryCache _cache;
         // db
         #endregion
 
         #region Constructor
-        public test3L(IConfiguration config, IMemoryCache cache, ILogger<test3L> logger)
+        public test3LA(IConfiguration config, IMemoryCache cache, ILogger<test3LA> logger)
         {
             _config = config;
             _loggerO = logger;
@@ -27,6 +27,9 @@ namespace test3.BLL
         #endregion
 
         #region Methods
+
+        #region
+        #endregion
 
         #endregion
     }
