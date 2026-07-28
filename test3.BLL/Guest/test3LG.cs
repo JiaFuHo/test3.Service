@@ -1,6 +1,6 @@
 ﻿using test3.Common;
-//using test3.DAL.HIS3.Context;
-using test3.Dto;
+using test3.DAL.test3.Models;
+using test3.Dto.Guest;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
@@ -33,11 +33,25 @@ namespace test3.BLL.Guest
         #endregion
 
         #region Collection
+        public CollectionQueryRes QueryCollection(CollectionQueryReq Req)
+        {
+            var Res = new CollectionQueryRes();
 
+
+
+            return Res;
+        }
         #endregion
 
         #region Search
+        public SearchQueryRes QueryBookInfo(SearchQueryReq Req)
+        {
+            var Res = new SearchQueryRes();
 
+
+
+            return Res;
+        }
         #endregion
 
         #endregion

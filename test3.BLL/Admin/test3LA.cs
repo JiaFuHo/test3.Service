@@ -1,6 +1,6 @@
 ﻿using test3.Common;
-//using test3.DAL.HIS3.Context;
-using test3.Dto;
+using test3.DAL.test3.Models;
+using test3.Dto.Admin;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
@@ -29,6 +29,7 @@ namespace test3.BLL.Admin
         #region Methods
 
         #region
+
         #endregion
 
         #endregion
