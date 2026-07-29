@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using test3.BLL.Guest;
+using test3.Common;
 using test3.Dto.Guest;
 
 namespace test3.API.Controllers.Portal
@@ -47,13 +48,19 @@ namespace test3.API.Controllers.Portal
         [HttpGet("search")]
         public ActionResult<SearchQueryRes> GetBookInfo([FromQuery] SearchQueryReq model)
         {
+            _loggerX.L1();
+
             var Res = new SearchQueryRes();
 
-            var (validation, Req, statusCode, message) = SearchReqValid(model);
+            var (validation, Req, statusCode, message) = SearchQueryValid(model);
 
             if (!validation)
             {
-                Res.Status = false; Res.StatusCode = statusCode!; Res.Message = message!;
+                Res.Status = false;
+                Res.StatusCode = statusCode!;
+                Res.Message = message!;
+
+                _loggerO.LogError($"GetBookInfo驗證失敗 - StatusCode = {Res.StatusCode}, Message = {Res.Message}");
 
                 return Ok(Res);
             }
@@ -62,12 +69,18 @@ namespace test3.API.Controllers.Portal
             {
                 Res = _logic.QueryBookInfo(Req!);
 
-                if (Res.Status) { }
+                if (Res.Status) { _loggerO.LogInformation($"GetBookInfo成功 - StatusCode = {Res.StatusCode}"); }
             }
             catch (Exception ex)
             {
-                Res.Status = false; Res.StatusCode = "5003"; Res.Message = $"Service Error: {ex.Message}";
+                Res.Status = false;
+                Res.StatusCode = "5003";
+                Res.Message = $"Service Error: {ex.Message}";
+
+                _loggerO.LogError(ex, $"GetBookInfo錯誤 - StatusCode = {Res.StatusCode}, Message = {Res.Message}, ex = ");
             }
+
+            _loggerX.L1();
 
             return Ok(Res);
         }
@@ -87,12 +100,12 @@ namespace test3.API.Controllers.Portal
 
         #region Search
         // Validation
-        private (Boolean validation, SearchQueryReq? ReqModel, String? statusCode, String? message) SearchReqValid(SearchQueryReq model)
+        private (Boolean validation, SearchQueryReq? ReqModel, String? statusCode, String? message) SearchQueryValid(SearchQueryReq model)
         {
-            var modelX = new SearchQueryReq
-            {
+            if (String.IsNullOrWhiteSpace(model.Info) && model.SYear == null && model.EYear == null && model.Lang == null && model.Type2 == null)
+            { return (false, null, "4001", "Client Required Error: 任一查詢條件"); }
 
-            };
+            var modelX = model;
 
             return (true, modelX, null, null);
         }

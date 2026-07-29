@@ -1,5 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Caching.Memory;
+﻿using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using test3.DAL.test3.Context;
@@ -48,11 +47,7 @@ namespace test3.BLL.Guest
         {
             var Res = new SearchQueryRes();
 
-            var querySrc = _db.Collections.Include(x => x.Authors)
-                                                              .Include(x => x.Language)
-                                                              .Include(x => x.Type)
-                                                              .Include(x => x.Books)
-                                                              .AsQueryable();
+            var querySrc = _db.Collections.AsQueryable();
 
             if (!String.IsNullOrWhiteSpace(Req.Info))
             {
@@ -63,7 +58,16 @@ namespace test3.BLL.Guest
                 {
                     querySrc = querySrc.Where(x => x.Isbn == Req.Info);
 
-                    if (!querySrc.Any()) { Res.Status = false; Res.StatusCode = "4004"; Res.Message = "查無相關ISBN"; return Res; }
+                    if (!querySrc.Any())
+                    {
+                        Res.Status = false;
+                        Res.StatusCode = "4004";
+                        Res.Message = "查無相關ISBN";
+
+                        _loggerO.LogError($"QueryBookInfo失敗 - StatusCode = {Res.StatusCode}, Message = {Res.Message}");
+
+                        return Res;
+                    }
                 }
             }
             if (Req.SYear != null)
@@ -81,7 +85,16 @@ namespace test3.BLL.Guest
             if (Req.Lang != null) { querySrc = querySrc.Where(x => x.LanguageId == Req.Lang); }
             if (Req.Type2 != null) { querySrc = querySrc.Where(x => x.TypeId == Req.Type2); }
 
-            if (!querySrc.Any()) { Res.Status = false; Res.StatusCode = "4004"; Res.Message = "查無相關館藏"; return Res; }
+            if (!querySrc.Any())
+            {
+                Res.Status = false;
+                Res.StatusCode = "4004";
+                Res.Message = "查無相關館藏";
+
+                _loggerO.LogError($"QueryBookInfo失敗 - StatusCode = {Res.StatusCode}, Message = {Res.Message}");
+
+                return Res;
+            }
 
             try
             {
@@ -108,7 +121,11 @@ namespace test3.BLL.Guest
             }
             catch (Exception ex)
             {
-                Res.Status = false; Res.StatusCode = "5002"; Res.Message = $"System Error: {ex.Message}";
+                Res.Status = false;
+                Res.StatusCode = "5002";
+                Res.Message = $"System Error: {ex.Message}";
+
+                _loggerO.LogError(ex, $"QueryBookInfo錯誤 - StatusCode = {Res.StatusCode}, Message = {Res.Message}, ex = ");
             }
 
             return Res;

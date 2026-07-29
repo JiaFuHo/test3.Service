@@ -8,7 +8,7 @@ namespace test3.DAL
     {
         public static IServiceCollection ConnDB(this IServiceCollection services, String? ConnTest3 = null)
         {
-            services.AddDbContext<test3Context>(options => { options.UseSqlServer(ConnTest3, optionsX => optionsX.UseCompatibilityLevel(120)); });
+            services.AddDbContext<test3Context>(options => { options.UseSqlServer(ConnTest3, optionsX => optionsX.UseCompatibilityLevel(120)).ConfigureWarnings(warnings => warnings.Ignore(Microsoft.EntityFrameworkCore.Diagnostics.SqlServerEventId.ByteIdentityColumnWarning)); });
 
             return services;
         }
