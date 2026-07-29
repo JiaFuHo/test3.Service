@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Caching.Memory;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using test3.DAL.test3.Context;
@@ -47,11 +48,68 @@ namespace test3.BLL.Guest
         {
             var Res = new SearchQueryRes();
 
-            var querySrc = _db.Collections.AsQueryable();
+            var querySrc = _db.Collections.Include(x => x.Authors)
+                                                              .Include(x => x.Language)
+                                                              .Include(x => x.Type)
+                                                              .Include(x => x.Books)
+                                                              .AsQueryable();
 
-            if (true) { }
+            if (!String.IsNullOrWhiteSpace(Req.Info))
+            {
+                if (Req.Type1 == "title") { querySrc = querySrc.Where(x => x.Title.Contains(Req.Info)); }
+                else if (Req.Type1 == "author") { querySrc = querySrc.Where(x => x.Authors.Any(x => x.Author1.Contains(Req.Info))); }
+                else if (Req.Type1 == "publisher") { querySrc = querySrc.Where(x => x.Publisher.Contains(Req.Info)); }
+                else
+                {
+                    querySrc = querySrc.Where(x => x.Isbn == Req.Info);
 
-            if (!querySrc.Any()) { Res.Status = false; Res.StatusCode = "4004"; Res.Message = ""; return Res; }
+                    if (!querySrc.Any()) { Res.Status = false; Res.StatusCode = "4004"; Res.Message = "查無相關ISBN"; return Res; }
+                }
+            }
+            if (Req.SYear != null)
+            {
+                var SDate = new DateTime(Req.SYear.Value, 1, 1);
+
+                querySrc = querySrc.Where(x => x.PublishDate >= SDate);
+            }
+            if (Req.EYear != null)
+            {
+                var EDate = new DateTime(Req.EYear.Value, 12, 31);
+
+                querySrc = querySrc.Where(x => x.PublishDate <= EDate);
+            }
+            if (Req.Lang != null) { querySrc = querySrc.Where(x => x.LanguageId == Req.Lang); }
+            if (Req.Type2 != null) { querySrc = querySrc.Where(x => x.TypeId == Req.Type2); }
+
+            if (!querySrc.Any()) { Res.Status = false; Res.StatusCode = "4004"; Res.Message = "查無相關館藏"; return Res; }
+
+            try
+            {
+                var query = querySrc.Select(x => new BookInfo
+                {
+                    Title = x.Title,
+                    Desc = x.Desc,
+                    Image = x.Image,
+                    Type = x.Type.Type1,
+                    Translator = x.Translator,
+                    Publisher = x.Publisher,
+                    Language = x.Language.Language1,
+                    ISBN = x.Isbn,
+                    PublishDate = x.PublishDate
+                });
+
+                var bookInfo = query.FirstOrDefault();
+
+                Res.Status = true;
+                Res.StatusCode = "2000";
+                Res.Message = "";
+                Res.TotalCount = 1;
+                Res.BookInfo = bookInfo;
+            }
+            catch (Exception ex)
+            {
+                Res.Status = false; Res.StatusCode = "5002"; Res.Message = $"System Error: {ex.Message}";
+            }
 
             return Res;
         }

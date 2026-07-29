@@ -7,7 +7,7 @@ namespace test3.API.Controllers.Portal
 {
     [ApiController]
     [Route("guest")]
-    [Authorize]
+    //[Authorize]
     public class test3CG : ControllerBase
     {
         #region Fields
@@ -45,7 +45,7 @@ namespace test3.API.Controllers.Portal
 
         #region Search
         [HttpGet("search")]
-        public ActionResult<SearchQueryRes> GetBookInfo([FromBody] SearchQueryReq model)
+        public ActionResult<SearchQueryRes> GetBookInfo([FromQuery] SearchQueryReq model)
         {
             var Res = new SearchQueryRes();
 
@@ -66,7 +66,7 @@ namespace test3.API.Controllers.Portal
             }
             catch (Exception ex)
             {
-                Res.Status = false; Res.StatusCode = "5001"; Res.Message = $"Service Error: {ex.Message}";
+                Res.Status = false; Res.StatusCode = "5003"; Res.Message = $"Service Error: {ex.Message}";
             }
 
             return Ok(Res);
