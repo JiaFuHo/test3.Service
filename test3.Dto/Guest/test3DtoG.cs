@@ -32,6 +32,7 @@
         public String? Desc { get; set; }
         public Byte[]? Image { get; set; }
         public String? Type { get; set; }
+        public String? Author { get; set; }
         public String? Translator { get; set; }
         public String? Publisher { get; set; }
         public String? Language { get; set; }

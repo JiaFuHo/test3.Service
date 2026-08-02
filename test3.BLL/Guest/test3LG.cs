@@ -52,7 +52,7 @@ namespace test3.BLL.Guest
             if (!String.IsNullOrWhiteSpace(Req.Info))
             {
                 if (Req.Type1 == "title") { querySrc = querySrc.Where(x => x.Title.Contains(Req.Info)); }
-                else if (Req.Type1 == "author") { querySrc = querySrc.Where(x => x.Authors.Any(x => x.Author1.Contains(Req.Info))); }
+                else if (Req.Type1 == "author") { querySrc = querySrc.Where(x => x.Authors.Any(y => y.Author1.Contains(Req.Info))); }
                 else if (Req.Type1 == "publisher") { querySrc = querySrc.Where(x => x.Publisher.Contains(Req.Info)); }
                 else
                 {
@@ -104,6 +104,7 @@ namespace test3.BLL.Guest
                     Desc = x.Desc,
                     Image = x.Image,
                     Type = x.Type.Type1,
+                    Author = String.Join("、", x.Authors.Select(x => x.Author1)),
                     Translator = x.Translator,
                     Publisher = x.Publisher,
                     Language = x.Language.Language1,
@@ -115,7 +116,7 @@ namespace test3.BLL.Guest
 
                 Res.Status = true;
                 Res.StatusCode = "2000";
-                Res.Message = "";
+                Res.Message = "查詢成功";
                 Res.TotalCount = 1;
                 Res.BookInfo = bookInfo;
             }
