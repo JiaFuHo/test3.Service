@@ -127,10 +127,10 @@ namespace test3.BLL.Guest
                 var query = querySrc.Select(x => new BookInfo
                 {
                     Title = x.Title,
-                    Desc = x.Desc,
+                    BDesc = x.Desc,
                     Image = x.Image,
                     Type = x.Type.Type1,
-                    Author = String.Join("、", x.Authors.Select(y => y.Author1)),
+                    AuthorInfos = x.Authors.Select(y => new AuthorInfo { Author = y.Author1, ADesc = y.Desc }),
                     Translator = x.Translator,
                     Publisher = x.Publisher,
                     Language = x.Language.Language1,

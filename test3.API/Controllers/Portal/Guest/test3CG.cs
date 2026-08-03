@@ -69,7 +69,7 @@ namespace test3.API.Controllers.Portal
             {
                 Res = _logic.QueryBookInfo(Req!);
 
-                if (Res.Status) { _loggerO.LogInformation($"GetBookInfo成功 - StatusCode = {Res.StatusCode}"); }
+                if (Res.Status) { _loggerO.LogInformation($"GetBookInfo成功 - StatusCode = {Res.StatusCode}, Book = {Res.BookInfo!.Title}"); }
             }
             catch (Exception ex)
             {
