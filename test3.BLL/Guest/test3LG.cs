@@ -135,7 +135,8 @@ namespace test3.BLL.Guest
                     Publisher = x.Publisher,
                     Language = x.Language.Language1,
                     ISBN = x.Isbn,
-                    PublishDate = x.PublishDate
+                    PublishDate = x.PublishDate,
+                    BookStatus = x.Books.Any(y => (y.BookStatusId == 1) && (!y.Reservations.Any(z => z.ReservationStatusId == 1 || z.ReservationStatusId == 3)))
                 });
 
                 var bookInfo = query.FirstOrDefault();

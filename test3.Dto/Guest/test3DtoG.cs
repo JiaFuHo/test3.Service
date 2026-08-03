@@ -38,6 +38,7 @@
         public String? Language { get; set; }
         public String? ISBN { get; set; }
         public DateTime? PublishDate { get; set; }
+        public Boolean BookStatus { get; set; } = false;
     }
 
     public class AuthorInfo

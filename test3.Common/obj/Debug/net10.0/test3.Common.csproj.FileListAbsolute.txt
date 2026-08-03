@@ -1,0 +1,12 @@
+C:\JiaFuHo - GF66\Programs\Others\test3\test3.Service\test3.Common\bin\Debug\net10.0\test3.Common.deps.json
+C:\JiaFuHo - GF66\Programs\Others\test3\test3.Service\test3.Common\bin\Debug\net10.0\test3.Common.dll
+C:\JiaFuHo - GF66\Programs\Others\test3\test3.Service\test3.Common\bin\Debug\net10.0\test3.Common.pdb
+C:\JiaFuHo - GF66\Programs\Others\test3\test3.Service\test3.Common\obj\Debug\net10.0\test3.Common.csproj.AssemblyReference.cache
+C:\JiaFuHo - GF66\Programs\Others\test3\test3.Service\test3.Common\obj\Debug\net10.0\test3.Common.GeneratedMSBuildEditorConfig.editorconfig
+C:\JiaFuHo - GF66\Programs\Others\test3\test3.Service\test3.Common\obj\Debug\net10.0\test3.Common.AssemblyInfoInputs.cache
+C:\JiaFuHo - GF66\Programs\Others\test3\test3.Service\test3.Common\obj\Debug\net10.0\test3.Common.AssemblyInfo.cs
+C:\JiaFuHo - GF66\Programs\Others\test3\test3.Service\test3.Common\obj\Debug\net10.0\test3.Common.csproj.CoreCompileInputs.cache
+C:\JiaFuHo - GF66\Programs\Others\test3\test3.Service\test3.Common\obj\Debug\net10.0\test3.Common.dll
+C:\JiaFuHo - GF66\Programs\Others\test3\test3.Service\test3.Common\obj\Debug\net10.0\refint\test3.Common.dll
+C:\JiaFuHo - GF66\Programs\Others\test3\test3.Service\test3.Common\obj\Debug\net10.0\test3.Common.pdb
+C:\JiaFuHo - GF66\Programs\Others\test3\test3.Service\test3.Common\obj\Debug\net10.0\ref\test3.Common.dll
