@@ -47,27 +47,53 @@ namespace test3.BLL.Guest
         {
             var Res = new SearchQueryRes();
 
+            var (check, message) = SearchQueryChk(Req);
+
+            if (!check)
+            {
+                Res.Status = false;
+                Res.StatusCode = "4003";
+                Res.Message = message!;
+
+                _loggerO.LogError($"QueryBookInfo檢查失敗 - StatusCode = {Res.StatusCode}, Message = {Res.Message}");
+
+                return Res;
+            }
+
             var querySrc = _db.Collections.AsQueryable();
 
             if (!String.IsNullOrWhiteSpace(Req.Info))
             {
-                if (Req.Type1 == "title") { querySrc = querySrc.Where(x => x.Title.Contains(Req.Info)); }
-                else if (Req.Type1 == "author") { querySrc = querySrc.Where(x => x.Authors.Any(y => y.Author1.Contains(Req.Info))); }
-                else if (Req.Type1 == "publisher") { querySrc = querySrc.Where(x => x.Publisher.Contains(Req.Info)); }
-                else
+                switch (Req.Type1)
                 {
-                    querySrc = querySrc.Where(x => x.Isbn == Req.Info);
+                    case "title":
+                        querySrc = querySrc.Where(x => x.Title.Contains(Req.Info)); break;
+                    case "author":
+                        querySrc = querySrc.Where(x => x.Authors.Any(y => y.Author1.Contains(Req.Info))); break;
+                    case "publisher":
+                        querySrc = querySrc.Where(x => x.Publisher.Contains(Req.Info)); break;
+                    case "isbn":
+                        querySrc = querySrc.Where(x => x.Isbn == Req.Info); break;
+                    default:
+                        break;
+                }
 
-                    if (!querySrc.Any())
+                if (!querySrc.Any())
+                {
+                    Res.Status = false;
+                    Res.StatusCode = "4004";
+                    Res.Message = Req.Type1 switch
                     {
-                        Res.Status = false;
-                        Res.StatusCode = "4004";
-                        Res.Message = "查無相關ISBN";
+                        "title" => "查無相關書名",
+                        "author" => "查無相關作者",
+                        "publisher" => "查無相關出版社",
+                        "isbn" => "查無相關ISBN",
+                        _ => "查無相關館藏"
+                    };
 
-                        _loggerO.LogError($"QueryBookInfo失敗 - StatusCode = {Res.StatusCode}, Message = {Res.Message}");
+                    _loggerO.LogError($"QueryBookInfo失敗 - StatusCode = {Res.StatusCode}, Message = {Res.Message}");
 
-                        return Res;
-                    }
+                    return Res;
                 }
             }
             if (Req.SYear != null)
@@ -104,7 +130,7 @@ namespace test3.BLL.Guest
                     Desc = x.Desc,
                     Image = x.Image,
                     Type = x.Type.Type1,
-                    Author = String.Join("、", x.Authors.Select(x => x.Author1)),
+                    Author = String.Join("、", x.Authors.Select(y => y.Author1)),
                     Translator = x.Translator,
                     Publisher = x.Publisher,
                     Language = x.Language.Language1,
@@ -136,6 +162,24 @@ namespace test3.BLL.Guest
         #endregion
 
         #region Aux Methods
+
+        #region Home
+
+        #endregion
+
+        #region Collection
+
+        #endregion
+
+        #region Search
+        // Check
+        private (Boolean check, String? message) SearchQueryChk(SearchQueryReq model)
+        {
+            if (model.SYear > model.EYear) { return (false, "Logic Error: 年份 (起) > 年份 (迄)"); }
+
+            return (true, null);
+        }
+        #endregion
 
         #endregion
     }
