@@ -29,7 +29,50 @@ namespace test3.API.Controllers.Portal
         #region Actions
 
         #region Home
+        [HttpGet("home/booklist")]
+        public ActionResult<HomeQueryBookRes> GetBookList([FromQuery] HomeQueryBookReq model)
+        {
+            _loggerX.L1();
 
+            var Res = new HomeQueryBookRes();
+
+            var (validation, Req, statusCode, message) = HomeQueryBookValid(model);
+
+            if (!validation)
+            {
+                Res.Status = false;
+                Res.StatusCode = statusCode!;
+                Res.Message = message!;
+
+                _loggerO.LogError($"GetBookList驗證失敗 - StatusCode = {Res.StatusCode}, Message = {Res.Message}");
+
+                return Ok(Res);
+            }
+
+            try
+            {
+                Res = _logic.QueryBookList(Req!);
+
+                if (Res.Status)
+                {
+                    var bookList = String.Join("、", Res.BookList!.Select(x => x.Title));
+
+                    _loggerO.LogInformation($"GetBookList成功 - StatusCode = {Res.StatusCode}, BookList = {bookList}");
+                }
+            }
+            catch (Exception ex)
+            {
+                Res.Status = false;
+                Res.StatusCode = "5003";
+                Res.Message = $"Service Error: {ex.Message}";
+
+                _loggerO.LogError(ex, $"GetBookList錯誤 - StatusCode = {Res.StatusCode}, Message = {Res.Message}, ex = ");
+            }
+
+            _loggerX.L1();
+
+            return Ok(Res);
+        }
         #endregion
 
         #region Collection
@@ -91,7 +134,15 @@ namespace test3.API.Controllers.Portal
         #region Methods
 
         #region Home
+        // Validation
+        private (Boolean validation, HomeQueryBookReq? ReqModel, String? statusCode, String? message) HomeQueryBookValid(HomeQueryBookReq model)
+        {
+            if (String.IsNullOrWhiteSpace(model.Mode)) { return (false, null, "4001", "System Required Error"); }
 
+            var modelX = model;
+
+            return (true, modelX, null, null);
+        }
         #endregion
 
         #region Collection
@@ -102,8 +153,7 @@ namespace test3.API.Controllers.Portal
         // Validation
         private (Boolean validation, SearchQueryReq? ReqModel, String? statusCode, String? message) SearchQueryValid(SearchQueryReq model)
         {
-            if (String.IsNullOrWhiteSpace(model.Info) && model.SYear == null && model.EYear == null && model.Lang == null && model.Type2 == null)
-            { return (false, null, "4001", "Client Required Error: 任一查詢條件"); }
+            if (String.IsNullOrWhiteSpace(model.Info) && model.SYear == null && model.EYear == null && model.Lang == null && model.Type2 == null) { return (false, null, "4001", "Client Required Error: 任一查詢條件"); }
 
             var modelX = model;
 

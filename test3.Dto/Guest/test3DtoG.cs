@@ -1,7 +1,36 @@
 ﻿namespace test3.Dto.Guest
 {
-    #region Home
+    public class BookInfo
+    {
+        public String? Title { get; set; }
+        public String? BDesc { get; set; }
+        public Byte[]? Image { get; set; }
+        public String? Type { get; set; }
+        public IEnumerable<AuthorInfo>? AuthorInfos { get; set; }
+        public String? Translator { get; set; }
+        public String? Publisher { get; set; }
+        public String? Language { get; set; }
+        public String? ISBN { get; set; }
+        public DateTime? PublishDate { get; set; }
+        public Boolean BookStatus { get; set; } = false;
+    }
 
+    public class AuthorInfo
+    {
+        public String? Author { get; set; }
+        public String? ADesc { get; set; }
+    }
+
+    #region Home
+    public class HomeQueryBookReq
+    {
+        public String? Mode { get; set; }
+    }
+
+    public class HomeQueryBookRes : QueryResBase
+    {
+        public IEnumerable<BookInfo>? BookList { get; set; }
+    }
     #endregion
 
     #region Collection
@@ -24,27 +53,6 @@
     public class SearchQueryRes : QueryResBase
     {
         public BookInfo? BookInfo { get; set; }
-    }
-
-    public class BookInfo
-    {
-        public String? Title { get; set; }
-        public String? BDesc { get; set; }
-        public Byte[]? Image { get; set; }
-        public String? Type { get; set; }
-        public IEnumerable<AuthorInfo>? AuthorInfos { get; set; }
-        public String? Translator { get; set; }
-        public String? Publisher { get; set; }
-        public String? Language { get; set; }
-        public String? ISBN { get; set; }
-        public DateTime? PublishDate { get; set; }
-        public Boolean BookStatus { get; set; } = false;
-    }
-
-    public class AuthorInfo
-    {
-        public String? Author { get; set; }
-        public String? ADesc { get; set; }
     }
     #endregion
 }

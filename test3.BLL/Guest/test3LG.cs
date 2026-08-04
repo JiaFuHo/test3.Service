@@ -28,7 +28,60 @@ namespace test3.BLL.Guest
         #region Methods
 
         #region Home
+        public HomeQueryBookRes QueryBookList(HomeQueryBookReq Req)
+        {
+            var Res = new HomeQueryBookRes();
 
+            var querySrc = _db.Collections.AsQueryable();
+
+            if (Req.Mode == "N") { querySrc = querySrc.OrderByDescending(x => x.Books.Max(y => y.AccessDate)).Take(9); }
+            else { querySrc = querySrc.OrderByDescending(x => x.Books.Sum(y => y.Borrows.Count())).Take(9); }
+
+            if (!querySrc.Any())
+            {
+                Res.Status = false;
+                Res.StatusCode = "4004";
+                Res.Message = "查無相關資訊";
+
+                _loggerO.LogError($"QueryBookList失敗 - StatusCode = {Res.StatusCode}, Message = {Res.Message}");
+
+                return Res;
+            }
+
+            try
+            {
+                var query = querySrc.Select(x => new BookInfo
+                {
+                    Title = x.Title,
+                    BDesc = x.Desc,
+                    Image = x.Image,
+                    Type = x.Type.Type1,
+                    AuthorInfos = x.Authors.Select(y => new AuthorInfo { Author = y.Author1 }),
+                    Publisher = x.Publisher,
+                    Language = x.Language.Language1,
+                    ISBN = x.Isbn,
+                    BookStatus = x.Books.Any(y => (y.BookStatusId == 1) && (!y.Reservations.Any(z => z.ReservationStatusId == 1 || z.ReservationStatusId == 3)))
+                });
+
+                var bookList = query.ToList();
+
+                Res.Status = true;
+                Res.StatusCode = "2000";
+                Res.Message = "查詢成功";
+                Res.TotalCount = 1;
+                Res.BookList = bookList;
+            }
+            catch (Exception ex)
+            {
+                Res.Status = false;
+                Res.StatusCode = "5002";
+                Res.Message = $"System Error: {ex.Message}";
+
+                _loggerO.LogError(ex, $"QueryBookList錯誤 - StatusCode = {Res.StatusCode}, Message = {Res.Message}, ex = ");
+            }
+
+            return Res;
+        }
         #endregion
 
         #region Collection
