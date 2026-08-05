@@ -74,7 +74,7 @@ namespace test3.BLL.Guest
             catch (Exception ex)
             {
                 Res.Status = false;
-                Res.StatusCode = "5002";
+                Res.StatusCode = "5102";
                 Res.Message = $"System Error: {ex.Message}";
 
                 _loggerO.LogError(ex, $"QueryBookList錯誤 - StatusCode = {Res.StatusCode}, Message = {Res.Message}, ex = ");
@@ -203,7 +203,7 @@ namespace test3.BLL.Guest
             catch (Exception ex)
             {
                 Res.Status = false;
-                Res.StatusCode = "5002";
+                Res.StatusCode = "5102";
                 Res.Message = $"System Error: {ex.Message}";
 
                 _loggerO.LogError(ex, $"QueryBookInfo錯誤 - StatusCode = {Res.StatusCode}, Message = {Res.Message}, ex = ");

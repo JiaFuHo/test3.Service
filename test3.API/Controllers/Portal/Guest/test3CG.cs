@@ -63,7 +63,7 @@ namespace test3.API.Controllers.Portal
             catch (Exception ex)
             {
                 Res.Status = false;
-                Res.StatusCode = "5003";
+                Res.StatusCode = "5101";
                 Res.Message = $"Service Error: {ex.Message}";
 
                 _loggerO.LogError(ex, $"GetBookList錯誤 - StatusCode = {Res.StatusCode}, Message = {Res.Message}, ex = ");
@@ -117,7 +117,7 @@ namespace test3.API.Controllers.Portal
             catch (Exception ex)
             {
                 Res.Status = false;
-                Res.StatusCode = "5003";
+                Res.StatusCode = "5101";
                 Res.Message = $"Service Error: {ex.Message}";
 
                 _loggerO.LogError(ex, $"GetBookInfo錯誤 - StatusCode = {Res.StatusCode}, Message = {Res.Message}, ex = ");
