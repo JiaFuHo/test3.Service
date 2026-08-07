@@ -7,11 +7,11 @@ namespace test3.DAL.test3.Models;
 
 public partial class Author
 {
-    public Byte AuthorId { get; set; }
+    public byte AuthorId { get; set; }
 
-    public String Author1 { get; set; } = null!;
+    public string Author1 { get; set; } = null!;
 
-    public String? Desc { get; set; }
+    public string? Desc { get; set; }
 
     public virtual ICollection<Collection> Collections { get; set; } = new List<Collection>();
 }

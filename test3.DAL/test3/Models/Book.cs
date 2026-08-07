@@ -7,13 +7,13 @@ namespace test3.DAL.test3.Models;
 
 public partial class Book
 {
-    public Int32 BookId { get; set; }
+    public int BookId { get; set; }
 
-    public Int32 CollectionId { get; set; }
+    public int CollectionId { get; set; }
 
-    public String BookCode { get; set; } = null!;
+    public string BookCode { get; set; } = null!;
 
-    public Byte BookStatusId { get; set; }
+    public byte BookStatusId { get; set; }
 
     public DateTime AccessDate { get; set; }
 

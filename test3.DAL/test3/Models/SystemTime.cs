@@ -7,7 +7,7 @@ namespace test3.DAL.test3.Models;
 
 public partial class SystemTime
 {
-    public Int32 Oid { get; set; }
+    public int Oid { get; set; }
 
     public DateTime Cdate { get; set; }
 }

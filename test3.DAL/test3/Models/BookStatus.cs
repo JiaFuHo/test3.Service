@@ -7,9 +7,9 @@ namespace test3.DAL.test3.Models;
 
 public partial class BookStatus
 {
-    public Byte BookStatusId { get; set; }
+    public byte BookStatusId { get; set; }
 
-    public String BookStatus1 { get; set; } = null!;
+    public string BookStatus1 { get; set; } = null!;
 
     public virtual ICollection<Book> Books { get; set; } = new List<Book>();
 }

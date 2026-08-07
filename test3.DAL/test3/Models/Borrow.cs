@@ -7,13 +7,13 @@ namespace test3.DAL.test3.Models;
 
 public partial class Borrow
 {
-    public Int32 BorrowId { get; set; }
+    public int BorrowId { get; set; }
 
-    public Int32 Cid { get; set; }
+    public int Cid { get; set; }
 
-    public Int32? ReservationId { get; set; }
+    public int? ReservationId { get; set; }
 
-    public Int32 BookId { get; set; }
+    public int BookId { get; set; }
 
     public DateTime BorrowDate { get; set; }
 
@@ -21,7 +21,7 @@ public partial class Borrow
 
     public DateTime? ReturnDate { get; set; }
 
-    public Byte BorrowStatusId { get; set; }
+    public byte BorrowStatusId { get; set; }
 
     public virtual Book Book { get; set; } = null!;
 

@@ -7,13 +7,13 @@ namespace test3.DAL.test3.Models;
 
 public partial class History
 {
-    public Int32 HistoryId { get; set; }
+    public int HistoryId { get; set; }
 
-    public Int32 BorrowId { get; set; }
+    public int BorrowId { get; set; }
 
-    public Byte? Score { get; set; }
+    public byte? Score { get; set; }
 
-    public String? Feedback { get; set; }
+    public string? Feedback { get; set; }
 
     public virtual Borrow Borrow { get; set; } = null!;
 }

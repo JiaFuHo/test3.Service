@@ -7,23 +7,25 @@ namespace test3.DAL.test3.Models;
 
 public partial class Collection
 {
-    public Int32 CollectionId { get; set; }
+    public int CollectionId { get; set; }
 
-    public String Title { get; set; } = null!;
+    public string Title { get; set; } = null!;
 
-    public String? Desc { get; set; }
+    public string? Desc { get; set; }
 
-    public Byte[]? Image { get; set; }
+    public byte[]? Image { get; set; }
 
-    public Byte TypeId { get; set; }
+    public byte TypeId { get; set; }
 
-    public String? Translator { get; set; }
+    public string? Translator { get; set; }
 
-    public String Publisher { get; set; } = null!;
+    public string Publisher { get; set; } = null!;
 
-    public Byte LanguageId { get; set; }
+    public byte LanguageId { get; set; }
 
-    public String Isbn { get; set; } = null!;
+    public string Isbn { get; set; } = null!;
+
+    public byte? SeriesId { get; set; }
 
     public DateTime PublishDate { get; set; }
 
@@ -34,6 +36,8 @@ public partial class Collection
     public virtual Language Language { get; set; } = null!;
 
     public virtual ICollection<Reservation> Reservations { get; set; } = new List<Reservation>();
+
+    public virtual Series? Series { get; set; }
 
     public virtual Type Type { get; set; } = null!;
 

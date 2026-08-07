@@ -7,11 +7,11 @@ namespace test3.DAL.test3.Models;
 
 public partial class Notification
 {
-    public Int32 NotificationId { get; set; }
+    public int NotificationId { get; set; }
 
-    public Int32 Cid { get; set; }
+    public int Cid { get; set; }
 
-    public String Message { get; set; } = null!;
+    public string Message { get; set; } = null!;
 
     public DateTime NotificationDate { get; set; }
 

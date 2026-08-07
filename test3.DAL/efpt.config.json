@@ -75,6 +75,10 @@
          "ObjectType": 0
       },
       {
+         "Name": "[dbo].[Series]",
+         "ObjectType": 0
+      },
+      {
          "Name": "[dbo].[SystemTime]",
          "ObjectType": 0
       },
@@ -83,7 +87,7 @@
          "ObjectType": 0
       }
    ],
-   "UiHInt32": null,
+   "UiHint": null,
    "UncountableWords": null,
    "UseAsyncStoredProcedureCalls": true,
    "UseBoolPropertiesWithoutDefaultSql": false,

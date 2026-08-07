@@ -7,11 +7,11 @@ namespace test3.DAL.test3.Models;
 
 public partial class Favorite
 {
-    public Int32 FavoriteId { get; set; }
+    public int FavoriteId { get; set; }
 
-    public Int32 Cid { get; set; }
+    public int Cid { get; set; }
 
-    public Int32 CollectionId { get; set; }
+    public int CollectionId { get; set; }
 
     public virtual Client CidNavigation { get; set; } = null!;
 

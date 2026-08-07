@@ -7,23 +7,23 @@ namespace test3.DAL.test3.Models;
 
 public partial class Client
 {
-    public Int32 Cid { get; set; }
+    public int Cid { get; set; }
 
     public Guid Guid { get; set; }
 
-    public String Cname { get; set; } = null!;
+    public string Cname { get; set; } = null!;
 
-    public String Cacc { get; set; } = null!;
+    public string Cacc { get; set; } = null!;
 
-    public String Cpwd { get; set; } = null!;
+    public string Cpwd { get; set; } = null!;
 
-    public String? Cphone { get; set; }
+    public string? Cphone { get; set; }
 
-    public String? Fid { get; set; }
+    public string? Fid { get; set; }
 
-    public String? Gid { get; set; }
+    public string? Gid { get; set; }
 
-    public Byte Permission { get; set; }
+    public byte Permission { get; set; }
 
     public virtual ICollection<Borrow> Borrows { get; set; } = new List<Borrow>();
 

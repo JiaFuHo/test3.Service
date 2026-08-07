@@ -7,9 +7,9 @@ namespace test3.DAL.test3.Models;
 
 public partial class ReservationStatus
 {
-    public Byte ReservationStatusId { get; set; }
+    public byte ReservationStatusId { get; set; }
 
-    public String ReservationStatus1 { get; set; } = null!;
+    public string ReservationStatus1 { get; set; } = null!;
 
     public virtual ICollection<Reservation> Reservations { get; set; } = new List<Reservation>();
 }

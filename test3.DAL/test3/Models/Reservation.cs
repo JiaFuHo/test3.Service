@@ -7,19 +7,19 @@ namespace test3.DAL.test3.Models;
 
 public partial class Reservation
 {
-    public Int32 ReservationId { get; set; }
+    public int ReservationId { get; set; }
 
-    public Int32 Cid { get; set; }
+    public int Cid { get; set; }
 
-    public Int32 CollectionId { get; set; }
+    public int CollectionId { get; set; }
 
-    public Int32? BookId { get; set; }
+    public int? BookId { get; set; }
 
     public DateTime ReservateDate { get; set; }
 
     public DateTime? DueDateR { get; set; }
 
-    public Byte ReservationStatusId { get; set; }
+    public byte ReservationStatusId { get; set; }
 
     public virtual Book? Book { get; set; }
 

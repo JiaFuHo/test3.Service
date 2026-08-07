@@ -7,9 +7,9 @@ namespace test3.DAL.test3.Models;
 
 public partial class BorrowStatus
 {
-    public Byte BorrowStatusId { get; set; }
+    public byte BorrowStatusId { get; set; }
 
-    public String BorrowStatus1 { get; set; } = null!;
+    public string BorrowStatus1 { get; set; } = null!;
 
     public virtual ICollection<Borrow> Borrows { get; set; } = new List<Borrow>();
 }

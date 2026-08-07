@@ -7,9 +7,9 @@ namespace test3.DAL.test3.Models;
 
 public partial class Type
 {
-    public Byte TypeId { get; set; }
+    public byte TypeId { get; set; }
 
-    public String Type1 { get; set; } = null!;
+    public string Type1 { get; set; } = null!;
 
     public virtual ICollection<Collection> Collections { get; set; } = new List<Collection>();
 }
