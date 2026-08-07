@@ -82,6 +82,35 @@ namespace test3.BLL.Guest
 
             return Res;
         }
+
+        public HomeQuerySeriesRes QuerySeriesList()
+        {
+            var Res = new HomeQuerySeriesRes();
+
+            var querySrc = _db.Series.AsQueryable();
+
+            try
+            {
+                var query = querySrc.Select(x => x.Series1).Take(3);
+
+                var seriesList = query.ToList();
+
+                Res.Status = true;
+                Res.StatusCode = "2000";
+                Res.Message = "查詢成功";
+                Res.SeriesList = seriesList;
+            }
+            catch (Exception ex)
+            {
+                Res.Status = false;
+                Res.StatusCode = "5102";
+                Res.Message = $"System Error: {ex.Message}";
+
+                _loggerO.LogError(ex, $"QuerySeriesList錯誤 - StatusCode = {Res.StatusCode}, Message = {Res.Message}, ex = ");
+            }
+
+            return Res;
+        }
         #endregion
 
         #region Collection

@@ -31,6 +31,11 @@
     {
         public IEnumerable<BookInfo>? BookList { get; set; }
     }
+
+    public class HomeQuerySeriesRes : QueryResBase
+    {
+        public IEnumerable<String>? SeriesList { get; set; }
+    }
     #endregion
 
     #region Collection

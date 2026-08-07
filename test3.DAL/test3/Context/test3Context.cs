@@ -44,7 +44,7 @@ public partial class test3Context : DbContext
 
     public virtual DbSet<SystemTime> SystemTimes { get; set; }
 
-    public virtual DbSet<Type> Types { get; set; }
+    public virtual DbSet<Models.Type> Types { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -378,7 +378,7 @@ public partial class test3Context : DbContext
                 .HasColumnName("CDate");
         });
 
-        modelBuilder.Entity<Type>(entity =>
+        modelBuilder.Entity<Models.Type>(entity =>
         {
             entity.HasKey(e => e.TypeId).HasName("PK_Type_TypeId");
 

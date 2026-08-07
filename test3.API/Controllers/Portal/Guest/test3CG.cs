@@ -73,6 +73,38 @@ namespace test3.API.Controllers.Portal
 
             return Ok(Res);
         }
+
+        [HttpGet("home/serieslist")]
+        public ActionResult<HomeQuerySeriesRes> GetSeriesList()
+        {
+            _loggerX.L1();
+
+            var Res = new HomeQuerySeriesRes();
+
+            try
+            {
+                Res = _logic.QuerySeriesList();
+
+                if (Res.Status)
+                {
+                    var seriesList = String.Join("、", Res.SeriesList!);
+
+                    _loggerO.LogInformation($"GetSeriesList成功 - StatusCode = {Res.StatusCode}, SeriesList = {seriesList}");
+                }
+            }
+            catch (Exception ex)
+            {
+                Res.Status = false;
+                Res.StatusCode = "5101";
+                Res.Message = $"Service Error: {ex.Message}";
+
+                _loggerO.LogError(ex, $"GetSeriesList錯誤 - StatusCode = {Res.StatusCode}, Message = {Res.Message}, ex = ");
+            }
+
+            _loggerX.L1();
+
+            return Ok(Res);
+        }
         #endregion
 
         #region Collection
