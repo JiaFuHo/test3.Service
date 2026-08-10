@@ -36,7 +36,7 @@ namespace test3.API
             #endregion
 
             #region Serilog
-            var logPath = builder.Configuration["LogPath"] ?? "C:\\JiaFuHo - GF66\\Programs\\Others\\test3\\test3.Logs";
+            var logPath = builder.Configuration["LogPath"] ?? "C:\\JiaFuHo - GF66\\Programs\\Others\\test3\\test3.Log\\test3.Service\\Log_.txt";
 
             Log.Logger = new LoggerConfiguration()
                                    .WriteTo.Console(
