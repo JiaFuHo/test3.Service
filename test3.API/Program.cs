@@ -119,8 +119,11 @@ namespace test3.API
             });
             #endregion
 
-            #region API
+            #region Controllers
             builder.Services.AddControllers();
+            #endregion
+
+            #region API
             builder.Services.AddOpenApi(options =>
             {
                 options.AddDocumentTransformer((document, context, cancellationToken) =>
