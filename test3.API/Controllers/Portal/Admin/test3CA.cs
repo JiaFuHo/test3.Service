@@ -1,6 +1,8 @@
-﻿using test3.BLL.Admin;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using test3.BLL.Admin;
+using test3.Common;
+using test3.Dto.Admin;
 
 namespace test3.API.Controllers.Portal.Admin
 {
@@ -11,16 +13,14 @@ namespace test3.API.Controllers.Portal.Admin
     {
         #region Fields
         private readonly test3LA _logic;
-        private readonly IConfiguration _config;
-        private readonly ILogger<test3CA> _loggerO;
+        private readonly ILogger<test3CA> _logO;
         #endregion
 
         #region Constructor
-        public test3CA(test3LA logic, IConfiguration config, ILogger<test3CA> logger)
+        public test3CA(test3LA logic, ILogger<test3CA> log)
         {
             _logic = logic;
-            _config = config;
-            _loggerO = logger;
+            _logO = log;
         }
         #endregion
 

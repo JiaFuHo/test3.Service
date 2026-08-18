@@ -13,16 +13,14 @@ namespace test3.API.Controllers.Portal
     {
         #region Fields
         private readonly test3LG _logic;
-        private readonly IConfiguration _config;
-        private readonly ILogger<test3CG> _loggerO;
+        private readonly ILogger<test3CG> _logO;
         #endregion
 
         #region Constructor
-        public test3CG(test3LG logic, IConfiguration config, ILogger<test3CG> logger)
+        public test3CG(test3LG logic, ILogger<test3CG> log)
         {
             _logic = logic;
-            _config = config;
-            _loggerO = logger;
+            _logO = log;
         }
         #endregion
 
@@ -32,7 +30,7 @@ namespace test3.API.Controllers.Portal
         [HttpGet("home/booklist")]
         public ActionResult<HomeQueryBookRes> GetBookList([FromQuery] HomeQueryBookReq model)
         {
-            _loggerX.L1();
+            _logX.L1();
 
             var Res = new HomeQueryBookRes();
 
@@ -44,7 +42,7 @@ namespace test3.API.Controllers.Portal
                 Res.StatusCode = statusCode!;
                 Res.Message = message!;
 
-                _loggerO.LogError($"GetBookList驗證失敗 - StatusCode = {Res.StatusCode}, Message = {Res.Message}");
+                _logO.LogError($"GetBookList驗證失敗 - StatusCode = {Res.StatusCode}, Message = {Res.Message}");
 
                 return Ok(Res);
             }
@@ -57,7 +55,7 @@ namespace test3.API.Controllers.Portal
                 {
                     var bookList = String.Join("、", Res.BookList!.Select(x => x.Title));
 
-                    _loggerO.LogInformation($"GetBookList成功 - StatusCode = {Res.StatusCode}, BookList = {bookList}");
+                    _logO.LogInformation($"GetBookList成功 - StatusCode = {Res.StatusCode}, BookList = {bookList}");
                 }
             }
             catch (Exception ex)
@@ -66,10 +64,10 @@ namespace test3.API.Controllers.Portal
                 Res.StatusCode = "5101";
                 Res.Message = $"Service Error: {ex.Message}";
 
-                _loggerO.LogError(ex, $"GetBookList錯誤 - StatusCode = {Res.StatusCode}, Message = {Res.Message}, ex = ");
+                _logO.LogError(ex, $"GetBookList錯誤 - StatusCode = {Res.StatusCode}, Message = {Res.Message}, ex = ");
             }
 
-            _loggerX.L1();
+            _logX.L1();
 
             return Ok(Res);
         }
@@ -77,7 +75,7 @@ namespace test3.API.Controllers.Portal
         [HttpGet("home/serieslist")]
         public ActionResult<HomeQuerySeriesRes> GetSeriesList()
         {
-            _loggerX.L1();
+            _logX.L1();
 
             var Res = new HomeQuerySeriesRes();
 
@@ -89,7 +87,7 @@ namespace test3.API.Controllers.Portal
                 {
                     var seriesList = String.Join("、", Res.SeriesList!);
 
-                    _loggerO.LogInformation($"GetSeriesList成功 - StatusCode = {Res.StatusCode}, SeriesList = {seriesList}");
+                    _logO.LogInformation($"GetSeriesList成功 - StatusCode = {Res.StatusCode}, SeriesList = {seriesList}");
                 }
             }
             catch (Exception ex)
@@ -98,10 +96,10 @@ namespace test3.API.Controllers.Portal
                 Res.StatusCode = "5101";
                 Res.Message = $"Service Error: {ex.Message}";
 
-                _loggerO.LogError(ex, $"GetSeriesList錯誤 - StatusCode = {Res.StatusCode}, Message = {Res.Message}, ex = ");
+                _logO.LogError(ex, $"GetSeriesList錯誤 - StatusCode = {Res.StatusCode}, Message = {Res.Message}, ex = ");
             }
 
-            _loggerX.L1();
+            _logX.L1();
 
             return Ok(Res);
         }
@@ -123,7 +121,7 @@ namespace test3.API.Controllers.Portal
         [HttpGet("search")]
         public ActionResult<SearchQueryRes> GetBookInfo([FromQuery] SearchQueryReq model)
         {
-            _loggerX.L1();
+            _logX.L1();
 
             var Res = new SearchQueryRes();
 
@@ -135,7 +133,7 @@ namespace test3.API.Controllers.Portal
                 Res.StatusCode = statusCode!;
                 Res.Message = message!;
 
-                _loggerO.LogError($"GetBookInfo驗證失敗 - StatusCode = {Res.StatusCode}, Message = {Res.Message}");
+                _logO.LogError($"GetBookInfo驗證失敗 - StatusCode = {Res.StatusCode}, Message = {Res.Message}");
 
                 return Ok(Res);
             }
@@ -144,7 +142,7 @@ namespace test3.API.Controllers.Portal
             {
                 Res = _logic.QueryBookInfo(Req!);
 
-                if (Res.Status) { _loggerO.LogInformation($"GetBookInfo成功 - StatusCode = {Res.StatusCode}, Book = {Res.BookInfo!.Title}"); }
+                if (Res.Status) { _logO.LogInformation($"GetBookInfo成功 - StatusCode = {Res.StatusCode}, Book = {Res.BookInfo!.Title}"); }
             }
             catch (Exception ex)
             {
@@ -152,10 +150,10 @@ namespace test3.API.Controllers.Portal
                 Res.StatusCode = "5101";
                 Res.Message = $"Service Error: {ex.Message}";
 
-                _loggerO.LogError(ex, $"GetBookInfo錯誤 - StatusCode = {Res.StatusCode}, Message = {Res.Message}, ex = ");
+                _logO.LogError(ex, $"GetBookInfo錯誤 - StatusCode = {Res.StatusCode}, Message = {Res.Message}, ex = ");
             }
 
-            _loggerX.L1();
+            _logX.L1();
 
             return Ok(Res);
         }

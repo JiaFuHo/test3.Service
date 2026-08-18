@@ -1,6 +1,6 @@
 namespace test3.Common
 {
-    public static class _loggerX
+    public static class _logX
     {
         #region Fields
         public static Serilog.ILogger Decorator { get; set; } = null!;

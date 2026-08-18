@@ -14,17 +14,17 @@ namespace test3.API.Providers.System
     public class AuthP : IAuthP
     {
         #region Fields
-        private readonly IConfiguration _config;
+        private readonly IConfiguration _para;
         #endregion
 
         #region Constructor
-        public AuthP(IConfiguration config) { _config = config; }
+        public AuthP(IConfiguration para) { _para = para; }
         #endregion
 
         #region Methods
         public (Boolean status, String? token, String message) LoginAuth(AuthReq model)
         {
-            var JWT = _config.GetSection("JWT");
+            var JWT = _para.GetSection("JWT");
 
             var Acc = JWT["Acc"];
             var Pwd = JWT["Pwd"];

@@ -57,7 +57,7 @@ namespace test3.API
 
             builder.Host.UseSerilog();
 
-            _loggerX.Decorator = new LoggerConfiguration()
+            _logX.Decorator = new LoggerConfiguration()
                                                 .WriteTo.Console(
                                                      outputTemplate: "{Message:lj}{NewLine}",
                                                      restrictedToMinimumLevel: LogEventLevel.Information
