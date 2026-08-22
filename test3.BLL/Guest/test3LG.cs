@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Caching.Memory;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
 using test3.DAL.test3.Context;
 using test3.Dto.Guest;
@@ -25,7 +26,7 @@ namespace test3.BLL.Guest
         #region Methods
 
         #region Home
-        public HomeQueryBookRes QueryBookList(HomeQueryBookReq Req)
+        public async Task<HomeQueryBookRes> QueryBookList(HomeQueryBookReq Req)
         {
             var Res = new HomeQueryBookRes();
 
@@ -34,7 +35,7 @@ namespace test3.BLL.Guest
             if (Req.Mode == "N") { querySrc = querySrc.OrderByDescending(x => x.Books.Max(y => y.AccessDate)).Take(9); }
             else { querySrc = querySrc.OrderByDescending(x => x.Books.Sum(y => y.Borrows.Count())).Take(9); }
 
-            if (!querySrc.Any())
+            if (!await querySrc.AnyAsync())
             {
                 Res.Status = false;
                 Res.StatusCode = "4004";
@@ -57,15 +58,15 @@ namespace test3.BLL.Guest
                     Publisher = x.Publisher,
                     Language = x.Language.Language1,
                     ISBN = x.Isbn,
-                    BookStatus = x.Books.Any(y => (y.BookStatusId == 1) && (!y.Reservations.Any(z => z.ReservationStatusId == 1 || z.ReservationStatusId == 3)))
+                    BookStatus = x.Books.Any(y => (y.BookStatusId == 1))
                 });
 
-                var bookList = query.ToList();
+                var bookList = await query.ToListAsync();
 
                 Res.Status = true;
                 Res.StatusCode = "2000";
                 Res.Message = "查詢成功";
-                Res.TotalCount = 1;
+                Res.TotalCount = bookList.Count;
                 Res.BookList = bookList;
             }
             catch (Exception ex)
@@ -80,17 +81,17 @@ namespace test3.BLL.Guest
             return Res;
         }
 
-        public HomeQuerySeriesRes QuerySeriesList()
+        public async Task<HomeQuerySeriesRes> QuerySeriesList()
         {
             var Res = new HomeQuerySeriesRes();
 
-            var querySrc = _db.Series.AsQueryable();
+            var querySrc = _db.Series.OrderBy(x => x.SeriesId).Take(3);
 
             try
             {
-                var query = querySrc.Select(x => x.Series1).Take(3);
+                var query = querySrc.Select(x => x.Series1);
 
-                var seriesList = query.ToList();
+                var seriesList = await query.ToListAsync();
 
                 Res.Status = true;
                 Res.StatusCode = "2000";
@@ -122,7 +123,7 @@ namespace test3.BLL.Guest
         #endregion
 
         #region Search
-        public SearchQueryRes QueryBookInfo(SearchQueryReq Req)
+        public async Task<SearchQueryRes> QueryBookInfo(SearchQueryReq Req)
         {
             var Res = new SearchQueryRes();
 
@@ -157,7 +158,7 @@ namespace test3.BLL.Guest
                         break;
                 }
 
-                if (!querySrc.Any())
+                if (!await querySrc.AnyAsync())
                 {
                     Res.Status = false;
                     Res.StatusCode = "4004";
@@ -190,7 +191,7 @@ namespace test3.BLL.Guest
             if (Req.Lang != null) { querySrc = querySrc.Where(x => x.LanguageId == Req.Lang); }
             if (Req.Type2 != null) { querySrc = querySrc.Where(x => x.TypeId == Req.Type2); }
 
-            if (!querySrc.Any())
+            if (!await querySrc.AnyAsync())
             {
                 Res.Status = false;
                 Res.StatusCode = "4004";
@@ -218,7 +219,7 @@ namespace test3.BLL.Guest
                     BookStatus = x.Books.Any(y => (y.BookStatusId == 1) && (!y.Reservations.Any(z => z.ReservationStatusId == 1 || z.ReservationStatusId == 3)))
                 });
 
-                var bookInfo = query.FirstOrDefault();
+                var bookInfo = await query.FirstOrDefaultAsync();
 
                 Res.Status = true;
                 Res.StatusCode = "2000";

@@ -28,10 +28,8 @@ namespace test3.API.Controllers.Portal
 
         #region Home
         [HttpGet("home/booklist")]
-        public ActionResult<HomeQueryBookRes> GetBookList([FromQuery] HomeQueryBookReq model)
+        public async Task<ActionResult<HomeQueryBookRes>> GetBookList([FromQuery] HomeQueryBookReq model)
         {
-            _logX.L1();
-
             var Res = new HomeQueryBookRes();
 
             var (validation, Req, statusCode, message) = HomeQueryBookValid(model);
@@ -49,7 +47,7 @@ namespace test3.API.Controllers.Portal
 
             try
             {
-                Res = _logic.QueryBookList(Req!);
+                Res = await _logic.QueryBookList(Req!);
 
                 if (Res.Status)
                 {
@@ -73,7 +71,7 @@ namespace test3.API.Controllers.Portal
         }
 
         [HttpGet("home/serieslist")]
-        public ActionResult<HomeQuerySeriesRes> GetSeriesList()
+        public async Task<ActionResult<HomeQuerySeriesRes>> GetSeriesList()
         {
             _logX.L1();
 
@@ -81,7 +79,7 @@ namespace test3.API.Controllers.Portal
 
             try
             {
-                Res = _logic.QuerySeriesList();
+                Res = await _logic.QuerySeriesList();
 
                 if (Res.Status)
                 {
@@ -119,10 +117,8 @@ namespace test3.API.Controllers.Portal
 
         #region Search
         [HttpGet("search")]
-        public ActionResult<SearchQueryRes> GetBookInfo([FromQuery] SearchQueryReq model)
+        public async Task<ActionResult<SearchQueryRes>> GetBookInfo([FromQuery] SearchQueryReq model)
         {
-            _logX.L1();
-
             var Res = new SearchQueryRes();
 
             var (validation, Req, statusCode, message) = SearchQueryValid(model);
@@ -140,7 +136,7 @@ namespace test3.API.Controllers.Portal
 
             try
             {
-                Res = _logic.QueryBookInfo(Req!);
+                Res = await _logic.QueryBookInfo(Req!);
 
                 if (Res.Status) { _logO.LogInformation($"GetBookInfo成功 - StatusCode = {Res.StatusCode}, Book = {Res.BookInfo!.Title}"); }
             }
