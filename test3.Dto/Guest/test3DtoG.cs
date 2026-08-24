@@ -49,10 +49,10 @@
     {
         public String? Type1 { get; set; }
         public String? Info { get; set; }
-        public Int32? SYear { get; set; }
-        public Int32? EYear { get; set; }
-        public Int32? Lang { get; set; }
-        public Int32? Type2 { get; set; }
+        public Int16? SYear { get; set; }
+        public Int16? EYear { get; set; }
+        public Byte? Lang { get; set; }
+        public Byte? Type2 { get; set; }
     }
 
     public class SearchQueryRes : QueryResBase

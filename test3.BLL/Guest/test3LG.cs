@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
 using test3.DAL.test3.Context;
+using test3.Dto;
 using test3.Dto.Guest;
 
 namespace test3.BLL.Guest
@@ -24,6 +25,15 @@ namespace test3.BLL.Guest
         #endregion
 
         #region Methods
+
+        #region Login
+        public async Task<LoginRes> Login(LoginReq Req)
+        {
+            var Res = new LoginRes();
+
+            return Res;
+        }
+        #endregion
 
         #region Home
         public async Task<HomeQueryBookRes> QueryBookList(HomeQueryBookReq Req)
