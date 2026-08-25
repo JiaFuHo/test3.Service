@@ -1,9 +1,10 @@
-﻿namespace test3.Dto
+﻿namespace test3.Dto.Common
 {
     public class LoginReq
     {
         public String? CAcc { get; set; }
         public String? CPwd { get; set; }
+        public String? Mode { get; set; } = "G";
     }
 
     public class LoginRes : ResBase

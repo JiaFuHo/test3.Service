@@ -2,7 +2,6 @@
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
 using test3.DAL.test3.Context;
-using test3.Dto;
 using test3.Dto.Guest;
 
 namespace test3.BLL.Guest
@@ -10,30 +9,21 @@ namespace test3.BLL.Guest
     public class test3LG
     {
         #region Fields
-        private readonly ILogger<test3LG> _logO;
-        private readonly IMemoryCache _cache;
         private readonly test3Context _db;
+        private readonly IMemoryCache _cache;
+        private readonly ILogger<test3LG> _logO;
         #endregion
 
         #region Constructor
-        public test3LG(ILogger<test3LG> log, IMemoryCache cache, test3Context db)
+        public test3LG(test3Context db, IMemoryCache cache, ILogger<test3LG> log)
         {
-            _logO = log;
-            _cache = cache;
             _db = db;
+            _cache = cache;
+            _logO = log;
         }
         #endregion
 
         #region Methods
-
-        #region Login
-        public async Task<LoginRes> Login(LoginReq Req)
-        {
-            var Res = new LoginRes();
-
-            return Res;
-        }
-        #endregion
 
         #region Home
         public async Task<HomeQueryBookRes> QueryBookList(HomeQueryBookReq Req)

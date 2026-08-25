@@ -1,4 +1,6 @@
-﻿namespace test3.Dto.Guest
+﻿using test3.Dto.Common;
+
+namespace test3.Dto.Guest
 {
     public class BookInfo
     {

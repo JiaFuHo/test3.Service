@@ -1,8 +1,9 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using test3.BLL.Common;
 using test3.BLL.Guest;
 using test3.Common;
-using test3.Dto;
+using test3.Dto.Common;
 using test3.Dto.Guest;
 
 namespace test3.API.Controllers.Portal
@@ -13,14 +14,16 @@ namespace test3.API.Controllers.Portal
     public class test3CG : ControllerBase
     {
         #region Fields
-        private readonly test3LG _logic;
+        private readonly test3LG _logicG;
+        private readonly LoginL _logicL;
         private readonly ILogger<test3CG> _logO;
         #endregion
 
         #region Constructor
-        public test3CG(test3LG logic, ILogger<test3CG> log)
+        public test3CG(test3LG logicG, LoginL logicL, ILogger<test3CG> log)
         {
-            _logic = logic;
+            _logicG = logicG;
+            _logicL = logicL;
             _logO = log;
         }
         #endregion
@@ -48,7 +51,7 @@ namespace test3.API.Controllers.Portal
 
             try
             {
-                Res = await _logic.Login(Req!);
+                Res = await _logicL.Login(Req!);
 
                 if (Res.Status) { _logO.LogInformation($"Login成功 - StatusCode = {Res.StatusCode}, Name = {Res.CName}"); }
             }
@@ -88,7 +91,7 @@ namespace test3.API.Controllers.Portal
 
             try
             {
-                Res = await _logic.QueryBookList(Req!);
+                Res = await _logicG.QueryBookList(Req!);
 
                 if (Res.Status)
                 {
@@ -120,7 +123,7 @@ namespace test3.API.Controllers.Portal
 
             try
             {
-                Res = await _logic.QuerySeriesList();
+                Res = await _logicG.QuerySeriesList();
 
                 if (Res.Status)
                 {
@@ -177,7 +180,7 @@ namespace test3.API.Controllers.Portal
 
             try
             {
-                Res = await _logic.QueryBookInfo(Req!);
+                Res = await _logicG.QueryBookInfo(Req!);
 
                 if (Res.Status) { _logO.LogInformation($"GetBookInfo成功 - StatusCode = {Res.StatusCode}, Book = {Res.BookInfo!.Title}"); }
             }
@@ -204,6 +207,7 @@ namespace test3.API.Controllers.Portal
         // Validation
         private (Boolean validation, LoginReq? ReqModel, String? statusCode, String? message) LoginValid(LoginReq model)
         {
+            if (String.IsNullOrWhiteSpace(model.Mode)) { return (false, null, "4001", "System Required Error"); }
             if (String.IsNullOrWhiteSpace(model.CAcc)) { return (false, null, "4001", "Client Required Error: 帳號"); }
             if (String.IsNullOrWhiteSpace(model.CPwd)) { return (false, null, "4001", "Client Required Error: 密碼"); }
 

@@ -1,4 +1,4 @@
-﻿namespace test3.Dto
+﻿namespace test3.Dto.Common
 {
     public abstract class ResBase
     {
