@@ -31,8 +31,8 @@ namespace test3.API.Controllers.Portal
         #region Actions
 
         #region Login
-        [HttpGet("login")]
-        public async Task<ActionResult<LoginRes>> Login([FromQuery] LoginReq model)
+        [HttpPost("login")]
+        public async Task<ActionResult<LoginRes>> Login([FromBody] LoginReq model)
         {
             var Res = new LoginRes();
 

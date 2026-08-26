@@ -6,6 +6,7 @@ using Serilog.Events;
 using System.Text;
 using test3.API.Providers.System;
 using test3.BLL.Admin;
+using test3.BLL.Common;
 using test3.BLL.Guest;
 using test3.Common;
 using test3.DAL;
@@ -80,6 +81,7 @@ namespace test3.API
             #region BLL
             builder.Services.AddScoped<test3LA>();
             builder.Services.AddScoped<test3LG>();
+            builder.Services.AddScoped<LoginL>();
             #endregion
 
             #region DAL
