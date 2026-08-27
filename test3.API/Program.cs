@@ -10,6 +10,7 @@ using test3.BLL.Common;
 using test3.BLL.Guest;
 using test3.Common;
 using test3.DAL;
+using test3.Interface;
 
 namespace test3.API
 {
@@ -75,7 +76,8 @@ namespace test3.API
             #endregion
 
             #region Providers
-            builder.Services.AddScoped<IAuthP, AuthP>();
+            builder.Services.AddScoped<AuthI, AuthP>();
+            builder.Services.AddScoped<LoginI, AuthP>();
             #endregion
 
             #region BLL

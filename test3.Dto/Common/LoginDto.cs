@@ -14,5 +14,6 @@
         public String? CName { get; set; }
         public String? CPhone { get; set; }
         public Byte? Permission { get; set; }
+        public String? Token { get; set; }
     }
 }

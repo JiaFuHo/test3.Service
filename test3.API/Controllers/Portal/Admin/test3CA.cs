@@ -44,6 +44,7 @@ namespace test3.API.Controllers.Portal.Admin
                 Res.StatusCode = statusCode!;
                 Res.Message = message!;
 
+                _logX.L1();
                 _logO.LogError($"Login驗證失敗 - StatusCode = {Res.StatusCode}, Message = {Res.Message}");
 
                 return Ok(Res);
@@ -53,7 +54,11 @@ namespace test3.API.Controllers.Portal.Admin
             {
                 Res = await _logicL.Login(Req!);
 
-                if (Res.Status) { _logO.LogInformation($"Login成功 - StatusCode = {Res.StatusCode}, Name = {Res.CName}"); }
+                if (Res.Status)
+                {
+                    _logX.L1();
+                    _logO.LogInformation($"Login成功 - StatusCode = {Res.StatusCode}, Name = {Res.CName}");
+                }
             }
             catch (Exception ex)
             {
@@ -61,10 +66,9 @@ namespace test3.API.Controllers.Portal.Admin
                 Res.StatusCode = "5101";
                 Res.Message = $"Service Error: {ex.Message}";
 
+                _logX.L1();
                 _logO.LogError(ex, $"Login錯誤 - StatusCode = {Res.StatusCode}, Message = {Res.Message}, ex = ");
             }
-
-            _logX.L1();
 
             return Ok(Res);
         }

@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
+using test3.Common;
 using test3.DAL.test3.Context;
 using test3.Dto.Guest;
 
@@ -41,6 +42,7 @@ namespace test3.BLL.Guest
                 Res.StatusCode = "4004";
                 Res.Message = "查無相關資訊";
 
+                _logX.L1();
                 _logO.LogError($"QueryBookList失敗 - StatusCode = {Res.StatusCode}, Message = {Res.Message}");
 
                 return Res;
@@ -75,6 +77,7 @@ namespace test3.BLL.Guest
                 Res.StatusCode = "5102";
                 Res.Message = $"System Error: {ex.Message}";
 
+                _logX.L1();
                 _logO.LogError(ex, $"QueryBookList錯誤 - StatusCode = {Res.StatusCode}, Message = {Res.Message}, ex = ");
             }
 
@@ -104,6 +107,7 @@ namespace test3.BLL.Guest
                 Res.StatusCode = "5102";
                 Res.Message = $"System Error: {ex.Message}";
 
+                _logX.L1();
                 _logO.LogError(ex, $"QuerySeriesList錯誤 - StatusCode = {Res.StatusCode}, Message = {Res.Message}, ex = ");
             }
 
@@ -135,6 +139,7 @@ namespace test3.BLL.Guest
                 Res.StatusCode = "4003";
                 Res.Message = message!;
 
+                _logX.L1();
                 _logO.LogError($"QueryBookInfo檢查失敗 - StatusCode = {Res.StatusCode}, Message = {Res.Message}");
 
                 return Res;
@@ -170,7 +175,8 @@ namespace test3.BLL.Guest
                         "isbn" => "查無相關ISBN",
                         _ => "查無相關館藏"
                     };
-
+                    
+                    _logX.L1();
                     _logO.LogError($"QueryBookInfo失敗 - StatusCode = {Res.StatusCode}, Message = {Res.Message}");
 
                     return Res;
@@ -197,6 +203,7 @@ namespace test3.BLL.Guest
                 Res.StatusCode = "4004";
                 Res.Message = "查無相關館藏";
 
+                _logX.L1();
                 _logO.LogError($"QueryBookInfo失敗 - StatusCode = {Res.StatusCode}, Message = {Res.Message}");
 
                 return Res;
@@ -233,6 +240,7 @@ namespace test3.BLL.Guest
                 Res.StatusCode = "5102";
                 Res.Message = $"System Error: {ex.Message}";
 
+                _logX.L1();
                 _logO.LogError(ex, $"QueryBookInfo錯誤 - StatusCode = {Res.StatusCode}, Message = {Res.Message}, ex = ");
             }
 

@@ -5,10 +5,10 @@ namespace test3.API.Models.System
     public class AuthReq
     {
         [Required]
-        public String? UserAcc { get; set; }
+        public String? UAcc { get; set; }
 
         [Required]
-        public String? UserPwd { get; set; }
+        public String? UPwd { get; set; }
     }
 
     public class AuthRes

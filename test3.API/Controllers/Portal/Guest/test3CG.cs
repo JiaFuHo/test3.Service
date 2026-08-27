@@ -44,6 +44,7 @@ namespace test3.API.Controllers.Portal
                 Res.StatusCode = statusCode!;
                 Res.Message = message!;
 
+                _logX.L1();
                 _logO.LogError($"Login驗證失敗 - StatusCode = {Res.StatusCode}, Message = {Res.Message}");
 
                 return Ok(Res);
@@ -53,7 +54,11 @@ namespace test3.API.Controllers.Portal
             {
                 Res = await _logicL.Login(Req!);
 
-                if (Res.Status) { _logO.LogInformation($"Login成功 - StatusCode = {Res.StatusCode}, Name = {Res.CName}"); }
+                if (Res.Status)
+                {
+                    _logX.L1();
+                    _logO.LogInformation($"Login成功 - StatusCode = {Res.StatusCode}, Name = {Res.CName}");
+                }
             }
             catch (Exception ex)
             {
@@ -61,10 +66,9 @@ namespace test3.API.Controllers.Portal
                 Res.StatusCode = "5101";
                 Res.Message = $"Service Error: {ex.Message}";
 
+                _logX.L1();
                 _logO.LogError(ex, $"Login錯誤 - StatusCode = {Res.StatusCode}, Message = {Res.Message}, ex = ");
             }
-
-            _logX.L1();
 
             return Ok(Res);
         }
@@ -84,6 +88,7 @@ namespace test3.API.Controllers.Portal
                 Res.StatusCode = statusCode!;
                 Res.Message = message!;
 
+                _logX.L1();
                 _logO.LogError($"GetBookList驗證失敗 - StatusCode = {Res.StatusCode}, Message = {Res.Message}");
 
                 return Ok(Res);
@@ -97,6 +102,7 @@ namespace test3.API.Controllers.Portal
                 {
                     var bookList = String.Join("、", Res.BookList!.Select(x => x.Title));
 
+                    _logX.L1();
                     _logO.LogInformation($"GetBookList成功 - StatusCode = {Res.StatusCode}, BookList = {bookList}");
                 }
             }
@@ -106,10 +112,9 @@ namespace test3.API.Controllers.Portal
                 Res.StatusCode = "5101";
                 Res.Message = $"Service Error: {ex.Message}";
 
+                _logX.L1();
                 _logO.LogError(ex, $"GetBookList錯誤 - StatusCode = {Res.StatusCode}, Message = {Res.Message}, ex = ");
             }
-
-            _logX.L1();
 
             return Ok(Res);
         }
@@ -117,8 +122,6 @@ namespace test3.API.Controllers.Portal
         [HttpGet("home/serieslist")]
         public async Task<ActionResult<HomeQuerySeriesRes>> GetSeriesList()
         {
-            _logX.L1();
-
             var Res = new HomeQuerySeriesRes();
 
             try
@@ -129,6 +132,7 @@ namespace test3.API.Controllers.Portal
                 {
                     var seriesList = String.Join("、", Res.SeriesList!);
 
+                    _logX.L1();
                     _logO.LogInformation($"GetSeriesList成功 - StatusCode = {Res.StatusCode}, SeriesList = {seriesList}");
                 }
             }
@@ -138,10 +142,9 @@ namespace test3.API.Controllers.Portal
                 Res.StatusCode = "5101";
                 Res.Message = $"Service Error: {ex.Message}";
 
+                _logX.L1();
                 _logO.LogError(ex, $"GetSeriesList錯誤 - StatusCode = {Res.StatusCode}, Message = {Res.Message}, ex = ");
             }
-
-            _logX.L1();
 
             return Ok(Res);
         }
@@ -173,6 +176,7 @@ namespace test3.API.Controllers.Portal
                 Res.StatusCode = statusCode!;
                 Res.Message = message!;
 
+                _logX.L1();
                 _logO.LogError($"GetBookInfo驗證失敗 - StatusCode = {Res.StatusCode}, Message = {Res.Message}");
 
                 return Ok(Res);
@@ -182,7 +186,11 @@ namespace test3.API.Controllers.Portal
             {
                 Res = await _logicG.QueryBookInfo(Req!);
 
-                if (Res.Status) { _logO.LogInformation($"GetBookInfo成功 - StatusCode = {Res.StatusCode}, Book = {Res.BookInfo!.Title}"); }
+                if (Res.Status)
+                {
+                    _logX.L1();
+                    _logO.LogInformation($"GetBookInfo成功 - StatusCode = {Res.StatusCode}, Book = {Res.BookInfo!.Title}");
+                }
             }
             catch (Exception ex)
             {
@@ -190,10 +198,9 @@ namespace test3.API.Controllers.Portal
                 Res.StatusCode = "5101";
                 Res.Message = $"Service Error: {ex.Message}";
 
+                _logX.L1();
                 _logO.LogError(ex, $"GetBookInfo錯誤 - StatusCode = {Res.StatusCode}, Message = {Res.Message}, ex = ");
             }
-
-            _logX.L1();
 
             return Ok(Res);
         }

@@ -24,6 +24,7 @@
     <ProjectReference Include="..\test3.Common\test3.Common.csproj" />
     <ProjectReference Include="..\test3.DAL\test3.DAL.csproj" />
     <ProjectReference Include="..\test3.Dto\test3.Dto.csproj" />
+    <ProjectReference Include="..\test3.Interface\test3.Interface.csproj" />
   </ItemGroup>
 
   <ItemGroup>
