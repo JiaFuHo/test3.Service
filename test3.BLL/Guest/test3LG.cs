@@ -31,6 +31,17 @@ namespace test3.BLL.Guest
         {
             var Res = new HomeQueryBookRes();
 
+            var CKey = $"BookList{Req.Mode}";
+
+            if (_cache.TryGetValue(CKey, out List<BookInfo>? CBookList))
+            {
+                Res.Status = true;
+                Res.StatusCode = "2000";
+                Res.Message = "查詢成功";
+                Res.TotalCount = CBookList!.Count;
+                Res.BookList = CBookList;
+            }
+
             var querySrc = _db.Collections.AsQueryable();
 
             if (Req.Mode == "N") { querySrc = querySrc.OrderByDescending(x => x.Books.Max(y => y.AccessDate)).Take(9); }
@@ -70,6 +81,10 @@ namespace test3.BLL.Guest
                 Res.Message = "查詢成功";
                 Res.TotalCount = bookList.Count;
                 Res.BookList = bookList;
+
+                var COpt = new MemoryCacheEntryOptions().SetAbsoluteExpiration(TimeSpan.FromHours(1));
+
+                _cache.Set(CKey, bookList, COpt);
             }
             catch (Exception ex)
             {
@@ -126,6 +141,10 @@ namespace test3.BLL.Guest
         }
         #endregion
 
+        #region Info
+
+        #endregion
+
         #region Search
         public async Task<SearchQueryRes> QueryBookInfo(SearchQueryReq Req)
         {
@@ -175,7 +194,7 @@ namespace test3.BLL.Guest
                         "isbn" => "查無相關ISBN",
                         _ => "查無相關館藏"
                     };
-                    
+
                     _logX.L1();
                     _logO.LogError($"QueryBookInfo失敗 - StatusCode = {Res.StatusCode}, Message = {Res.Message}");
 

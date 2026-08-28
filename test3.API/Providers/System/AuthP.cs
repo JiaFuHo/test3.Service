@@ -57,10 +57,7 @@ namespace test3.API.Providers.System
 
             var SK = JWT["SK"];
 
-            var claims = new List<Claim>
-            {
-                new Claim(JwtRegisteredClaimNames.Sub, Convert.ToString(Res.Guid)!)
-            };
+            var claims = new List<Claim> { new Claim(JwtRegisteredClaimNames.Sub, Convert.ToString(Res.Guid)!) };
 
             if (Res.Permission == 3) { claims.Add(new Claim(ClaimTypes.Role, "Client3")); }
             else if (Res.Permission == 2) { claims.Add(new Claim(ClaimTypes.Role, "Client2")); }
@@ -72,7 +69,7 @@ namespace test3.API.Providers.System
             var tokenDsc = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(claims),
-                Expires = DateTime.UtcNow.AddMinutes(30),
+                Expires = DateTime.UtcNow.AddHours(1),
                 Issuer = JWT["Issuer"],
                 Audience = JWT["Audience"],
                 SigningCredentials = sign

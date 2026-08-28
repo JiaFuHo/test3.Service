@@ -46,6 +46,10 @@ namespace test3.Dto.Guest
     public class CollectionQueryRes : QueryResBase { }
     #endregion
 
+    #region Info
+
+    #endregion
+
     #region Search
     public class SearchQueryReq
     {

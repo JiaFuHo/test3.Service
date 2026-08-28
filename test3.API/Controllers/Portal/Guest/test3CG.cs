@@ -162,6 +162,10 @@ namespace test3.API.Controllers.Portal
         }
         #endregion
 
+        #region Info
+
+        #endregion
+
         #region Search
         [HttpGet("search")]
         public async Task<ActionResult<SearchQueryRes>> GetBookInfo([FromQuery] SearchQueryReq model)

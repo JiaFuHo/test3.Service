@@ -32,6 +32,7 @@ namespace test3.API.Controllers.Portal.Admin
 
         #region Login
         [HttpPost("login")]
+        [AllowAnonymous]
         public async Task<ActionResult<LoginRes>> Login([FromBody] LoginReq model)
         {
             var Res = new LoginRes();
