@@ -60,19 +60,19 @@ namespace test3.API
             builder.Host.UseSerilog();
 
             _logX.Decorator = new LoggerConfiguration()
-                                                .WriteTo.Console(
-                                                     outputTemplate: "{Message:lj}{NewLine}",
-                                                     restrictedToMinimumLevel: LogEventLevel.Information
-                                                )
-                                                .WriteTo.File(
-                                                     outputTemplate: "{Message:lj}{NewLine}",
-                                                     path: logPath,
-                                                     retainedFileCountLimit: null,
-                                                     rollingInterval: RollingInterval.Day,
-                                                     shared: true
-                                                )
-                                                .MinimumLevel.Verbose()
-                                                .CreateLogger();
+                                           .WriteTo.Console(
+                                                outputTemplate: "{Message:lj}{NewLine}",
+                                                restrictedToMinimumLevel: LogEventLevel.Information
+                                           )
+                                           .WriteTo.File(
+                                                outputTemplate: "{Message:lj}{NewLine}",
+                                                path: logPath,
+                                                retainedFileCountLimit: null,
+                                                rollingInterval: RollingInterval.Day,
+                                                shared: true
+                                           )
+                                           .MinimumLevel.Verbose()
+                                           .CreateLogger();
             #endregion
 
             #region Providers
