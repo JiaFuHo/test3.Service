@@ -130,7 +130,7 @@ namespace test3.API.Controllers.Portal
 
                 if (Res.Status)
                 {
-                    var seriesList = String.Join("、", Res.SeriesList!);
+                    var seriesList = String.Join("、", Res.SeriesList!.Select(x => x.Series));
 
                     _logX.L1();
                     _logO.LogInformation($"GetSeriesList成功 - StatusCode = {Res.StatusCode}, SeriesList = {seriesList}");
@@ -151,12 +151,63 @@ namespace test3.API.Controllers.Portal
         #endregion
 
         #region Collection
+        [HttpGet("collection/accordion")]
+        public async Task<ActionResult<CollectionQueryAccordionRes>> GetAccordion()
+        {
+            var Res = new CollectionQueryAccordionRes();
+
+            try
+            {
+                Res = await _logicG.QueryAccordion();
+
+                if (Res.Status)
+                {
+                    var typeList = String.Join("、", Res.TypeList!.Select(x => x.Type));
+                    var publisherList = String.Join("、", Res.PublisherList!);
+                    var languageList = String.Join("、", Res.LangList!.Select(x => x.Lang));
+                    var seriesList = String.Join("、", Res.SeriesList!.Select(x => x.Series));
+
+                    _logX.L1();
+                    _logO.LogInformation($"GetAccordion成功 - StatusCode = {Res.StatusCode}, TypeList = {typeList}, PublisherList = {publisherList}, LanguageList = {languageList}, SeriesList = {seriesList}");
+                }
+            }
+            catch (Exception ex)
+            {
+                Res.Status = false;
+                Res.StatusCode = "5101";
+                Res.Message = $"Service Error: {ex.Message}";
+
+                _logX.L1();
+                _logO.LogError(ex, $"GetAccordion錯誤 - StatusCode = {Res.StatusCode}, Message = {Res.Message}, ex = ");
+            }
+
+            return Ok(Res);
+        }
+
         [HttpGet("collection")]
-        public ActionResult<CollectionQueryRes> GetCollection()
+        public async Task<ActionResult<CollectionQueryRes>> GetCollection([FromQuery] CollectionQueryReq model)
         {
             var Res = new CollectionQueryRes();
 
+            try
+            {
+                Res = await _logicG.QueryCollection(model);
 
+                if (Res.Status)
+                {
+                    _logX.L1();
+                    _logO.LogInformation($"GetCollection成功 - StatusCode = {Res.StatusCode}, BookCount = {Res.TotalCount}");
+                }
+            }
+            catch (Exception ex)
+            {
+                Res.Status = false;
+                Res.StatusCode = "5101";
+                Res.Message = $"Service Error: {ex.Message}";
+
+                _logX.L1();
+                _logO.LogError(ex, $"GetCollection錯誤 - StatusCode = {Res.StatusCode}, Message = {Res.Message}, ex = ");
+            }
 
             return Ok(Res);
         }

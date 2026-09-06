@@ -40,6 +40,8 @@ namespace test3.BLL.Guest
                 Res.Message = "查詢成功";
                 Res.TotalCount = CBookList!.Count;
                 Res.BookList = CBookList;
+
+                return Res;
             }
 
             var querySrc = _db.Collections.AsQueryable();
@@ -103,11 +105,23 @@ namespace test3.BLL.Guest
         {
             var Res = new HomeQuerySeriesRes();
 
+            var CKey = $"SeriesList";
+
+            if (_cache.TryGetValue(CKey, out List<SeriesInfo>? CSeriesList))
+            {
+                Res.Status = true;
+                Res.StatusCode = "2000";
+                Res.Message = "查詢成功";
+                Res.SeriesList = CSeriesList;
+
+                return Res;
+            }
+
             var querySrc = _db.Series.OrderBy(x => x.SeriesId).Take(3);
 
             try
             {
-                var query = querySrc.Select(x => x.Series1);
+                var query = querySrc.Select(x => new SeriesInfo { SeriesId = x.SeriesId, Series = x.Series1 });
 
                 var seriesList = await query.ToListAsync();
 
@@ -115,6 +129,10 @@ namespace test3.BLL.Guest
                 Res.StatusCode = "2000";
                 Res.Message = "查詢成功";
                 Res.SeriesList = seriesList;
+
+                var COpt = new MemoryCacheEntryOptions().SetAbsoluteExpiration(TimeSpan.FromHours(1));
+
+                _cache.Set(CKey, seriesList, COpt);
             }
             catch (Exception ex)
             {
@@ -131,11 +149,147 @@ namespace test3.BLL.Guest
         #endregion
 
         #region Collection
-        public CollectionQueryRes QueryCollection(CollectionQueryReq Req)
+        public async Task<CollectionQueryAccordionRes> QueryAccordion()
+        {
+            var Res = new CollectionQueryAccordionRes();
+
+            var CKey = $"Accordion";
+
+            if (_cache.TryGetValue(CKey, out (List<TypeInfo>? CTypeList, List<String>? CPublisherList, List<LangInfo>? CLangList, List<SeriesInfo>? CSeriesList) CList))
+            {
+                Res.Status = true;
+                Res.StatusCode = "2000";
+                Res.Message = "查詢成功";
+                Res.TypeList = CList.CTypeList;
+                Res.PublisherList = CList.CPublisherList;
+                Res.LangList = CList.CLangList;
+                Res.SeriesList = CList.CSeriesList;
+
+                return Res;
+            }
+
+            var querySrc1 = _db.Types.AsQueryable();
+            var querySrc2 = _db.Collections.GroupBy(x => x.Publisher).OrderByDescending(g => g.Count());
+            var querySrc3 = _db.Languages.AsQueryable();
+            var querySrc4 = _db.Series.AsQueryable();
+
+            try
+            {
+                var query1 = querySrc1.Select(x => new TypeInfo { TypeId = x.TypeId, Type = x.Type1 });
+                var query2 = querySrc2.Select(g => g.Key).Take(5);
+                var query3 = querySrc3.Select(x => new LangInfo { LangId = x.LanguageId, Lang = x.Language1 });
+                var query4 = querySrc4.Select(x => new SeriesInfo { SeriesId = x.SeriesId, Series = x.Series1 });
+
+                var typeList = await query1.ToListAsync();
+                var publisherList = await query2.ToListAsync();
+                var languageList = await query3.ToListAsync();
+                var seriesList = await query4.ToListAsync();
+
+                Res.Status = true;
+                Res.StatusCode = "2000";
+                Res.Message = "查詢成功";
+                Res.TypeList = typeList;
+                Res.PublisherList = publisherList;
+                Res.LangList = languageList;
+                Res.SeriesList = seriesList;
+
+                var COpt = new MemoryCacheEntryOptions().SetAbsoluteExpiration(TimeSpan.FromHours(1));
+
+                _cache.Set(CKey, (typeList, publisherList, languageList, seriesList), COpt);
+            }
+            catch (Exception ex)
+            {
+                Res.Status = false;
+                Res.StatusCode = "5102";
+                Res.Message = $"System Error: {ex.Message}";
+
+                _logX.L1();
+                _logO.LogError(ex, $"QueryAccordion錯誤 - StatusCode = {Res.StatusCode}, Message = {Res.Message}, ex = ");
+            }
+
+            return Res;
+        }
+
+        public async Task<CollectionQueryRes> QueryCollection(CollectionQueryReq Req)
         {
             var Res = new CollectionQueryRes();
 
+            var (check, message) = CollectionQueryChk(Req);
 
+            if (!check)
+            {
+                Res.Status = false;
+                Res.StatusCode = "4003";
+                Res.Message = message!;
+
+                _logX.L1();
+                _logO.LogError($"QueryCollection檢查失敗 - StatusCode = {Res.StatusCode}, Message = {Res.Message}");
+
+                return Res;
+            }
+
+            var querySrc = _db.Collections.AsQueryable();
+
+            if (Req.TypeId != null) { querySrc = querySrc.Where(x => x.TypeId == Req.TypeId); }
+            if (!String.IsNullOrWhiteSpace(Req.Publisher)) { querySrc = querySrc.Where(x => x.Publisher == Req.Publisher); }
+            if (Req.LangId != null) { querySrc = querySrc.Where(x => x.LanguageId == Req.LangId); }
+            if (Req.SeriesId != null) { querySrc = querySrc.Where(x => x.SeriesId == Req.SeriesId); }
+            if (Req.SYear != null)
+            {
+                var SDate = new DateTime(Req.SYear.Value, 1, 1);
+
+                querySrc = querySrc.Where(x => x.PublishDate >= SDate);
+            }
+            if (Req.EYear != null)
+            {
+                var EDate = new DateTime(Req.EYear.Value, 12, 31);
+
+                querySrc = querySrc.Where(x => x.PublishDate <= EDate);
+            }
+
+            if (!await querySrc.AnyAsync())
+            {
+                Res.Status = false;
+                Res.StatusCode = "4004";
+                Res.Message = "查無相關館藏";
+
+                _logX.L1();
+                _logO.LogError($"QueryCollection失敗 - StatusCode = {Res.StatusCode}, Message = {Res.Message}");
+
+                return Res;
+            }
+
+            try
+            {
+                var query = querySrc.Select(x => new BookInfo
+                {
+                    Title = x.Title,
+                    Image = x.Image,
+                    Type = x.Type.Type1,
+                    AuthorInfos = x.Authors.Select(y => new AuthorInfo { Author = y.Author1 }),
+                    Translator = x.Translator,
+                    Publisher = x.Publisher,
+                    Language = x.Language.Language1,
+                    ISBN = x.Isbn,
+                });
+
+                var bookList = await query.ToListAsync();
+
+                Res.Status = true;
+                Res.StatusCode = "2000";
+                Res.Message = "查詢成功";
+                Res.TotalCount = bookList.Count;
+                Res.BookList = bookList;
+            }
+            catch (Exception ex)
+            {
+                Res.Status = false;
+                Res.StatusCode = "5102";
+                Res.Message = $"System Error: {ex.Message}";
+
+                _logX.L1();
+                _logO.LogError(ex, $"QueryCollection錯誤 - StatusCode = {Res.StatusCode}, Message = {Res.Message}, ex = ");
+            }
 
             return Res;
         }
@@ -276,7 +430,12 @@ namespace test3.BLL.Guest
         #endregion
 
         #region Collection
+        private (Boolean check, String? message) CollectionQueryChk(CollectionQueryReq model)
+        {
+            if (model.SYear > model.EYear) { return (false, "Logic Error: 年份 (起) > 年份 (迄)"); }
 
+            return (true, null);
+        }
         #endregion
 
         #region Search

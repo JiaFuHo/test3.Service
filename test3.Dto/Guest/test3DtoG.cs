@@ -2,6 +2,12 @@
 
 namespace test3.Dto.Guest
 {
+    public class AuthorInfo
+    {
+        public String? Author { get; set; }
+        public String? ADesc { get; set; }
+    }
+
     public class BookInfo
     {
         public String? Title { get; set; }
@@ -17,10 +23,22 @@ namespace test3.Dto.Guest
         public Boolean BookStatus { get; set; } = false;
     }
 
-    public class AuthorInfo
+    public class LangInfo
     {
-        public String? Author { get; set; }
-        public String? ADesc { get; set; }
+        public Byte? LangId { get; set; }
+        public String? Lang { get; set; }
+    }
+
+    public class SeriesInfo
+    {
+        public Byte? SeriesId { get; set; }
+        public String? Series { get; set; }
+    }
+
+    public class TypeInfo
+    {
+        public Byte? TypeId { get; set; }
+        public String? Type { get; set; }
     }
 
     #region Home
@@ -36,14 +54,33 @@ namespace test3.Dto.Guest
 
     public class HomeQuerySeriesRes : QueryResBase
     {
-        public IEnumerable<String>? SeriesList { get; set; }
+        public IEnumerable<SeriesInfo>? SeriesList { get; set; }
     }
     #endregion
 
     #region Collection
-    public class CollectionQueryReq { }
+    public class CollectionQueryAccordionRes : QueryResBase
+    {
+        public IEnumerable<TypeInfo>? TypeList { get; set; }
+        public IEnumerable<String>? PublisherList { get; set; }
+        public IEnumerable<LangInfo>? LangList { get; set; }
+        public IEnumerable<SeriesInfo>? SeriesList { get; set; }
+    }
 
-    public class CollectionQueryRes : QueryResBase { }
+    public class CollectionQueryReq
+    {
+        public Byte? TypeId { get; set; }
+        public String? Publisher { get; set; }
+        public Byte? LangId { get; set; }
+        public Byte? SeriesId { get; set; }
+        public Int16? SYear { get; set; }
+        public Int16? EYear { get; set; }
+    }
+
+    public class CollectionQueryRes : QueryResBase
+    {
+        public IEnumerable<BookInfo>? BookList { get; set; }
+    }
     #endregion
 
     #region Info
