@@ -84,6 +84,7 @@ namespace test3.API
             builder.Services.AddScoped<test3LA>();
             builder.Services.AddScoped<test3LG>();
             builder.Services.AddScoped<LoginL>();
+            builder.Services.AddScoped<LookupL>();
             #endregion
 
             #region DAL

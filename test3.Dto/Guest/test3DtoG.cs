@@ -23,24 +23,6 @@ namespace test3.Dto.Guest
         public Boolean BookStatus { get; set; } = false;
     }
 
-    public class LangInfo
-    {
-        public Byte? LangId { get; set; }
-        public String? Lang { get; set; }
-    }
-
-    public class SeriesInfo
-    {
-        public Byte? SeriesId { get; set; }
-        public String? Series { get; set; }
-    }
-
-    public class TypeInfo
-    {
-        public Byte? TypeId { get; set; }
-        public String? Type { get; set; }
-    }
-
     #region Home
     public class HomeQueryBookReq
     {
@@ -51,22 +33,9 @@ namespace test3.Dto.Guest
     {
         public IEnumerable<BookInfo>? BookList { get; set; }
     }
-
-    public class HomeQuerySeriesRes : QueryResBase
-    {
-        public IEnumerable<SeriesInfo>? SeriesList { get; set; }
-    }
     #endregion
 
     #region Collection
-    public class CollectionQueryAccordionRes : QueryResBase
-    {
-        public IEnumerable<TypeInfo>? TypeList { get; set; }
-        public IEnumerable<String>? PublisherList { get; set; }
-        public IEnumerable<LangInfo>? LangList { get; set; }
-        public IEnumerable<SeriesInfo>? SeriesList { get; set; }
-    }
-
     public class CollectionQueryReq
     {
         public Byte? TypeId { get; set; }
@@ -90,12 +59,12 @@ namespace test3.Dto.Guest
     #region Search
     public class SearchQueryReq
     {
-        public String? Type1 { get; set; }
+        public String? Kind { get; set; }
         public String? Info { get; set; }
         public Int16? SYear { get; set; }
         public Int16? EYear { get; set; }
-        public Byte? Lang { get; set; }
-        public Byte? Type2 { get; set; }
+        public Byte? LangId { get; set; }
+        public Byte? TypeId { get; set; }
     }
 
     public class SearchQueryRes : QueryResBase

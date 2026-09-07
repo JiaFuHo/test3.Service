@@ -6,7 +6,7 @@ using test3.Common;
 using test3.Dto.Common;
 using test3.Dto.Guest;
 
-namespace test3.API.Controllers.Portal
+namespace test3.API.Controllers.Portal.Guest
 {
     [ApiController]
     [Route("guest")]
@@ -118,72 +118,9 @@ namespace test3.API.Controllers.Portal
 
             return Ok(Res);
         }
-
-        [HttpGet("home/serieslist")]
-        public async Task<ActionResult<HomeQuerySeriesRes>> GetSeriesList()
-        {
-            var Res = new HomeQuerySeriesRes();
-
-            try
-            {
-                Res = await _logicG.QuerySeriesList();
-
-                if (Res.Status)
-                {
-                    var seriesList = String.Join("、", Res.SeriesList!.Select(x => x.Series));
-
-                    _logX.L1();
-                    _logO.LogInformation($"GetSeriesList成功 - StatusCode = {Res.StatusCode}, SeriesList = {seriesList}");
-                }
-            }
-            catch (Exception ex)
-            {
-                Res.Status = false;
-                Res.StatusCode = "5101";
-                Res.Message = $"Service Error: {ex.Message}";
-
-                _logX.L1();
-                _logO.LogError(ex, $"GetSeriesList錯誤 - StatusCode = {Res.StatusCode}, Message = {Res.Message}, ex = ");
-            }
-
-            return Ok(Res);
-        }
         #endregion
 
         #region Collection
-        [HttpGet("collection/accordion")]
-        public async Task<ActionResult<CollectionQueryAccordionRes>> GetAccordion()
-        {
-            var Res = new CollectionQueryAccordionRes();
-
-            try
-            {
-                Res = await _logicG.QueryAccordion();
-
-                if (Res.Status)
-                {
-                    var typeList = String.Join("、", Res.TypeList!.Select(x => x.Type));
-                    var publisherList = String.Join("、", Res.PublisherList!);
-                    var languageList = String.Join("、", Res.LangList!.Select(x => x.Lang));
-                    var seriesList = String.Join("、", Res.SeriesList!.Select(x => x.Series));
-
-                    _logX.L1();
-                    _logO.LogInformation($"GetAccordion成功 - StatusCode = {Res.StatusCode}, TypeList = {typeList}, PublisherList = {publisherList}, LanguageList = {languageList}, SeriesList = {seriesList}");
-                }
-            }
-            catch (Exception ex)
-            {
-                Res.Status = false;
-                Res.StatusCode = "5101";
-                Res.Message = $"Service Error: {ex.Message}";
-
-                _logX.L1();
-                _logO.LogError(ex, $"GetAccordion錯誤 - StatusCode = {Res.StatusCode}, Message = {Res.Message}, ex = ");
-            }
-
-            return Ok(Res);
-        }
-
         [HttpGet("collection")]
         public async Task<ActionResult<CollectionQueryRes>> GetCollection([FromQuery] CollectionQueryReq model)
         {
@@ -295,11 +232,15 @@ namespace test3.API.Controllers.Portal
 
         #endregion
 
+        #region Info
+
+        #endregion
+
         #region Search
         // Validation
         private (Boolean validation, SearchQueryReq? ReqModel, String? statusCode, String? message) SearchQueryValid(SearchQueryReq model)
         {
-            if (String.IsNullOrWhiteSpace(model.Info) && model.SYear == null && model.EYear == null && model.Lang == null && model.Type2 == null) { return (false, null, "4001", "Client Required Error: 任一查詢條件"); }
+            if (String.IsNullOrWhiteSpace(model.Info) && model.SYear == null && model.EYear == null && model.LangId == null && model.TypeId == null) { return (false, null, "4001", "Client Required Error: 任一查詢條件"); }
 
             var modelX = model;
 

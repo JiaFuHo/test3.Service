@@ -100,116 +100,9 @@ namespace test3.BLL.Guest
 
             return Res;
         }
-
-        public async Task<HomeQuerySeriesRes> QuerySeriesList()
-        {
-            var Res = new HomeQuerySeriesRes();
-
-            var CKey = $"SeriesList";
-
-            if (_cache.TryGetValue(CKey, out List<SeriesInfo>? CSeriesList))
-            {
-                Res.Status = true;
-                Res.StatusCode = "2000";
-                Res.Message = "查詢成功";
-                Res.SeriesList = CSeriesList;
-
-                return Res;
-            }
-
-            var querySrc = _db.Series.OrderBy(x => x.SeriesId).Take(3);
-
-            try
-            {
-                var query = querySrc.Select(x => new SeriesInfo { SeriesId = x.SeriesId, Series = x.Series1 });
-
-                var seriesList = await query.ToListAsync();
-
-                Res.Status = true;
-                Res.StatusCode = "2000";
-                Res.Message = "查詢成功";
-                Res.SeriesList = seriesList;
-
-                var COpt = new MemoryCacheEntryOptions().SetAbsoluteExpiration(TimeSpan.FromHours(1));
-
-                _cache.Set(CKey, seriesList, COpt);
-            }
-            catch (Exception ex)
-            {
-                Res.Status = false;
-                Res.StatusCode = "5102";
-                Res.Message = $"System Error: {ex.Message}";
-
-                _logX.L1();
-                _logO.LogError(ex, $"QuerySeriesList錯誤 - StatusCode = {Res.StatusCode}, Message = {Res.Message}, ex = ");
-            }
-
-            return Res;
-        }
         #endregion
 
         #region Collection
-        public async Task<CollectionQueryAccordionRes> QueryAccordion()
-        {
-            var Res = new CollectionQueryAccordionRes();
-
-            var CKey = $"Accordion";
-
-            if (_cache.TryGetValue(CKey, out (List<TypeInfo>? CTypeList, List<String>? CPublisherList, List<LangInfo>? CLangList, List<SeriesInfo>? CSeriesList) CList))
-            {
-                Res.Status = true;
-                Res.StatusCode = "2000";
-                Res.Message = "查詢成功";
-                Res.TypeList = CList.CTypeList;
-                Res.PublisherList = CList.CPublisherList;
-                Res.LangList = CList.CLangList;
-                Res.SeriesList = CList.CSeriesList;
-
-                return Res;
-            }
-
-            var querySrc1 = _db.Types.AsQueryable();
-            var querySrc2 = _db.Collections.GroupBy(x => x.Publisher).OrderByDescending(g => g.Count());
-            var querySrc3 = _db.Languages.AsQueryable();
-            var querySrc4 = _db.Series.AsQueryable();
-
-            try
-            {
-                var query1 = querySrc1.Select(x => new TypeInfo { TypeId = x.TypeId, Type = x.Type1 });
-                var query2 = querySrc2.Select(g => g.Key).Take(5);
-                var query3 = querySrc3.Select(x => new LangInfo { LangId = x.LanguageId, Lang = x.Language1 });
-                var query4 = querySrc4.Select(x => new SeriesInfo { SeriesId = x.SeriesId, Series = x.Series1 });
-
-                var typeList = await query1.ToListAsync();
-                var publisherList = await query2.ToListAsync();
-                var languageList = await query3.ToListAsync();
-                var seriesList = await query4.ToListAsync();
-
-                Res.Status = true;
-                Res.StatusCode = "2000";
-                Res.Message = "查詢成功";
-                Res.TypeList = typeList;
-                Res.PublisherList = publisherList;
-                Res.LangList = languageList;
-                Res.SeriesList = seriesList;
-
-                var COpt = new MemoryCacheEntryOptions().SetAbsoluteExpiration(TimeSpan.FromHours(1));
-
-                _cache.Set(CKey, (typeList, publisherList, languageList, seriesList), COpt);
-            }
-            catch (Exception ex)
-            {
-                Res.Status = false;
-                Res.StatusCode = "5102";
-                Res.Message = $"System Error: {ex.Message}";
-
-                _logX.L1();
-                _logO.LogError(ex, $"QueryAccordion錯誤 - StatusCode = {Res.StatusCode}, Message = {Res.Message}, ex = ");
-            }
-
-            return Res;
-        }
-
         public async Task<CollectionQueryRes> QueryCollection(CollectionQueryReq Req)
         {
             var Res = new CollectionQueryRes();
@@ -322,7 +215,7 @@ namespace test3.BLL.Guest
 
             if (!String.IsNullOrWhiteSpace(Req.Info))
             {
-                switch (Req.Type1)
+                switch (Req.Kind)
                 {
                     case "title":
                         querySrc = querySrc.Where(x => x.Title.Contains(Req.Info)); break;
@@ -340,7 +233,7 @@ namespace test3.BLL.Guest
                 {
                     Res.Status = false;
                     Res.StatusCode = "4004";
-                    Res.Message = Req.Type1 switch
+                    Res.Message = Req.Kind switch
                     {
                         "title" => "查無相關書名",
                         "author" => "查無相關作者",
@@ -367,8 +260,8 @@ namespace test3.BLL.Guest
 
                 querySrc = querySrc.Where(x => x.PublishDate <= EDate);
             }
-            if (Req.Lang != null) { querySrc = querySrc.Where(x => x.LanguageId == Req.Lang); }
-            if (Req.Type2 != null) { querySrc = querySrc.Where(x => x.TypeId == Req.Type2); }
+            if (Req.LangId != null) { querySrc = querySrc.Where(x => x.LanguageId == Req.LangId); }
+            if (Req.TypeId != null) { querySrc = querySrc.Where(x => x.TypeId == Req.TypeId); }
 
             if (!await querySrc.AnyAsync())
             {
@@ -436,6 +329,10 @@ namespace test3.BLL.Guest
 
             return (true, null);
         }
+        #endregion
+
+        #region Info
+
         #endregion
 
         #region Search
