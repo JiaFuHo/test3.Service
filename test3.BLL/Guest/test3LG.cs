@@ -154,6 +154,8 @@ namespace test3.BLL.Guest
 
             try
             {
+                querySrc = querySrc.Skip((Req.Page - 1) * Req.Size).Take(Req.Size);
+
                 var query = querySrc.Select(x => new BookInfo
                 {
                     Title = x.Title,
@@ -164,6 +166,7 @@ namespace test3.BLL.Guest
                     Publisher = x.Publisher,
                     Language = x.Language.Language1,
                     ISBN = x.Isbn,
+                    BookStatus = x.Books.Any(y => (y.BookStatusId == 1) && (!y.Reservations.Any(z => z.ReservationStatusId == 1 || z.ReservationStatusId == 3)))
                 });
 
                 var bookList = await query.ToListAsync();

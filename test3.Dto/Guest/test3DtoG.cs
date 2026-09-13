@@ -36,7 +36,7 @@ namespace test3.Dto.Guest
     #endregion
 
     #region Collection
-    public class CollectionQueryReq
+    public class CollectionQueryReq : QueryReqBase
     {
         public Byte? TypeId { get; set; }
         public String? Publisher { get; set; }
