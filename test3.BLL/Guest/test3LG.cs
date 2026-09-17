@@ -154,9 +154,9 @@ namespace test3.BLL.Guest
 
             try
             {
-                querySrc = querySrc.Skip((Req.Page - 1) * Req.Size).Take(Req.Size);
+                var querySrcX = querySrc.Skip((Req.Page - 1) * Req.Size).Take(Req.Size);
 
-                var query = querySrc.Select(x => new BookInfo
+                var query = querySrcX.Select(x => new BookInfo
                 {
                     Title = x.Title,
                     Image = x.Image,
@@ -174,7 +174,7 @@ namespace test3.BLL.Guest
                 Res.Status = true;
                 Res.StatusCode = "2000";
                 Res.Message = "查詢成功";
-                Res.TotalCount = bookList.Count;
+                Res.TotalCount = await querySrc.CountAsync();
                 Res.BookList = bookList;
             }
             catch (Exception ex)
