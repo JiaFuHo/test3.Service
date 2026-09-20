@@ -193,6 +193,131 @@ namespace test3.BLL.Guest
 
         #region Info
 
+        #region InfoX
+        public async Task<InfoQueryRes> QueryInfo(InfoQueryReq Req)
+        {
+            var Res = new InfoQueryRes();
+
+            // ???
+
+            try
+            {
+
+            }
+            catch (Exception ex)
+            {
+                Res.Status = false;
+                Res.StatusCode = "5102";
+                Res.Message = $"System Error: {ex.Message}";
+
+                _logX.L1();
+                _logO.LogError(ex, $"QueryInfo錯誤 - StatusCode = {Res.StatusCode}, Message = {Res.Message}, ex = ");
+            }
+
+            return Res;
+        }
+        #endregion
+
+        #region Fav
+        public async Task<FavQueryRes> QueryFav(FavQueryReq Req)
+        {
+            var Res = new FavQueryRes();
+
+            // ???
+
+            try
+            {
+
+            }
+            catch (Exception ex)
+            {
+                Res.Status = false;
+                Res.StatusCode = "5102";
+                Res.Message = $"System Error: {ex.Message}";
+
+                _logX.L1();
+                _logO.LogError(ex, $"QueryFav錯誤 - StatusCode = {Res.StatusCode}, Message = {Res.Message}, ex = ");
+            }
+
+            return Res;
+        }
+        #endregion
+
+        #region Rsv
+        public async Task<RsvQueryRes> QueryRsv(RsvQueryReq Req)
+        {
+            var Res = new RsvQueryRes();
+
+            // ???
+
+            try
+            {
+
+            }
+            catch (Exception ex)
+            {
+                Res.Status = false;
+                Res.StatusCode = "5102";
+                Res.Message = $"System Error: {ex.Message}";
+
+                _logX.L1();
+                _logO.LogError(ex, $"QueryRsv錯誤 - StatusCode = {Res.StatusCode}, Message = {Res.Message}, ex = ");
+            }
+
+            return Res;
+        }
+        #endregion
+
+        #region Hx
+        public async Task<HxQueryRes> QueryHx(HxQueryReq Req)
+        {
+            var Res = new HxQueryRes();
+
+            // ???
+
+            try
+            {
+
+            }
+            catch (Exception ex)
+            {
+                Res.Status = false;
+                Res.StatusCode = "5102";
+                Res.Message = $"System Error: {ex.Message}";
+
+                _logX.L1();
+                _logO.LogError(ex, $"QueryHx錯誤 - StatusCode = {Res.StatusCode}, Message = {Res.Message}, ex = ");
+            }
+
+            return Res;
+        }
+        #endregion
+
+        #region Msg
+        public async Task<MsgQueryRes> QueryMsg(MsgQueryReq Req)
+        {
+            var Res = new MsgQueryRes();
+
+            // ???
+
+            try
+            {
+
+            }
+            catch (Exception ex)
+            {
+                Res.Status = false;
+                Res.StatusCode = "5102";
+                Res.Message = $"System Error: {ex.Message}";
+
+                _logX.L1();
+                _logO.LogError(ex, $"QueryMsg錯誤 - StatusCode = {Res.StatusCode}, Message = {Res.Message}, ex = ");
+            }
+
+            return Res;
+        }
+        #endregion
+
         #endregion
 
         #region Search

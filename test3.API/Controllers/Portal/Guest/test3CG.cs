@@ -10,7 +10,6 @@ namespace test3.API.Controllers.Portal.Guest
 {
     [ApiController]
     [Route("guest")]
-    //[Authorize]
     public class test3CG : ControllerBase
     {
         #region Fields
@@ -151,6 +150,161 @@ namespace test3.API.Controllers.Portal.Guest
         #endregion
 
         #region Info
+
+        #region InfoX
+        [HttpGet("info")]
+        [Authorize]
+        public async Task<ActionResult<InfoQueryRes>> GetInfo([FromQuery] InfoQueryReq model)
+        {
+            var Res = new InfoQueryRes();
+
+            try
+            {
+                Res = await _logicG.QueryInfo(model);
+
+                if (Res.Status)
+                {
+                    _logX.L1();
+                    _logO.LogInformation($"GetInfo成功 - StatusCode = {Res.StatusCode}");
+                }
+            }
+            catch (Exception ex)
+            {
+                Res.Status = false;
+                Res.StatusCode = "5101";
+                Res.Message = $"Service Error: {ex.Message}";
+
+                _logX.L1();
+                _logO.LogError(ex, $"GetInfo錯誤 - StatusCode = {Res.StatusCode}, Message = {Res.Message}, ex = ");
+            }
+
+            return Ok(Res);
+        }
+        #endregion
+
+        #region Fav
+        [HttpGet("info/fav")]
+        [Authorize]
+        public async Task<ActionResult<FavQueryRes>> GetFav([FromQuery] FavQueryReq model)
+        {
+            var Res = new FavQueryRes();
+
+            try
+            {
+                Res = await _logicG.QueryFav(model);
+
+                if (Res.Status)
+                {
+                    _logX.L1();
+                    _logO.LogInformation($"GetFav成功 - StatusCode = {Res.StatusCode}, FavCount = {Res.TotalCount}");
+                }
+            }
+            catch (Exception ex)
+            {
+                Res.Status = false;
+                Res.StatusCode = "5101";
+                Res.Message = $"Service Error: {ex.Message}";
+
+                _logX.L1();
+                _logO.LogError(ex, $"GetFav錯誤 - StatusCode = {Res.StatusCode}, Message = {Res.Message}, ex = ");
+            }
+
+            return Ok(Res);
+        }
+        #endregion
+
+        #region Rsv
+        [HttpGet("info/rsv")]
+        [Authorize]
+        public async Task<ActionResult<RsvQueryRes>> GetRsv([FromQuery] RsvQueryReq model)
+        {
+            var Res = new RsvQueryRes();
+
+            try
+            {
+                Res = await _logicG.QueryRsv(model);
+
+                if (Res.Status)
+                {
+                    _logX.L1();
+                    _logO.LogInformation($"GetRsv成功 - StatusCode = {Res.StatusCode}, RsvCount = {Res.TotalCount}");
+                }
+            }
+            catch (Exception ex)
+            {
+                Res.Status = false;
+                Res.StatusCode = "5101";
+                Res.Message = $"Service Error: {ex.Message}";
+
+                _logX.L1();
+                _logO.LogError(ex, $"GetRsv錯誤 - StatusCode = {Res.StatusCode}, Message = {Res.Message}, ex = ");
+            }
+
+            return Ok(Res);
+        }
+        #endregion
+
+        #region Hx
+        [HttpGet("info/hx")]
+        [Authorize]
+        public async Task<ActionResult<HxQueryRes>> GetHx([FromQuery] HxQueryReq model)
+        {
+            var Res = new HxQueryRes();
+
+            try
+            {
+                Res = await _logicG.QueryHx(model);
+
+                if (Res.Status)
+                {
+                    _logX.L1();
+                    _logO.LogInformation($"GetHx成功 - StatusCode = {Res.StatusCode}, HxCount = {Res.TotalCount}");
+                }
+            }
+            catch (Exception ex)
+            {
+                Res.Status = false;
+                Res.StatusCode = "5101";
+                Res.Message = $"Service Error: {ex.Message}";
+
+                _logX.L1();
+                _logO.LogError(ex, $"GetHx錯誤 - StatusCode = {Res.StatusCode}, Message = {Res.Message}, ex = ");
+            }
+
+            return Ok(Res);
+        }
+        #endregion
+
+        #region Msg
+        [HttpGet("info/msg")]
+        [Authorize]
+        public async Task<ActionResult<MsgQueryRes>> GetMsg([FromQuery] MsgQueryReq model)
+        {
+            var Res = new MsgQueryRes();
+
+            try
+            {
+                Res = await _logicG.QueryMsg(model);
+
+                if (Res.Status)
+                {
+                    _logX.L1();
+                    _logO.LogInformation($"GetMsg成功 - StatusCode = {Res.StatusCode}, MsgCount = {Res.TotalCount}");
+                }
+            }
+            catch (Exception ex)
+            {
+                Res.Status = false;
+                Res.StatusCode = "5101";
+                Res.Message = $"Service Error: {ex.Message}";
+
+                _logX.L1();
+                _logO.LogError(ex, $"GetMsg錯誤 - StatusCode = {Res.StatusCode}, Message = {Res.Message}, ex = ");
+            }
+
+            return Ok(Res);
+        }
+        #endregion
 
         #endregion
 

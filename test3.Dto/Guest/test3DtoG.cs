@@ -54,6 +54,36 @@ namespace test3.Dto.Guest
 
     #region Info
 
+    #region InfoX
+    public class InfoQueryReq { }
+
+    public class InfoQueryRes : ResBase { }
+    #endregion
+
+    #region Fav
+    public class FavQueryReq { }
+
+    public class FavQueryRes : QueryResBase { }
+    #endregion
+
+    #region Rsv
+    public class RsvQueryReq { }
+
+    public class RsvQueryRes : QueryResBase { }
+    #endregion
+
+    #region Hx
+    public class HxQueryReq { }
+
+    public class HxQueryRes : QueryResBase { }
+    #endregion
+
+    #region Msg
+    public class MsgQueryReq { }
+
+    public class MsgQueryRes : QueryResBase { }
+    #endregion
+
     #endregion
 
     #region Search
