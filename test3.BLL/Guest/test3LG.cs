@@ -65,6 +65,7 @@ namespace test3.BLL.Guest
             {
                 var query = querySrc.Select(x => new BookInfo
                 {
+                    CollectionId = x.CollectionId,
                     Title = x.Title,
                     BDesc = x.Desc,
                     Image = x.Image,
@@ -158,6 +159,7 @@ namespace test3.BLL.Guest
 
                 var query = querySrcX.Select(x => new BookInfo
                 {
+                    CollectionId = x.CollectionId,
                     Title = x.Title,
                     Image = x.Image,
                     Type = x.Type.Type1,
@@ -193,41 +195,45 @@ namespace test3.BLL.Guest
 
         #region Info
 
-        #region InfoX
-        public async Task<InfoQueryRes> QueryInfo(InfoQueryReq Req)
-        {
-            var Res = new InfoQueryRes();
-
-            // ???
-
-            try
-            {
-
-            }
-            catch (Exception ex)
-            {
-                Res.Status = false;
-                Res.StatusCode = "5102";
-                Res.Message = $"System Error: {ex.Message}";
-
-                _logX.L1();
-                _logO.LogError(ex, $"QueryInfo錯誤 - StatusCode = {Res.StatusCode}, Message = {Res.Message}, ex = ");
-            }
-
-            return Res;
-        }
-        #endregion
-
         #region Fav
         public async Task<FavQueryRes> QueryFav(FavQueryReq Req)
         {
             var Res = new FavQueryRes();
 
-            // ???
+            var querySrc = _db.Clients.Where(x => x.Guid == Req.Guid).SelectMany(x => x.Favorites);
+
+            if (!await querySrc.AnyAsync())
+            {
+                Res.Status = false;
+                Res.StatusCode = "4004";
+                Res.Message = "查無相關紀錄";
+
+                _logX.L1();
+                _logO.LogError($"QueryFav失敗 - StatusCode = {Res.StatusCode}, Message = {Res.Message}");
+
+                return Res;
+            }
 
             try
             {
+                var querySrcX = querySrc.Skip((Req.Page - 1) * Req.Size).Take(Req.Size);
 
+                var query = querySrcX.Select(x => new FavInfo
+                {
+                    CollectionId = x.CollectionId,
+                    Title = x.Collection.Title,
+                    Image = x.Collection.Image,
+                    AuthorInfos = x.Collection.Authors.Select(y => new AuthorInfo { Author = y.Author1 }),
+                    Publisher = x.Collection.Publisher
+                });
+
+                var favList = await query.ToListAsync();
+
+                Res.Status = true;
+                Res.StatusCode = "2000";
+                Res.Message = "查詢成功";
+                Res.TotalCount = await querySrc.CountAsync();
+                Res.FavList = favList;
             }
             catch (Exception ex)
             {
@@ -241,6 +247,48 @@ namespace test3.BLL.Guest
 
             return Res;
         }
+
+        public async Task<FavSaveRes> CreateFav(FavSaveReq Req)
+        {
+            var Res = new FavSaveRes();
+
+            try
+            {
+
+            }
+            catch (Exception ex)
+            {
+                Res.Status = false;
+                Res.StatusCode = "5102";
+                Res.Message = $"System Error: {ex.Message}";
+
+                _logX.L1();
+                _logO.LogError(ex, $"CreateFav錯誤 - StatusCode = {Res.StatusCode}, Message = {Res.Message}, ex = ");
+            }
+
+            return Res;
+        }
+
+        public async Task<FavSaveRes> DeleteFav(FavSaveReq Req)
+        {
+            var Res = new FavSaveRes();
+
+            try
+            {
+
+            }
+            catch (Exception ex)
+            {
+                Res.Status = false;
+                Res.StatusCode = "5102";
+                Res.Message = $"System Error: {ex.Message}";
+
+                _logX.L1();
+                _logO.LogError(ex, $"DeleteFav錯誤 - StatusCode = {Res.StatusCode}, Message = {Res.Message}, ex = ");
+            }
+
+            return Res;
+        }
         #endregion
 
         #region Rsv
@@ -248,11 +296,42 @@ namespace test3.BLL.Guest
         {
             var Res = new RsvQueryRes();
 
-            // ???
+            var querySrc = _db.Clients.Where(x => x.Guid == Req.Guid).SelectMany(x => x.Reservations);
+
+            if (!await querySrc.AnyAsync())
+            {
+                Res.Status = false;
+                Res.StatusCode = "4004";
+                Res.Message = "查無相關紀錄";
+
+                _logX.L1();
+                _logO.LogError($"QueryRsv失敗 - StatusCode = {Res.StatusCode}, Message = {Res.Message}");
+
+                return Res;
+            }
 
             try
             {
+                var querySrcX = querySrc.Skip((Req.Page - 1) * Req.Size).Take(Req.Size);
 
+                var query = querySrcX.Select(x => new RsvInfo
+                {
+                    CollectionId = x.CollectionId,
+                    Title = x.Collection.Title,
+                    Image = x.Collection.Image,
+                    AuthorInfos = x.Collection.Authors.Select(y => new AuthorInfo { Author = y.Author1 }),
+                    ReservateDate = x.ReservateDate,
+                    DueDateR = x.DueDateR,
+                    ReservationStatus = x.ReservationStatus.ReservationStatus1
+                });
+
+                var rsvList = await query.ToListAsync();
+
+                Res.Status = true;
+                Res.StatusCode = "2000";
+                Res.Message = "查詢成功";
+                Res.TotalCount = await querySrc.CountAsync();
+                Res.RsvList = rsvList;
             }
             catch (Exception ex)
             {
@@ -266,6 +345,48 @@ namespace test3.BLL.Guest
 
             return Res;
         }
+
+        public async Task<RsvSaveRes> CreateRsv(RsvSaveReq Req)
+        {
+            var Res = new RsvSaveRes();
+
+            try
+            {
+
+            }
+            catch (Exception ex)
+            {
+                Res.Status = false;
+                Res.StatusCode = "5102";
+                Res.Message = $"System Error: {ex.Message}";
+
+                _logX.L1();
+                _logO.LogError(ex, $"CreateRsv錯誤 - StatusCode = {Res.StatusCode}, Message = {Res.Message}, ex = ");
+            }
+
+            return Res;
+        }
+
+        public async Task<RsvSaveRes> UpdateRsv(RsvSaveReq Req)
+        {
+            var Res = new RsvSaveRes();
+
+            try
+            {
+
+            }
+            catch (Exception ex)
+            {
+                Res.Status = false;
+                Res.StatusCode = "5102";
+                Res.Message = $"System Error: {ex.Message}";
+
+                _logX.L1();
+                _logO.LogError(ex, $"UpdateRsv錯誤 - StatusCode = {Res.StatusCode}, Message = {Res.Message}, ex = ");
+            }
+
+            return Res;
+        }
         #endregion
 
         #region Hx
@@ -273,11 +394,44 @@ namespace test3.BLL.Guest
         {
             var Res = new HxQueryRes();
 
-            // ???
+            var querySrc = _db.Clients.Where(x => x.Guid == Req.Guid).SelectMany(x => x.Borrows);
+
+            if (!await querySrc.AnyAsync())
+            {
+                Res.Status = false;
+                Res.StatusCode = "4004";
+                Res.Message = "查無相關紀錄";
+
+                _logX.L1();
+                _logO.LogError($"QueryHx失敗 - StatusCode = {Res.StatusCode}, Message = {Res.Message}");
+
+                return Res;
+            }
 
             try
             {
+                var querySrcX = querySrc.Skip((Req.Page - 1) * Req.Size).Take(Req.Size);
 
+                var query = querySrcX.Select(x => new HxInfo
+                {
+                    HistoryId = x.History!.HistoryId,
+                    Title = x.Book.Collection.Title,
+                    Image = x.Book.Collection.Image,
+                    AuthorInfos = x.Book.Collection.Authors.Select(y => new AuthorInfo { Author = y.Author1 }),
+                    BorrowDate = x.BorrowDate,
+                    DueDateB = x.DueDateB,
+                    BorrowStatus = x.BorrowStatus.BorrowStatus1,
+                    Score = x.History!.Score,
+                    Feedback = x.History!.Feedback
+                });
+
+                var hxList = await query.ToListAsync();
+
+                Res.Status = true;
+                Res.StatusCode = "2000";
+                Res.Message = "查詢成功";
+                Res.TotalCount = await querySrc.CountAsync();
+                Res.HxList = hxList;
             }
             catch (Exception ex)
             {
@@ -291,14 +445,10 @@ namespace test3.BLL.Guest
 
             return Res;
         }
-        #endregion
 
-        #region Msg
-        public async Task<MsgQueryRes> QueryMsg(MsgQueryReq Req)
+        public async Task<HxSaveRes> CreateHx(HxSaveReq Req)
         {
-            var Res = new MsgQueryRes();
-
-            // ???
+            var Res = new HxSaveRes();
 
             try
             {
@@ -311,7 +461,123 @@ namespace test3.BLL.Guest
                 Res.Message = $"System Error: {ex.Message}";
 
                 _logX.L1();
+                _logO.LogError(ex, $"CreateHx錯誤 - StatusCode = {Res.StatusCode}, Message = {Res.Message}, ex = ");
+            }
+
+            return Res;
+        }
+
+        public async Task<HxSaveRes> UpdateHx(HxSaveReq Req)
+        {
+            var Res = new HxSaveRes();
+
+            try
+            {
+
+            }
+            catch (Exception ex)
+            {
+                Res.Status = false;
+                Res.StatusCode = "5102";
+                Res.Message = $"System Error: {ex.Message}";
+
+                _logX.L1();
+                _logO.LogError(ex, $"UpdateHx錯誤 - StatusCode = {Res.StatusCode}, Message = {Res.Message}, ex = ");
+            }
+
+            return Res;
+        }
+        #endregion
+
+        #region Msg
+        public async Task<MsgQueryRes> QueryMsg(MsgQueryReq Req)
+        {
+            var Res = new MsgQueryRes();
+
+            var querySrc = _db.Clients.Where(x => x.Guid == Req.Guid).SelectMany(x => x.Notifications);
+
+            if (!await querySrc.AnyAsync())
+            {
+                Res.Status = false;
+                Res.StatusCode = "4004";
+                Res.Message = "查無相關紀錄";
+
+                _logX.L1();
+                _logO.LogError($"QueryMsg失敗 - StatusCode = {Res.StatusCode}, Message = {Res.Message}");
+
+                return Res;
+            }
+
+            try
+            {
+                var querySrcX = querySrc.Skip((Req.Page - 1) * Req.Size).Take(Req.Size);
+
+                var query = querySrcX.Select(x => new MsgInfo
+                {
+                    NotificationId = x.NotificationId,
+                    Message = x.Message,
+                    NotificationDate = x.NotificationDate,
+                    IsRead = x.IsRead
+                });
+
+                var msgList = await query.ToListAsync();
+
+                Res.Status = true;
+                Res.StatusCode = "2000";
+                Res.Message = "查詢成功";
+                Res.TotalCount = await querySrc.CountAsync();
+                Res.MsgList = msgList;
+            }
+            catch (Exception ex)
+            {
+                Res.Status = false;
+                Res.StatusCode = "5102";
+                Res.Message = $"System Error: {ex.Message}";
+
+                _logX.L1();
                 _logO.LogError(ex, $"QueryMsg錯誤 - StatusCode = {Res.StatusCode}, Message = {Res.Message}, ex = ");
+            }
+
+            return Res;
+        }
+
+        public async Task<MsgSaveRes> CreateMsg(MsgSaveReq Req)
+        {
+            var Res = new MsgSaveRes();
+
+            try
+            {
+
+            }
+            catch (Exception ex)
+            {
+                Res.Status = false;
+                Res.StatusCode = "5102";
+                Res.Message = $"System Error: {ex.Message}";
+
+                _logX.L1();
+                _logO.LogError(ex, $"CreateMsg錯誤 - StatusCode = {Res.StatusCode}, Message = {Res.Message}, ex = ");
+            }
+
+            return Res;
+        }
+
+        public async Task<MsgSaveRes> UpdateMsg(MsgSaveReq Req)
+        {
+            var Res = new MsgSaveRes();
+
+            try
+            {
+
+            }
+            catch (Exception ex)
+            {
+                Res.Status = false;
+                Res.StatusCode = "5102";
+                Res.Message = $"System Error: {ex.Message}";
+
+                _logX.L1();
+                _logO.LogError(ex, $"UpdateMsg錯誤 - StatusCode = {Res.StatusCode}, Message = {Res.Message}, ex = ");
             }
 
             return Res;
@@ -407,6 +673,7 @@ namespace test3.BLL.Guest
             {
                 var query = querySrc.Select(x => new BookInfo
                 {
+                    CollectionId = x.CollectionId,
                     Title = x.Title,
                     BDesc = x.Desc,
                     Image = x.Image,

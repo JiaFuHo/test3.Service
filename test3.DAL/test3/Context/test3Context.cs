@@ -44,7 +44,7 @@ public partial class test3Context : DbContext
 
     public virtual DbSet<SystemTime> SystemTimes { get; set; }
 
-    public virtual DbSet<Models.Type> Types { get; set; }
+    public virtual DbSet<Type> Types { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -72,6 +72,7 @@ public partial class test3Context : DbContext
 
             entity.HasIndex(e => e.BookCode, "UK_Book_BookCode").IsUnique();
 
+            entity.Property(e => e.AccessDate).HasPrecision(0);
             entity.Property(e => e.BookCode)
                 .HasMaxLength(23)
                 .IsUnicode(false);
@@ -111,7 +112,10 @@ public partial class test3Context : DbContext
 
             entity.HasIndex(e => e.Cid, "IX_Borrow_CId");
 
+            entity.Property(e => e.BorrowDate).HasPrecision(0);
             entity.Property(e => e.Cid).HasColumnName("CId");
+            entity.Property(e => e.DueDateB).HasPrecision(0);
+            entity.Property(e => e.ReturnDate).HasPrecision(0);
 
             entity.HasOne(d => d.Book).WithMany(p => p.Borrows)
                 .HasForeignKey(d => d.BookId)
@@ -208,6 +212,7 @@ public partial class test3Context : DbContext
                 .HasMaxLength(17)
                 .IsUnicode(false)
                 .HasColumnName("ISBN");
+            entity.Property(e => e.PublishDate).HasPrecision(0);
             entity.Property(e => e.Publisher).HasMaxLength(50);
             entity.Property(e => e.Title).HasMaxLength(100);
             entity.Property(e => e.Translator).HasMaxLength(50);
@@ -274,8 +279,10 @@ public partial class test3Context : DbContext
 
             entity.HasIndex(e => e.BorrowId, "IX_History_BorrowId");
 
-            entity.HasOne(d => d.Borrow).WithMany(p => p.Histories)
-                .HasForeignKey(d => d.BorrowId)
+            entity.HasIndex(e => e.BorrowId, "UK_History_BorrowId").IsUnique();
+
+            entity.HasOne(d => d.Borrow).WithOne(p => p.History)
+                .HasForeignKey<History>(d => d.BorrowId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_History_BorrowId");
         });
@@ -301,6 +308,7 @@ public partial class test3Context : DbContext
             entity.ToTable("Notification");
 
             entity.Property(e => e.Cid).HasColumnName("CId");
+            entity.Property(e => e.NotificationDate).HasPrecision(0);
 
             entity.HasOne(d => d.CidNavigation).WithMany(p => p.Notifications)
                 .HasForeignKey(d => d.Cid)
@@ -319,6 +327,8 @@ public partial class test3Context : DbContext
             entity.HasIndex(e => e.CollectionId, "IX_Reservation_CollectionId");
 
             entity.Property(e => e.Cid).HasColumnName("CId");
+            entity.Property(e => e.DueDateR).HasPrecision(0);
+            entity.Property(e => e.ReservateDate).HasPrecision(0);
 
             entity.HasOne(d => d.Book).WithMany(p => p.Reservations)
                 .HasForeignKey(d => d.BookId)
@@ -374,11 +384,12 @@ public partial class test3Context : DbContext
 
             entity.Property(e => e.Oid).HasColumnName("OId");
             entity.Property(e => e.Cdate)
+                .HasPrecision(0)
                 .HasDefaultValueSql("(CONVERT([date],getdate()))")
                 .HasColumnName("CDate");
         });
 
-        modelBuilder.Entity<Models.Type>(entity =>
+        modelBuilder.Entity<Type>(entity =>
         {
             entity.HasKey(e => e.TypeId).HasName("PK_Type_TypeId");
 

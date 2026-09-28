@@ -29,7 +29,7 @@ public partial class Borrow
 
     public virtual Client CidNavigation { get; set; } = null!;
 
-    public virtual ICollection<History> Histories { get; set; } = new List<History>();
+    public virtual History? History { get; set; }
 
     public virtual Reservation? Reservation { get; set; }
 }

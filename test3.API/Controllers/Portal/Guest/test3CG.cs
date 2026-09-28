@@ -151,43 +151,26 @@ namespace test3.API.Controllers.Portal.Guest
 
         #region Info
 
-        #region InfoX
-        [HttpGet("info")]
-        [Authorize]
-        public async Task<ActionResult<InfoQueryRes>> GetInfo([FromQuery] InfoQueryReq model)
-        {
-            var Res = new InfoQueryRes();
-
-            try
-            {
-                Res = await _logicG.QueryInfo(model);
-
-                if (Res.Status)
-                {
-                    _logX.L1();
-                    _logO.LogInformation($"GetInfo成功 - StatusCode = {Res.StatusCode}");
-                }
-            }
-            catch (Exception ex)
-            {
-                Res.Status = false;
-                Res.StatusCode = "5101";
-                Res.Message = $"Service Error: {ex.Message}";
-
-                _logX.L1();
-                _logO.LogError(ex, $"GetInfo錯誤 - StatusCode = {Res.StatusCode}, Message = {Res.Message}, ex = ");
-            }
-
-            return Ok(Res);
-        }
-        #endregion
-
         #region Fav
         [HttpGet("info/fav")]
         [Authorize]
         public async Task<ActionResult<FavQueryRes>> GetFav([FromQuery] FavQueryReq model)
         {
             var Res = new FavQueryRes();
+
+            var (validation, Req, statusCode, message) = InfoQueryValid(model);
+
+            if (!validation)
+            {
+                Res.Status = false;
+                Res.StatusCode = statusCode!;
+                Res.Message = message!;
+
+                _logX.L1();
+                _logO.LogError($"GetFav驗證失敗 - StatusCode = {Res.StatusCode}, Message = {Res.Message}");
+
+                return Ok(Res);
+            }
 
             try
             {
@@ -211,6 +194,92 @@ namespace test3.API.Controllers.Portal.Guest
 
             return Ok(Res);
         }
+
+        [HttpPost("info/fav")]
+        [Authorize]
+        public async Task<ActionResult<FavSaveRes>> PostFav([FromBody] FavSaveReq model)
+        {
+            var Res = new FavSaveRes();
+
+            var (validation, Req, statusCode, message) = InfoSaveValid(model);
+
+            if (!validation)
+            {
+                Res.Status = false;
+                Res.StatusCode = statusCode!;
+                Res.Message = message!;
+
+                _logX.L1();
+                _logO.LogError($"PostFav驗證失敗 - StatusCode = {Res.StatusCode}, Message = {Res.Message}");
+
+                return Ok(Res);
+            }
+
+            try
+            {
+                Res = await _logicG.CreateFav(model);
+
+                if (Res.Status)
+                {
+                    _logX.L1();
+                    _logO.LogInformation($"PostFav成功 - StatusCode = {Res.StatusCode}");
+                }
+            }
+            catch (Exception ex)
+            {
+                Res.Status = false;
+                Res.StatusCode = "5101";
+                Res.Message = $"Service Error: {ex.Message}";
+
+                _logX.L1();
+                _logO.LogError(ex, $"PostFav錯誤 - StatusCode = {Res.StatusCode}, Message = {Res.Message}, ex = ");
+            }
+
+            return Ok(Res);
+        }
+
+        [HttpDelete("info/fav")]
+        [Authorize]
+        public async Task<ActionResult<FavSaveRes>> DeleteFav([FromQuery] FavSaveReq model)
+        {
+            var Res = new FavSaveRes();
+
+            var (validation, Req, statusCode, message) = InfoSaveValid(model);
+
+            if (!validation)
+            {
+                Res.Status = false;
+                Res.StatusCode = statusCode!;
+                Res.Message = message!;
+
+                _logX.L1();
+                _logO.LogError($"DeleteFav驗證失敗 - StatusCode = {Res.StatusCode}, Message = {Res.Message}");
+
+                return Ok(Res);
+            }
+
+            try
+            {
+                Res = await _logicG.DeleteFav(model);
+
+                if (Res.Status)
+                {
+                    _logX.L1();
+                    _logO.LogInformation($"DeleteFav成功 - StatusCode = {Res.StatusCode}");
+                }
+            }
+            catch (Exception ex)
+            {
+                Res.Status = false;
+                Res.StatusCode = "5101";
+                Res.Message = $"Service Error: {ex.Message}";
+
+                _logX.L1();
+                _logO.LogError(ex, $"DeleteFav錯誤 - StatusCode = {Res.StatusCode}, Message = {Res.Message}, ex = ");
+            }
+
+            return Ok(Res);
+        }
         #endregion
 
         #region Rsv
@@ -219,6 +288,20 @@ namespace test3.API.Controllers.Portal.Guest
         public async Task<ActionResult<RsvQueryRes>> GetRsv([FromQuery] RsvQueryReq model)
         {
             var Res = new RsvQueryRes();
+
+            var (validation, Req, statusCode, message) = InfoQueryValid(model);
+
+            if (!validation)
+            {
+                Res.Status = false;
+                Res.StatusCode = statusCode!;
+                Res.Message = message!;
+
+                _logX.L1();
+                _logO.LogError($"GetRsv驗證失敗 - StatusCode = {Res.StatusCode}, Message = {Res.Message}");
+
+                return Ok(Res);
+            }
 
             try
             {
@@ -242,6 +325,92 @@ namespace test3.API.Controllers.Portal.Guest
 
             return Ok(Res);
         }
+
+        [HttpPost("info/rsv")]
+        [Authorize]
+        public async Task<ActionResult<RsvSaveRes>> PostRsv([FromBody] RsvSaveReq model)
+        {
+            var Res = new RsvSaveRes();
+
+            var (validation, Req, statusCode, message) = InfoSaveValid(model);
+
+            if (!validation)
+            {
+                Res.Status = false;
+                Res.StatusCode = statusCode!;
+                Res.Message = message!;
+
+                _logX.L1();
+                _logO.LogError($"PostRsv驗證失敗 - StatusCode = {Res.StatusCode}, Message = {Res.Message}");
+
+                return Ok(Res);
+            }
+
+            try
+            {
+                Res = await _logicG.CreateRsv(model);
+
+                if (Res.Status)
+                {
+                    _logX.L1();
+                    _logO.LogInformation($"PostRsv成功 - StatusCode = {Res.StatusCode}");
+                }
+            }
+            catch (Exception ex)
+            {
+                Res.Status = false;
+                Res.StatusCode = "5101";
+                Res.Message = $"Service Error: {ex.Message}";
+
+                _logX.L1();
+                _logO.LogError(ex, $"PostRsv錯誤 - StatusCode = {Res.StatusCode}, Message = {Res.Message}, ex = ");
+            }
+
+            return Ok(Res);
+        }
+
+        [HttpPut("info/rsv")]
+        [Authorize]
+        public async Task<ActionResult<RsvSaveRes>> PutRsv([FromBody] RsvSaveReq model)
+        {
+            var Res = new RsvSaveRes();
+
+            var (validation, Req, statusCode, message) = InfoSaveValid(model);
+
+            if (!validation)
+            {
+                Res.Status = false;
+                Res.StatusCode = statusCode!;
+                Res.Message = message!;
+
+                _logX.L1();
+                _logO.LogError($"PutRsv驗證失敗 - StatusCode = {Res.StatusCode}, Message = {Res.Message}");
+
+                return Ok(Res);
+            }
+
+            try
+            {
+                Res = await _logicG.UpdateRsv(model);
+
+                if (Res.Status)
+                {
+                    _logX.L1();
+                    _logO.LogInformation($"PutRsv成功 - StatusCode = {Res.StatusCode}");
+                }
+            }
+            catch (Exception ex)
+            {
+                Res.Status = false;
+                Res.StatusCode = "5101";
+                Res.Message = $"Service Error: {ex.Message}";
+
+                _logX.L1();
+                _logO.LogError(ex, $"PutRsv錯誤 - StatusCode = {Res.StatusCode}, Message = {Res.Message}, ex = ");
+            }
+
+            return Ok(Res);
+        }
         #endregion
 
         #region Hx
@@ -250,6 +419,20 @@ namespace test3.API.Controllers.Portal.Guest
         public async Task<ActionResult<HxQueryRes>> GetHx([FromQuery] HxQueryReq model)
         {
             var Res = new HxQueryRes();
+
+            var (validation, Req, statusCode, message) = InfoQueryValid(model);
+
+            if (!validation)
+            {
+                Res.Status = false;
+                Res.StatusCode = statusCode!;
+                Res.Message = message!;
+
+                _logX.L1();
+                _logO.LogError($"GetHx驗證失敗 - StatusCode = {Res.StatusCode}, Message = {Res.Message}");
+
+                return Ok(Res);
+            }
 
             try
             {
@@ -273,6 +456,92 @@ namespace test3.API.Controllers.Portal.Guest
 
             return Ok(Res);
         }
+
+        [HttpPost("info/hx")]
+        [Authorize]
+        public async Task<ActionResult<HxSaveRes>> PostHx([FromBody] HxSaveReq model)
+        {
+            var Res = new HxSaveRes();
+
+            var (validation, Req, statusCode, message) = InfoSaveValid(model);
+
+            if (!validation)
+            {
+                Res.Status = false;
+                Res.StatusCode = statusCode!;
+                Res.Message = message!;
+
+                _logX.L1();
+                _logO.LogError($"PostHx驗證失敗 - StatusCode = {Res.StatusCode}, Message = {Res.Message}");
+
+                return Ok(Res);
+            }
+
+            try
+            {
+                Res = await _logicG.CreateHx(model);
+
+                if (Res.Status)
+                {
+                    _logX.L1();
+                    _logO.LogInformation($"PostHx成功 - StatusCode = {Res.StatusCode}");
+                }
+            }
+            catch (Exception ex)
+            {
+                Res.Status = false;
+                Res.StatusCode = "5101";
+                Res.Message = $"Service Error: {ex.Message}";
+
+                _logX.L1();
+                _logO.LogError(ex, $"PostHx錯誤 - StatusCode = {Res.StatusCode}, Message = {Res.Message}, ex = ");
+            }
+
+            return Ok(Res);
+        }
+
+        [HttpPut("info/hx")]
+        [Authorize]
+        public async Task<ActionResult<HxSaveRes>> PutHx([FromBody] HxSaveReq model)
+        {
+            var Res = new HxSaveRes();
+
+            var (validation, Req, statusCode, message) = InfoSaveValid(model);
+
+            if (!validation)
+            {
+                Res.Status = false;
+                Res.StatusCode = statusCode!;
+                Res.Message = message!;
+
+                _logX.L1();
+                _logO.LogError($"PutHx驗證失敗 - StatusCode = {Res.StatusCode}, Message = {Res.Message}");
+
+                return Ok(Res);
+            }
+
+            try
+            {
+                Res = await _logicG.UpdateHx(model);
+
+                if (Res.Status)
+                {
+                    _logX.L1();
+                    _logO.LogInformation($"PutHx成功 - StatusCode = {Res.StatusCode}");
+                }
+            }
+            catch (Exception ex)
+            {
+                Res.Status = false;
+                Res.StatusCode = "5101";
+                Res.Message = $"Service Error: {ex.Message}";
+
+                _logX.L1();
+                _logO.LogError(ex, $"PutHx錯誤 - StatusCode = {Res.StatusCode}, Message = {Res.Message}, ex = ");
+            }
+
+            return Ok(Res);
+        }
         #endregion
 
         #region Msg
@@ -281,6 +550,20 @@ namespace test3.API.Controllers.Portal.Guest
         public async Task<ActionResult<MsgQueryRes>> GetMsg([FromQuery] MsgQueryReq model)
         {
             var Res = new MsgQueryRes();
+
+            var (validation, Req, statusCode, message) = InfoQueryValid(model);
+
+            if (!validation)
+            {
+                Res.Status = false;
+                Res.StatusCode = statusCode!;
+                Res.Message = message!;
+
+                _logX.L1();
+                _logO.LogError($"GetMsg驗證失敗 - StatusCode = {Res.StatusCode}, Message = {Res.Message}");
+
+                return Ok(Res);
+            }
 
             try
             {
@@ -300,6 +583,92 @@ namespace test3.API.Controllers.Portal.Guest
 
                 _logX.L1();
                 _logO.LogError(ex, $"GetMsg錯誤 - StatusCode = {Res.StatusCode}, Message = {Res.Message}, ex = ");
+            }
+
+            return Ok(Res);
+        }
+
+        [HttpPost("info/msg")]
+        [Authorize]
+        public async Task<ActionResult<MsgSaveRes>> PostMsg([FromBody] MsgSaveReq model)
+        {
+            var Res = new MsgSaveRes();
+
+            var (validation, Req, statusCode, message) = InfoSaveValid(model);
+
+            if (!validation)
+            {
+                Res.Status = false;
+                Res.StatusCode = statusCode!;
+                Res.Message = message!;
+
+                _logX.L1();
+                _logO.LogError($"PostMsg驗證失敗 - StatusCode = {Res.StatusCode}, Message = {Res.Message}");
+
+                return Ok(Res);
+            }
+
+            try
+            {
+                Res = await _logicG.CreateMsg(model);
+
+                if (Res.Status)
+                {
+                    _logX.L1();
+                    _logO.LogInformation($"PostMsg成功 - StatusCode = {Res.StatusCode}");
+                }
+            }
+            catch (Exception ex)
+            {
+                Res.Status = false;
+                Res.StatusCode = "5101";
+                Res.Message = $"Service Error: {ex.Message}";
+
+                _logX.L1();
+                _logO.LogError(ex, $"PostMsg錯誤 - StatusCode = {Res.StatusCode}, Message = {Res.Message}, ex = ");
+            }
+
+            return Ok(Res);
+        }
+
+        [HttpPut("info/msg")]
+        [Authorize]
+        public async Task<ActionResult<MsgSaveRes>> PutMsg([FromBody] MsgSaveReq model)
+        {
+            var Res = new MsgSaveRes();
+
+            var (validation, Req, statusCode, message) = InfoSaveValid(model);
+
+            if (!validation)
+            {
+                Res.Status = false;
+                Res.StatusCode = statusCode!;
+                Res.Message = message!;
+
+                _logX.L1();
+                _logO.LogError($"PutMsg驗證失敗 - StatusCode = {Res.StatusCode}, Message = {Res.Message}");
+
+                return Ok(Res);
+            }
+
+            try
+            {
+                Res = await _logicG.UpdateMsg(model);
+
+                if (Res.Status)
+                {
+                    _logX.L1();
+                    _logO.LogInformation($"PutMsg成功 - StatusCode = {Res.StatusCode}");
+                }
+            }
+            catch (Exception ex)
+            {
+                Res.Status = false;
+                Res.StatusCode = "5101";
+                Res.Message = $"Service Error: {ex.Message}";
+
+                _logX.L1();
+                _logO.LogError(ex, $"PutMsg錯誤 - StatusCode = {Res.StatusCode}, Message = {Res.Message}, ex = ");
             }
 
             return Ok(Res);
@@ -387,7 +756,48 @@ namespace test3.API.Controllers.Portal.Guest
         #endregion
 
         #region Info
+        // Validation
+        private (Boolean validation, InfoQueryReqBase? ReqModel, String? statusCode, String? message) InfoQueryValid(InfoQueryReqBase model)
+        {
+            if (model.Guid == null || model.Guid == Guid.Empty) { return (false, null, "4001", "System Required Error"); }
 
+            var modelX = model;
+
+            return (true, modelX, null, null);
+        }
+
+        private (Boolean validation, InfoSaveReqBase? ReqModel, String? statusCode, String? message) InfoSaveValid(InfoSaveReqBase model)
+        {
+            if (model.Guid == null || model.Guid == Guid.Empty) { return (false, null, "4001", "System Required Error"); }
+
+            var modelX = (InfoSaveReqBase?)null;
+
+            switch (model)
+            {
+                case FavSaveReq Fav:
+                    if (Fav.CollectionId == null) { return (false, null, "4001", "System Required Error"); }
+
+                    modelX = Fav; break;
+                case RsvSaveReq Rsv:
+                    if (Rsv.CollectionId == null) { return (false, null, "4001", "System Required Error"); }
+                    if (Rsv.ReservationStatusId == null) { return (false, null, "4001", "System Required Error"); }
+
+                    modelX = Rsv; break;
+                case HxSaveReq Hx:
+                    if (Hx.HistoryId == null) { return (false, null, "4001", "System Required Error"); }
+
+                    modelX = Hx; break;
+                case MsgSaveReq Msg:
+                    if (Msg.NotificationId == null) { return (false, null, "4001", "System Required Error"); }
+                    if (Msg.IsRead == null) { return (false, null, "4001", "System Required Error"); }
+
+                    modelX = Msg; break;
+                default:
+                    return (false, null, "5101", "Service Error");
+            }
+
+            return (true, modelX, null, null);
+        }
         #endregion
 
         #region Search
