@@ -642,6 +642,8 @@ namespace test3.BLL.Guest
                     return Res;
                 }
             }
+            if (Req.TypeId != null) { querySrc = querySrc.Where(x => x.TypeId == Req.TypeId); }
+            if (Req.LangId != null) { querySrc = querySrc.Where(x => x.LanguageId == Req.LangId); }
             if (Req.SYear != null)
             {
                 var SDate = new DateTime(Req.SYear.Value, 1, 1);
@@ -654,8 +656,6 @@ namespace test3.BLL.Guest
 
                 querySrc = querySrc.Where(x => x.PublishDate <= EDate);
             }
-            if (Req.LangId != null) { querySrc = querySrc.Where(x => x.LanguageId == Req.LangId); }
-            if (Req.TypeId != null) { querySrc = querySrc.Where(x => x.TypeId == Req.TypeId); }
 
             if (!await querySrc.AnyAsync())
             {

@@ -804,7 +804,8 @@ namespace test3.API.Controllers.Portal.Guest
         // Validation
         private (Boolean validation, SearchQueryReq? ReqModel, String? statusCode, String? message) SearchQueryValid(SearchQueryReq model)
         {
-            if (String.IsNullOrWhiteSpace(model.Info) && model.SYear == null && model.EYear == null && model.LangId == null && model.TypeId == null) { return (false, null, "4001", "Client Required Error: 任一查詢條件"); }
+            if (String.IsNullOrWhiteSpace(model.Kind)) { return (false, null, "4001", "System Required Error"); }
+            if (String.IsNullOrWhiteSpace(model.Info) && model.TypeId == null && model.LangId == null && model.SYear == null && model.EYear == null) { return (false, null, "4001", "Client Required Error: 任一查詢條件"); }
 
             var modelX = model;
 

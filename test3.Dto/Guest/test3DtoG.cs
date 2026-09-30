@@ -180,10 +180,10 @@ namespace test3.Dto.Guest
     {
         public String? Kind { get; set; }
         public String? Info { get; set; }
+        public Byte? TypeId { get; set; }
+        public Byte? LangId { get; set; }
         public Int16? SYear { get; set; }
         public Int16? EYear { get; set; }
-        public Byte? LangId { get; set; }
-        public Byte? TypeId { get; set; }
     }
 
     public class SearchQueryRes : QueryResBase
