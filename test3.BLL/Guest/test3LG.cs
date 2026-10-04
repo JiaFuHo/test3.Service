@@ -3,6 +3,7 @@ using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
 using test3.Common;
 using test3.DAL.test3.Context;
+using test3.DAL.test3.Models;
 using test3.Dto.Guest;
 
 namespace test3.BLL.Guest
@@ -252,9 +253,48 @@ namespace test3.BLL.Guest
         {
             var Res = new FavSaveRes();
 
+            var (check, Cid, message) = await InfoSaveChk(Req);
+
+            if (!check)
+            {
+                Res.Status = false;
+                Res.StatusCode = "4004";
+                Res.Message = message;
+
+                _logX.L1();
+                _logO.LogError($"CreateFav檢查失敗 - StatusCode = {Res.StatusCode}, Message = {Res.Message}");
+
+                return Res;
+            }
+
+            var createChk = await _db.Favorites.AnyAsync(x => x.Cid == (Int32)Cid! && x.CollectionId == Req.CollectionId);
+
+            if (createChk)
+            {
+                Res.Status = false;
+                Res.StatusCode = "4004";
+                Res.Message = "新增失敗，查有重複紀錄";
+
+                _logX.L1();
+                _logO.LogError($"CreateFav失敗 - StatusCode = {Res.StatusCode}, Message = {Res.Message}");
+
+                return Res;
+            }
+
             try
             {
+                var create = new Favorite
+                {
+                    Cid = (Int32)Cid!,
+                    CollectionId = (Int32)Req.CollectionId!
+                };
 
+                _db.Favorites.Add(create);
+                await _db.SaveChangesAsync();
+
+                Res.Status = true;
+                Res.StatusCode = "2000";
+                Res.Message = "新增成功";
             }
             catch (Exception ex)
             {
@@ -273,9 +313,41 @@ namespace test3.BLL.Guest
         {
             var Res = new FavSaveRes();
 
+            var (check, Cid, message) = await InfoSaveChk(Req);
+
+            if (!check)
+            {
+                Res.Status = false;
+                Res.StatusCode = "4004";
+                Res.Message = message;
+
+                _logX.L1();
+                _logO.LogError($"DeleteFav檢查失敗 - StatusCode = {Res.StatusCode}, Message = {Res.Message}");
+
+                return Res;
+            }
+
+            var deleteSrc = await _db.Favorites.FirstOrDefaultAsync(x => x.Cid == (Int32)Cid! && x.CollectionId == Req.CollectionId);
+
+            if (deleteSrc == null)
+            {
+                Res.Status = false;
+                Res.StatusCode = "4004";
+                Res.Message = "查無相關紀錄";
+
+                _logX.L1();
+                _logO.LogError($"DeleteFav失敗 - StatusCode = {Res.StatusCode}, Message = {Res.Message}");
+
+                return Res;
+            }
+
             try
             {
+                _db.Favorites.Remove(deleteSrc);
+                await _db.SaveChangesAsync();
 
+                Res.Status = true;
+                Res.Message = "刪除成功";
             }
             catch (Exception ex)
             {
@@ -350,9 +422,64 @@ namespace test3.BLL.Guest
         {
             var Res = new RsvSaveRes();
 
+            var (check1, Cid, message1) = await InfoSaveChk(Req);
+
+            if (!check1)
+            {
+                Res.Status = false;
+                Res.StatusCode = "4004";
+                Res.Message = message1;
+
+                _logX.L1();
+                _logO.LogError($"CreateRsv失敗 - StatusCode = {Res.StatusCode}, Message = {Res.Message}");
+
+                return Res;
+            }
+
+            var (check2, message2) = await RsvChk((Int32)Cid!);
+
+            if (!check2)
+            {
+                Res.Status = false;
+                Res.StatusCode = "4003";
+                Res.Message = message2;
+
+                _logX.L1();
+                _logO.LogError($"CreateRsv檢查失敗 - StatusCode = {Res.StatusCode}, Message = {Res.Message}");
+
+                return Res;
+            }
+
+            var createChk = await _db.Reservations.AnyAsync(x => x.Cid == (Int32)Cid! && x.CollectionId == Req.CollectionId && (x.ReservationStatusId == 1 || x.ReservationStatusId == 3));
+
+            if (createChk)
+            {
+                Res.Status = false;
+                Res.StatusCode = "4004";
+                Res.Message = "預約失敗，查有重複紀錄";
+
+                _logX.L1();
+                _logO.LogError($"CreateRsv失敗 - StatusCode = {Res.StatusCode}, Message = {Res.Message}");
+
+                return Res;
+            }
+
             try
             {
+                var create = new Reservation
+                {
+                    Cid = (Int32)Cid!,
+                    CollectionId = (Int32)Req.CollectionId!,
+                    ReservateDate = DateTime.Today,
+                    ReservationStatusId = (Byte)Req.ReservationStatusId!
+                };
 
+                _db.Reservations.Add(create);
+                await _db.SaveChangesAsync();
+
+                Res.Status = true;
+                Res.StatusCode = "2000";
+                Res.Message = "預約成功";
             }
             catch (Exception ex)
             {
@@ -371,9 +498,41 @@ namespace test3.BLL.Guest
         {
             var Res = new RsvSaveRes();
 
+            var (check, Cid, message) = await InfoSaveChk(Req);
+
+            if (!check)
+            {
+                Res.Status = false;
+                Res.StatusCode = "4004";
+                Res.Message = message;
+
+                _logX.L1();
+                _logO.LogError($"UpdateRsv檢查失敗 - StatusCode = {Res.StatusCode}, Message = {Res.Message}");
+
+                return Res;
+            }
+
+            var updateSrc = await _db.Reservations.FirstOrDefaultAsync(x => x.Cid == (Int32)Cid! && x.CollectionId == Req.CollectionId && (x.ReservationStatusId == 1 || x.ReservationStatusId == 3));
+
+            if (updateSrc == null)
+            {
+                Res.Status = false;
+                Res.StatusCode = "4004";
+                Res.Message = "查無相關紀錄";
+
+                _logX.L1();
+                _logO.LogError($"UpdateRsv失敗 - StatusCode = {Res.StatusCode}, Message = {Res.Message}");
+
+                return Res;
+            }
+
             try
             {
+                updateSrc.ReservationStatusId = (Byte)Req.ReservationStatusId!;
+                await _db.SaveChangesAsync();
 
+                Res.Status = true;
+                Res.Message = "修改成功";
             }
             catch (Exception ex)
             {
@@ -446,34 +605,49 @@ namespace test3.BLL.Guest
             return Res;
         }
 
-        public async Task<HxSaveRes> CreateHx(HxSaveReq Req)
-        {
-            var Res = new HxSaveRes();
-
-            try
-            {
-
-            }
-            catch (Exception ex)
-            {
-                Res.Status = false;
-                Res.StatusCode = "5102";
-                Res.Message = $"System Error: {ex.Message}";
-
-                _logX.L1();
-                _logO.LogError(ex, $"CreateHx錯誤 - StatusCode = {Res.StatusCode}, Message = {Res.Message}, ex = ");
-            }
-
-            return Res;
-        }
-
         public async Task<HxSaveRes> UpdateHx(HxSaveReq Req)
         {
             var Res = new HxSaveRes();
 
+            var (check, Cid, message) = await InfoSaveChk(Req);
+
+            if (!check)
+            {
+                Res.Status = false;
+                Res.StatusCode = "4004";
+                Res.Message = message;
+
+                _logX.L1();
+                _logO.LogError($"UpdateHx檢查失敗 - StatusCode = {Res.StatusCode}, Message = {Res.Message}");
+
+                return Res;
+            }
+
+            var updateSrc = await _db.Histories.FirstOrDefaultAsync(x => x.Borrow.Cid == (Int32)Cid! && x.HistoryId == Req.HistoryId);
+
+            if (updateSrc == null)
+            {
+                Res.Status = false;
+                Res.StatusCode = "4004";
+                Res.Message = "查無相關紀錄";
+
+                _logX.L1();
+                _logO.LogError($"UpdateHx失敗 - StatusCode = {Res.StatusCode}, Message = {Res.Message}");
+
+                return Res;
+            }
+
             try
             {
+                updateSrc.Score = Req.Score;
+                updateSrc.Feedback = Req.Feedback;
 
+                var updateChk = (_db.Entry(updateSrc).State == EntityState.Modified);
+
+                await _db.SaveChangesAsync();
+
+                Res.Status = true;
+                Res.Message = (updateChk) ? "修改成功" : "查無相關修改";
             }
             catch (Exception ex)
             {
@@ -541,34 +715,48 @@ namespace test3.BLL.Guest
             return Res;
         }
 
-        public async Task<MsgSaveRes> CreateMsg(MsgSaveReq Req)
-        {
-            var Res = new MsgSaveRes();
-
-            try
-            {
-
-            }
-            catch (Exception ex)
-            {
-                Res.Status = false;
-                Res.StatusCode = "5102";
-                Res.Message = $"System Error: {ex.Message}";
-
-                _logX.L1();
-                _logO.LogError(ex, $"CreateMsg錯誤 - StatusCode = {Res.StatusCode}, Message = {Res.Message}, ex = ");
-            }
-
-            return Res;
-        }
-
         public async Task<MsgSaveRes> UpdateMsg(MsgSaveReq Req)
         {
             var Res = new MsgSaveRes();
 
+            var (check, Cid, message) = await InfoSaveChk(Req);
+
+            if (!check)
+            {
+                Res.Status = false;
+                Res.StatusCode = "4004";
+                Res.Message = message;
+
+                _logX.L1();
+                _logO.LogError($"UpdateMsg檢查失敗 - StatusCode = {Res.StatusCode}, Message = {Res.Message}");
+
+                return Res;
+            }
+
+            var updateSrc = await _db.Notifications.FirstOrDefaultAsync(x => x.Cid == (Int32)Cid! && x.NotificationId == Req.NotificationId);
+
+            if (updateSrc == null)
+            {
+                Res.Status = false;
+                Res.StatusCode = "4004";
+                Res.Message = "查無相關紀錄";
+
+                _logX.L1();
+                _logO.LogError($"UpdateMsg失敗 - StatusCode = {Res.StatusCode}, Message = {Res.Message}");
+
+                return Res;
+            }
+
             try
             {
+                updateSrc.IsRead = (Boolean)Req.IsRead!;
 
+                var updateChk = (_db.Entry(updateSrc).State == EntityState.Modified);
+
+                await _db.SaveChangesAsync();
+
+                Res.Status = true;
+                Res.Message = (updateChk) ? "修改成功" : "查無相關修改";
             }
             catch (Exception ex)
             {
@@ -727,7 +915,25 @@ namespace test3.BLL.Guest
         #endregion
 
         #region Info
+        private async Task<(Boolean check, Int32? Cid, String? message)> InfoSaveChk(InfoSaveReqBase model)
+        {
+            var querySrc = _db.Clients.Where(x => x.Guid == model.Guid);
 
+            if (!await querySrc.AnyAsync()) { return (false, null, "查無相關使用者"); }
+
+            var query = await querySrc.Select(x => x.Cid).FirstAsync();
+
+            return (true, query, null);
+        }
+
+        private async Task<(Boolean check, String? message)> RsvChk(Int32 Cid)
+        {
+            var querySrc = _db.Reservations.Where(x => x.Cid == Cid && (x.ReservationStatusId == 1 || x.ReservationStatusId == 3));
+
+            if (await querySrc.CountAsync() >= 3) { return (false, "Logic Error: 預約數已達上限"); }
+
+            return (true, null);
+        }
         #endregion
 
         #region Search

@@ -457,49 +457,6 @@ namespace test3.API.Controllers.Portal.Guest
             return Ok(Res);
         }
 
-        [HttpPost("info/hx")]
-        [Authorize]
-        public async Task<ActionResult<HxSaveRes>> PostHx([FromBody] HxSaveReq model)
-        {
-            var Res = new HxSaveRes();
-
-            var (validation, Req, statusCode, message) = InfoSaveValid(model);
-
-            if (!validation)
-            {
-                Res.Status = false;
-                Res.StatusCode = statusCode!;
-                Res.Message = message!;
-
-                _logX.L1();
-                _logO.LogError($"PostHx驗證失敗 - StatusCode = {Res.StatusCode}, Message = {Res.Message}");
-
-                return Ok(Res);
-            }
-
-            try
-            {
-                Res = await _logicG.CreateHx(model);
-
-                if (Res.Status)
-                {
-                    _logX.L1();
-                    _logO.LogInformation($"PostHx成功 - StatusCode = {Res.StatusCode}");
-                }
-            }
-            catch (Exception ex)
-            {
-                Res.Status = false;
-                Res.StatusCode = "5101";
-                Res.Message = $"Service Error: {ex.Message}";
-
-                _logX.L1();
-                _logO.LogError(ex, $"PostHx錯誤 - StatusCode = {Res.StatusCode}, Message = {Res.Message}, ex = ");
-            }
-
-            return Ok(Res);
-        }
-
         [HttpPut("info/hx")]
         [Authorize]
         public async Task<ActionResult<HxSaveRes>> PutHx([FromBody] HxSaveReq model)
@@ -583,49 +540,6 @@ namespace test3.API.Controllers.Portal.Guest
 
                 _logX.L1();
                 _logO.LogError(ex, $"GetMsg錯誤 - StatusCode = {Res.StatusCode}, Message = {Res.Message}, ex = ");
-            }
-
-            return Ok(Res);
-        }
-
-        [HttpPost("info/msg")]
-        [Authorize]
-        public async Task<ActionResult<MsgSaveRes>> PostMsg([FromBody] MsgSaveReq model)
-        {
-            var Res = new MsgSaveRes();
-
-            var (validation, Req, statusCode, message) = InfoSaveValid(model);
-
-            if (!validation)
-            {
-                Res.Status = false;
-                Res.StatusCode = statusCode!;
-                Res.Message = message!;
-
-                _logX.L1();
-                _logO.LogError($"PostMsg驗證失敗 - StatusCode = {Res.StatusCode}, Message = {Res.Message}");
-
-                return Ok(Res);
-            }
-
-            try
-            {
-                Res = await _logicG.CreateMsg(model);
-
-                if (Res.Status)
-                {
-                    _logX.L1();
-                    _logO.LogInformation($"PostMsg成功 - StatusCode = {Res.StatusCode}");
-                }
-            }
-            catch (Exception ex)
-            {
-                Res.Status = false;
-                Res.StatusCode = "5101";
-                Res.Message = $"Service Error: {ex.Message}";
-
-                _logX.L1();
-                _logO.LogError(ex, $"PostMsg錯誤 - StatusCode = {Res.StatusCode}, Message = {Res.Message}, ex = ");
             }
 
             return Ok(Res);
