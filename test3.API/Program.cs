@@ -38,7 +38,7 @@ namespace test3.API
             #endregion
 
             #region Serilog
-            var logPath = builder.Configuration["LogPath"] ?? "C:\\JiaFuHo - GF66\\Programs\\Others\\test3\\test3.Log\\test3.Service\\Log_.txt";
+            var logPath = builder.Configuration["LogPath"] ?? "C:\\JiaFuHo - GF66\\Programs\\Others\\test3\\04 test3.Log\\02 test3.Service\\Log_.txt";
 
             Log.Logger = new LoggerConfiguration()
                                    .WriteTo.Console(
@@ -118,7 +118,7 @@ namespace test3.API
                     ValidateIssuerSigningKey = true,
 
                     ValidIssuer = JWT["Issuer"] ?? throw new Exception("System Para Error: JWT.Issuer"),
-                    ValidAudience = JWT["Audience"] ?? throw new Exception("System ParaError: JWT.Audience"),
+                    ValidAudience = JWT["Audience"] ?? throw new Exception("System Para Error: JWT.Audience"),
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(JSK))
                 };
             });
