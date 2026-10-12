@@ -105,6 +105,7 @@ namespace test3.Dto.Guest
         public IEnumerable<AuthorInfo>? AuthorInfos { get; set; }
         public DateTime? ReservateDate { get; set; }
         public DateTime? DueDateR { get; set; }
+        public Byte? ReservationStatusId { get; set; }
         public String? ReservationStatus { get; set; }
     }
 
@@ -128,6 +129,7 @@ namespace test3.Dto.Guest
     public class HxInfo
     {
         public Int32? HistoryId { get; set; }
+        public Int32? CollectionId { get; set; }
         public String? Title { get; set; }
         public Byte[]? Image { get; set; }
         public IEnumerable<AuthorInfo>? AuthorInfos { get; set; }
@@ -136,6 +138,7 @@ namespace test3.Dto.Guest
         public String? BorrowStatus { get; set; }
         public Byte? Score { get; set; }
         public String? Feedback { get; set; }
+        public Boolean? IsFav { get; set; }
     }
 
     public class HxSaveReq : InfoSaveReqBase

@@ -44,7 +44,7 @@ namespace test3.API.Controllers.Portal.Guest
                 Res.Message = message!;
 
                 _logX.L1();
-                _logO.LogError($"Login驗證失敗 - StatusCode = {Res.StatusCode}, Message = {Res.Message}");
+                _logO.LogWarning($"Login驗證失敗 - StatusCode = {Res.StatusCode}, Message = {Res.Message}");
 
                 return Ok(Res);
             }
@@ -88,7 +88,7 @@ namespace test3.API.Controllers.Portal.Guest
                 Res.Message = message!;
 
                 _logX.L1();
-                _logO.LogError($"GetBookList驗證失敗 - StatusCode = {Res.StatusCode}, Message = {Res.Message}");
+                _logO.LogWarning($"GetBookList驗證失敗 - StatusCode = {Res.StatusCode}, Message = {Res.Message}");
 
                 return Ok(Res);
             }
@@ -167,7 +167,7 @@ namespace test3.API.Controllers.Portal.Guest
                 Res.Message = message!;
 
                 _logX.L1();
-                _logO.LogError($"GetFav驗證失敗 - StatusCode = {Res.StatusCode}, Message = {Res.Message}");
+                _logO.LogWarning($"GetFav驗證失敗 - StatusCode = {Res.StatusCode}, Message = {Res.Message}");
 
                 return Ok(Res);
             }
@@ -210,7 +210,7 @@ namespace test3.API.Controllers.Portal.Guest
                 Res.Message = message!;
 
                 _logX.L1();
-                _logO.LogError($"PostFav驗證失敗 - StatusCode = {Res.StatusCode}, Message = {Res.Message}");
+                _logO.LogWarning($"PostFav驗證失敗 - StatusCode = {Res.StatusCode}, Message = {Res.Message}");
 
                 return Ok(Res);
             }
@@ -253,7 +253,7 @@ namespace test3.API.Controllers.Portal.Guest
                 Res.Message = message!;
 
                 _logX.L1();
-                _logO.LogError($"DeleteFav驗證失敗 - StatusCode = {Res.StatusCode}, Message = {Res.Message}");
+                _logO.LogWarning($"DeleteFav驗證失敗 - StatusCode = {Res.StatusCode}, Message = {Res.Message}");
 
                 return Ok(Res);
             }
@@ -298,7 +298,7 @@ namespace test3.API.Controllers.Portal.Guest
                 Res.Message = message!;
 
                 _logX.L1();
-                _logO.LogError($"GetRsv驗證失敗 - StatusCode = {Res.StatusCode}, Message = {Res.Message}");
+                _logO.LogWarning($"GetRsv驗證失敗 - StatusCode = {Res.StatusCode}, Message = {Res.Message}");
 
                 return Ok(Res);
             }
@@ -341,7 +341,7 @@ namespace test3.API.Controllers.Portal.Guest
                 Res.Message = message!;
 
                 _logX.L1();
-                _logO.LogError($"PostRsv驗證失敗 - StatusCode = {Res.StatusCode}, Message = {Res.Message}");
+                _logO.LogWarning($"PostRsv驗證失敗 - StatusCode = {Res.StatusCode}, Message = {Res.Message}");
 
                 return Ok(Res);
             }
@@ -384,7 +384,7 @@ namespace test3.API.Controllers.Portal.Guest
                 Res.Message = message!;
 
                 _logX.L1();
-                _logO.LogError($"PutRsv驗證失敗 - StatusCode = {Res.StatusCode}, Message = {Res.Message}");
+                _logO.LogWarning($"PutRsv驗證失敗 - StatusCode = {Res.StatusCode}, Message = {Res.Message}");
 
                 return Ok(Res);
             }
@@ -429,7 +429,7 @@ namespace test3.API.Controllers.Portal.Guest
                 Res.Message = message!;
 
                 _logX.L1();
-                _logO.LogError($"GetHx驗證失敗 - StatusCode = {Res.StatusCode}, Message = {Res.Message}");
+                _logO.LogWarning($"GetHx驗證失敗 - StatusCode = {Res.StatusCode}, Message = {Res.Message}");
 
                 return Ok(Res);
             }
@@ -472,7 +472,7 @@ namespace test3.API.Controllers.Portal.Guest
                 Res.Message = message!;
 
                 _logX.L1();
-                _logO.LogError($"PutHx驗證失敗 - StatusCode = {Res.StatusCode}, Message = {Res.Message}");
+                _logO.LogWarning($"PutHx驗證失敗 - StatusCode = {Res.StatusCode}, Message = {Res.Message}");
 
                 return Ok(Res);
             }
@@ -517,7 +517,7 @@ namespace test3.API.Controllers.Portal.Guest
                 Res.Message = message!;
 
                 _logX.L1();
-                _logO.LogError($"GetMsg驗證失敗 - StatusCode = {Res.StatusCode}, Message = {Res.Message}");
+                _logO.LogWarning($"GetMsg驗證失敗 - StatusCode = {Res.StatusCode}, Message = {Res.Message}");
 
                 return Ok(Res);
             }
@@ -560,7 +560,7 @@ namespace test3.API.Controllers.Portal.Guest
                 Res.Message = message!;
 
                 _logX.L1();
-                _logO.LogError($"PutMsg驗證失敗 - StatusCode = {Res.StatusCode}, Message = {Res.Message}");
+                _logO.LogWarning($"PutMsg驗證失敗 - StatusCode = {Res.StatusCode}, Message = {Res.Message}");
 
                 return Ok(Res);
             }
@@ -606,7 +606,7 @@ namespace test3.API.Controllers.Portal.Guest
                 Res.Message = message!;
 
                 _logX.L1();
-                _logO.LogError($"GetBookInfo驗證失敗 - StatusCode = {Res.StatusCode}, Message = {Res.Message}");
+                _logO.LogWarning($"GetBookInfo驗證失敗 - StatusCode = {Res.StatusCode}, Message = {Res.Message}");
 
                 return Ok(Res);
             }

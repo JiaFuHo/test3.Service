@@ -57,7 +57,7 @@ namespace test3.BLL.Guest
                 Res.Message = "查無相關資訊";
 
                 _logX.L1();
-                _logO.LogError($"QueryBookList失敗 - StatusCode = {Res.StatusCode}, Message = {Res.Message}");
+                _logO.LogWarning($"QueryBookList失敗 - StatusCode = {Res.StatusCode}, Message = {Res.Message}");
 
                 return Res;
             }
@@ -118,7 +118,7 @@ namespace test3.BLL.Guest
                 Res.Message = message!;
 
                 _logX.L1();
-                _logO.LogError($"QueryCollection檢查失敗 - StatusCode = {Res.StatusCode}, Message = {Res.Message}");
+                _logO.LogWarning($"QueryCollection檢查失敗 - StatusCode = {Res.StatusCode}, Message = {Res.Message}");
 
                 return Res;
             }
@@ -149,7 +149,7 @@ namespace test3.BLL.Guest
                 Res.Message = "查無相關館藏";
 
                 _logX.L1();
-                _logO.LogError($"QueryCollection失敗 - StatusCode = {Res.StatusCode}, Message = {Res.Message}");
+                _logO.LogWarning($"QueryCollection失敗 - StatusCode = {Res.StatusCode}, Message = {Res.Message}");
 
                 return Res;
             }
@@ -210,7 +210,7 @@ namespace test3.BLL.Guest
                 Res.Message = "查無相關紀錄";
 
                 _logX.L1();
-                _logO.LogError($"QueryFav失敗 - StatusCode = {Res.StatusCode}, Message = {Res.Message}");
+                _logO.LogWarning($"QueryFav失敗 - StatusCode = {Res.StatusCode}, Message = {Res.Message}");
 
                 return Res;
             }
@@ -262,7 +262,7 @@ namespace test3.BLL.Guest
                 Res.Message = message;
 
                 _logX.L1();
-                _logO.LogError($"CreateFav檢查失敗 - StatusCode = {Res.StatusCode}, Message = {Res.Message}");
+                _logO.LogWarning($"CreateFav檢查失敗 - StatusCode = {Res.StatusCode}, Message = {Res.Message}");
 
                 return Res;
             }
@@ -276,7 +276,7 @@ namespace test3.BLL.Guest
                 Res.Message = "新增失敗，查有重複紀錄";
 
                 _logX.L1();
-                _logO.LogError($"CreateFav失敗 - StatusCode = {Res.StatusCode}, Message = {Res.Message}");
+                _logO.LogWarning($"CreateFav失敗 - StatusCode = {Res.StatusCode}, Message = {Res.Message}");
 
                 return Res;
             }
@@ -322,7 +322,7 @@ namespace test3.BLL.Guest
                 Res.Message = message;
 
                 _logX.L1();
-                _logO.LogError($"DeleteFav檢查失敗 - StatusCode = {Res.StatusCode}, Message = {Res.Message}");
+                _logO.LogWarning($"DeleteFav檢查失敗 - StatusCode = {Res.StatusCode}, Message = {Res.Message}");
 
                 return Res;
             }
@@ -336,7 +336,7 @@ namespace test3.BLL.Guest
                 Res.Message = "查無相關紀錄";
 
                 _logX.L1();
-                _logO.LogError($"DeleteFav失敗 - StatusCode = {Res.StatusCode}, Message = {Res.Message}");
+                _logO.LogWarning($"DeleteFav失敗 - StatusCode = {Res.StatusCode}, Message = {Res.Message}");
 
                 return Res;
             }
@@ -368,7 +368,7 @@ namespace test3.BLL.Guest
         {
             var Res = new RsvQueryRes();
 
-            var querySrc = _db.Clients.Where(x => x.Guid == Req.Guid).SelectMany(x => x.Reservations);
+            var querySrc = _db.Clients.Where(x => x.Guid == Req.Guid).SelectMany(x => x.Reservations).OrderByDescending(x => x.ReservateDate);
 
             if (!await querySrc.AnyAsync())
             {
@@ -377,7 +377,7 @@ namespace test3.BLL.Guest
                 Res.Message = "查無相關紀錄";
 
                 _logX.L1();
-                _logO.LogError($"QueryRsv失敗 - StatusCode = {Res.StatusCode}, Message = {Res.Message}");
+                _logO.LogWarning($"QueryRsv失敗 - StatusCode = {Res.StatusCode}, Message = {Res.Message}");
 
                 return Res;
             }
@@ -394,6 +394,7 @@ namespace test3.BLL.Guest
                     AuthorInfos = x.Collection.Authors.Select(y => new AuthorInfo { Author = y.Author1 }),
                     ReservateDate = x.ReservateDate,
                     DueDateR = x.DueDateR,
+                    ReservationStatusId = x.ReservationStatusId,
                     ReservationStatus = x.ReservationStatus.ReservationStatus1
                 });
 
@@ -431,7 +432,7 @@ namespace test3.BLL.Guest
                 Res.Message = message1;
 
                 _logX.L1();
-                _logO.LogError($"CreateRsv失敗 - StatusCode = {Res.StatusCode}, Message = {Res.Message}");
+                _logO.LogWarning($"CreateRsv失敗 - StatusCode = {Res.StatusCode}, Message = {Res.Message}");
 
                 return Res;
             }
@@ -445,21 +446,35 @@ namespace test3.BLL.Guest
                 Res.Message = message2;
 
                 _logX.L1();
-                _logO.LogError($"CreateRsv檢查失敗 - StatusCode = {Res.StatusCode}, Message = {Res.Message}");
+                _logO.LogWarning($"CreateRsv檢查失敗 - StatusCode = {Res.StatusCode}, Message = {Res.Message}");
 
                 return Res;
             }
 
-            var createChk = await _db.Reservations.AnyAsync(x => x.Cid == (Int32)Cid! && x.CollectionId == Req.CollectionId && (x.ReservationStatusId == 1 || x.ReservationStatusId == 3));
+            var createChk1 = _db.Reservations.Where(x => x.Cid == (Int32)Cid! && x.CollectionId == Req.CollectionId && (x.ReservationStatusId == 2 && x.ReservateDate.Date == DateTime.Today));
 
-            if (createChk)
+            if (await createChk1.CountAsync() >= 2)
+            {
+                Res.Status = false;
+                Res.StatusCode = "4004";
+                Res.Message = "預約失敗，當日不可多次重新預約";
+
+                _logX.L1();
+                _logO.LogWarning($"CreateRsv失敗 - StatusCode = {Res.StatusCode}, Message = {Res.Message}");
+
+                return Res;
+            }
+
+            var createChk2 = await _db.Reservations.AnyAsync(x => x.Cid == (Int32)Cid! && x.CollectionId == Req.CollectionId && (x.ReservationStatusId == 1 || x.ReservationStatusId == 3));
+
+            if (createChk2)
             {
                 Res.Status = false;
                 Res.StatusCode = "4004";
                 Res.Message = "預約失敗，查有重複紀錄";
 
                 _logX.L1();
-                _logO.LogError($"CreateRsv失敗 - StatusCode = {Res.StatusCode}, Message = {Res.Message}");
+                _logO.LogWarning($"CreateRsv失敗 - StatusCode = {Res.StatusCode}, Message = {Res.Message}");
 
                 return Res;
             }
@@ -470,7 +485,7 @@ namespace test3.BLL.Guest
                 {
                     Cid = (Int32)Cid!,
                     CollectionId = (Int32)Req.CollectionId!,
-                    ReservateDate = DateTime.Today,
+                    ReservateDate = DateTime.Now,
                     ReservationStatusId = (Byte)Req.ReservationStatusId!
                 };
 
@@ -507,7 +522,7 @@ namespace test3.BLL.Guest
                 Res.Message = message;
 
                 _logX.L1();
-                _logO.LogError($"UpdateRsv檢查失敗 - StatusCode = {Res.StatusCode}, Message = {Res.Message}");
+                _logO.LogWarning($"UpdateRsv檢查失敗 - StatusCode = {Res.StatusCode}, Message = {Res.Message}");
 
                 return Res;
             }
@@ -521,7 +536,7 @@ namespace test3.BLL.Guest
                 Res.Message = "查無相關紀錄";
 
                 _logX.L1();
-                _logO.LogError($"UpdateRsv失敗 - StatusCode = {Res.StatusCode}, Message = {Res.Message}");
+                _logO.LogWarning($"UpdateRsv失敗 - StatusCode = {Res.StatusCode}, Message = {Res.Message}");
 
                 return Res;
             }
@@ -553,7 +568,7 @@ namespace test3.BLL.Guest
         {
             var Res = new HxQueryRes();
 
-            var querySrc = _db.Clients.Where(x => x.Guid == Req.Guid).SelectMany(x => x.Borrows);
+            var querySrc = _db.Clients.Where(x => x.Guid == Req.Guid).SelectMany(x => x.Borrows).OrderByDescending(x => x.BorrowDate);
 
             if (!await querySrc.AnyAsync())
             {
@@ -562,7 +577,7 @@ namespace test3.BLL.Guest
                 Res.Message = "查無相關紀錄";
 
                 _logX.L1();
-                _logO.LogError($"QueryHx失敗 - StatusCode = {Res.StatusCode}, Message = {Res.Message}");
+                _logO.LogWarning($"QueryHx失敗 - StatusCode = {Res.StatusCode}, Message = {Res.Message}");
 
                 return Res;
             }
@@ -574,6 +589,7 @@ namespace test3.BLL.Guest
                 var query = querySrcX.Select(x => new HxInfo
                 {
                     HistoryId = x.History!.HistoryId,
+                    CollectionId = x.Book.CollectionId,
                     Title = x.Book.Collection.Title,
                     Image = x.Book.Collection.Image,
                     AuthorInfos = x.Book.Collection.Authors.Select(y => new AuthorInfo { Author = y.Author1 }),
@@ -581,7 +597,8 @@ namespace test3.BLL.Guest
                     DueDateB = x.DueDateB,
                     BorrowStatus = x.BorrowStatus.BorrowStatus1,
                     Score = x.History!.Score,
-                    Feedback = x.History!.Feedback
+                    Feedback = x.History!.Feedback,
+                    IsFav = x.Book.Collection.Favorites.Any(y => y.Cid == x.Cid)
                 });
 
                 var hxList = await query.ToListAsync();
@@ -618,7 +635,7 @@ namespace test3.BLL.Guest
                 Res.Message = message;
 
                 _logX.L1();
-                _logO.LogError($"UpdateHx檢查失敗 - StatusCode = {Res.StatusCode}, Message = {Res.Message}");
+                _logO.LogWarning($"UpdateHx檢查失敗 - StatusCode = {Res.StatusCode}, Message = {Res.Message}");
 
                 return Res;
             }
@@ -632,7 +649,7 @@ namespace test3.BLL.Guest
                 Res.Message = "查無相關紀錄";
 
                 _logX.L1();
-                _logO.LogError($"UpdateHx失敗 - StatusCode = {Res.StatusCode}, Message = {Res.Message}");
+                _logO.LogWarning($"UpdateHx失敗 - StatusCode = {Res.StatusCode}, Message = {Res.Message}");
 
                 return Res;
             }
@@ -668,7 +685,7 @@ namespace test3.BLL.Guest
         {
             var Res = new MsgQueryRes();
 
-            var querySrc = _db.Clients.Where(x => x.Guid == Req.Guid).SelectMany(x => x.Notifications);
+            var querySrc = _db.Clients.Where(x => x.Guid == Req.Guid).SelectMany(x => x.Notifications).OrderByDescending(x => x.NotificationDate);
 
             if (!await querySrc.AnyAsync())
             {
@@ -677,7 +694,7 @@ namespace test3.BLL.Guest
                 Res.Message = "查無相關紀錄";
 
                 _logX.L1();
-                _logO.LogError($"QueryMsg失敗 - StatusCode = {Res.StatusCode}, Message = {Res.Message}");
+                _logO.LogWarning($"QueryMsg失敗 - StatusCode = {Res.StatusCode}, Message = {Res.Message}");
 
                 return Res;
             }
@@ -728,7 +745,7 @@ namespace test3.BLL.Guest
                 Res.Message = message;
 
                 _logX.L1();
-                _logO.LogError($"UpdateMsg檢查失敗 - StatusCode = {Res.StatusCode}, Message = {Res.Message}");
+                _logO.LogWarning($"UpdateMsg檢查失敗 - StatusCode = {Res.StatusCode}, Message = {Res.Message}");
 
                 return Res;
             }
@@ -742,7 +759,7 @@ namespace test3.BLL.Guest
                 Res.Message = "查無相關紀錄";
 
                 _logX.L1();
-                _logO.LogError($"UpdateMsg失敗 - StatusCode = {Res.StatusCode}, Message = {Res.Message}");
+                _logO.LogWarning($"UpdateMsg失敗 - StatusCode = {Res.StatusCode}, Message = {Res.Message}");
 
                 return Res;
             }
@@ -788,7 +805,7 @@ namespace test3.BLL.Guest
                 Res.Message = message!;
 
                 _logX.L1();
-                _logO.LogError($"QueryBookInfo檢查失敗 - StatusCode = {Res.StatusCode}, Message = {Res.Message}");
+                _logO.LogWarning($"QueryBookInfo檢查失敗 - StatusCode = {Res.StatusCode}, Message = {Res.Message}");
 
                 return Res;
             }
@@ -825,7 +842,7 @@ namespace test3.BLL.Guest
                     };
 
                     _logX.L1();
-                    _logO.LogError($"QueryBookInfo失敗 - StatusCode = {Res.StatusCode}, Message = {Res.Message}");
+                    _logO.LogWarning($"QueryBookInfo失敗 - StatusCode = {Res.StatusCode}, Message = {Res.Message}");
 
                     return Res;
                 }
@@ -852,7 +869,7 @@ namespace test3.BLL.Guest
                 Res.Message = "查無相關館藏";
 
                 _logX.L1();
-                _logO.LogError($"QueryBookInfo失敗 - StatusCode = {Res.StatusCode}, Message = {Res.Message}");
+                _logO.LogWarning($"QueryBookInfo失敗 - StatusCode = {Res.StatusCode}, Message = {Res.Message}");
 
                 return Res;
             }

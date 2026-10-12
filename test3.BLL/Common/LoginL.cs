@@ -40,7 +40,7 @@ namespace test3.BLL.Common
                     Res.Message = "帳號 or 密碼錯誤";
 
                     _logX.L1();
-                    _logO.LogError($"Login失敗 - StatusCode = {Res.StatusCode}, Message = {Res.Message}");
+                    _logO.LogWarning($"Login失敗 - StatusCode = {Res.StatusCode}, Message = {Res.Message}");
 
                     return Res;
                 }
@@ -54,7 +54,7 @@ namespace test3.BLL.Common
                     Res.Message = "帳號 or 密碼錯誤";
 
                     _logX.L1();
-                    _logO.LogError($"Login失敗 - StatusCode = {Res.StatusCode}, Message = {Res.Message}");
+                    _logO.LogWarning($"Login失敗 - StatusCode = {Res.StatusCode}, Message = {Res.Message}");
 
                     return Res;
                 }
@@ -66,7 +66,7 @@ namespace test3.BLL.Common
                     Res.Message = "權限不足";
 
                     _logX.L1();
-                    _logO.LogError($"Login失敗 - StatusCode = {Res.StatusCode}, Message = {Res.Message}");
+                    _logO.LogWarning($"Login失敗 - StatusCode = {Res.StatusCode}, Message = {Res.Message}");
 
                     return Res;
                 }

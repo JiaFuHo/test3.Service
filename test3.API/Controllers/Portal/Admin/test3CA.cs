@@ -46,7 +46,7 @@ namespace test3.API.Controllers.Portal.Admin
                 Res.Message = message!;
 
                 _logX.L1();
-                _logO.LogError($"Login驗證失敗 - StatusCode = {Res.StatusCode}, Message = {Res.Message}");
+                _logO.LogWarning($"Login驗證失敗 - StatusCode = {Res.StatusCode}, Message = {Res.Message}");
 
                 return Ok(Res);
             }
