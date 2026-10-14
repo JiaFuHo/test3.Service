@@ -547,7 +547,7 @@ namespace test3.BLL.Guest
                 await _db.SaveChangesAsync();
 
                 Res.Status = true;
-                Res.Message = "修改成功";
+                Res.Message = "取消成功";
             }
             catch (Exception ex)
             {
