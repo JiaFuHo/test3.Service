@@ -17,6 +17,10 @@ public partial class Book
 
     public DateTime AccessDate { get; set; }
 
+    public DateTime Ctime { get; set; }
+
+    public DateTime Stime { get; set; }
+
     public virtual BookStatus BookStatus { get; set; } = null!;
 
     public virtual ICollection<Borrow> Borrows { get; set; } = new List<Borrow>();

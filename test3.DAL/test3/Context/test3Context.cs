@@ -76,6 +76,14 @@ public partial class test3Context : DbContext
             entity.Property(e => e.BookCode)
                 .HasMaxLength(23)
                 .IsUnicode(false);
+            entity.Property(e => e.Ctime)
+                .HasPrecision(0)
+                .HasDefaultValueSql("(sysdatetime())")
+                .HasColumnName("CTime");
+            entity.Property(e => e.Stime)
+                .HasPrecision(0)
+                .HasDefaultValueSql("(sysdatetime())")
+                .HasColumnName("STime");
 
             entity.HasOne(d => d.BookStatus).WithMany(p => p.Books)
                 .HasForeignKey(d => d.BookStatusId)
@@ -114,8 +122,16 @@ public partial class test3Context : DbContext
 
             entity.Property(e => e.BorrowDate).HasPrecision(0);
             entity.Property(e => e.Cid).HasColumnName("CId");
+            entity.Property(e => e.Ctime)
+                .HasPrecision(0)
+                .HasDefaultValueSql("(sysdatetime())")
+                .HasColumnName("CTime");
             entity.Property(e => e.DueDateB).HasPrecision(0);
             entity.Property(e => e.ReturnDate).HasPrecision(0);
+            entity.Property(e => e.Stime)
+                .HasPrecision(0)
+                .HasDefaultValueSql("(sysdatetime())")
+                .HasColumnName("STime");
 
             entity.HasOne(d => d.Book).WithMany(p => p.Borrows)
                 .HasForeignKey(d => d.BookId)
@@ -179,6 +195,10 @@ public partial class test3Context : DbContext
                 .HasMaxLength(128)
                 .IsUnicode(false)
                 .HasColumnName("CPwd");
+            entity.Property(e => e.Ctime)
+                .HasPrecision(0)
+                .HasDefaultValueSql("(sysdatetime())")
+                .HasColumnName("CTime");
             entity.Property(e => e.Fid)
                 .HasMaxLength(100)
                 .IsUnicode(false)
@@ -188,6 +208,10 @@ public partial class test3Context : DbContext
                 .IsUnicode(false)
                 .HasColumnName("GId");
             entity.Property(e => e.Guid).HasDefaultValueSql("(newid())");
+            entity.Property(e => e.Stime)
+                .HasPrecision(0)
+                .HasDefaultValueSql("(sysdatetime())")
+                .HasColumnName("STime");
         });
 
         modelBuilder.Entity<Collection>(entity =>
@@ -208,12 +232,20 @@ public partial class test3Context : DbContext
 
             entity.HasIndex(e => e.Isbn, "UK_Collection_ISBN").IsUnique();
 
+            entity.Property(e => e.Ctime)
+                .HasPrecision(0)
+                .HasDefaultValueSql("(sysdatetime())")
+                .HasColumnName("CTime");
             entity.Property(e => e.Isbn)
                 .HasMaxLength(17)
                 .IsUnicode(false)
                 .HasColumnName("ISBN");
             entity.Property(e => e.PublishDate).HasPrecision(0);
             entity.Property(e => e.Publisher).HasMaxLength(50);
+            entity.Property(e => e.Stime)
+                .HasPrecision(0)
+                .HasDefaultValueSql("(sysdatetime())")
+                .HasColumnName("STime");
             entity.Property(e => e.Title).HasMaxLength(100);
             entity.Property(e => e.Translator).HasMaxLength(50);
 
@@ -259,6 +291,10 @@ public partial class test3Context : DbContext
             entity.HasIndex(e => new { e.Cid, e.CollectionId }, "CUK_Favorite").IsUnique();
 
             entity.Property(e => e.Cid).HasColumnName("CId");
+            entity.Property(e => e.Ctime)
+                .HasPrecision(0)
+                .HasDefaultValueSql("(sysdatetime())")
+                .HasColumnName("CTime");
 
             entity.HasOne(d => d.CidNavigation).WithMany(p => p.Favorites)
                 .HasForeignKey(d => d.Cid)
@@ -280,6 +316,15 @@ public partial class test3Context : DbContext
             entity.HasIndex(e => e.BorrowId, "IX_History_BorrowId");
 
             entity.HasIndex(e => e.BorrowId, "UK_History_BorrowId").IsUnique();
+
+            entity.Property(e => e.Ctime)
+                .HasPrecision(0)
+                .HasDefaultValueSql("(sysdatetime())")
+                .HasColumnName("CTime");
+            entity.Property(e => e.Stime)
+                .HasPrecision(0)
+                .HasDefaultValueSql("(sysdatetime())")
+                .HasColumnName("STime");
 
             entity.HasOne(d => d.Borrow).WithOne(p => p.History)
                 .HasForeignKey<History>(d => d.BorrowId)
@@ -308,7 +353,15 @@ public partial class test3Context : DbContext
             entity.ToTable("Notification");
 
             entity.Property(e => e.Cid).HasColumnName("CId");
+            entity.Property(e => e.Ctime)
+                .HasPrecision(0)
+                .HasDefaultValueSql("(sysdatetime())")
+                .HasColumnName("CTime");
             entity.Property(e => e.NotificationDate).HasPrecision(0);
+            entity.Property(e => e.Stime)
+                .HasPrecision(0)
+                .HasDefaultValueSql("(sysdatetime())")
+                .HasColumnName("STime");
 
             entity.HasOne(d => d.CidNavigation).WithMany(p => p.Notifications)
                 .HasForeignKey(d => d.Cid)
@@ -327,8 +380,16 @@ public partial class test3Context : DbContext
             entity.HasIndex(e => e.CollectionId, "IX_Reservation_CollectionId");
 
             entity.Property(e => e.Cid).HasColumnName("CId");
+            entity.Property(e => e.Ctime)
+                .HasPrecision(0)
+                .HasDefaultValueSql("(sysdatetime())")
+                .HasColumnName("CTime");
             entity.Property(e => e.DueDateR).HasPrecision(0);
             entity.Property(e => e.ReservateDate).HasPrecision(0);
+            entity.Property(e => e.Stime)
+                .HasPrecision(0)
+                .HasDefaultValueSql("(sysdatetime())")
+                .HasColumnName("STime");
 
             entity.HasOne(d => d.Book).WithMany(p => p.Reservations)
                 .HasForeignKey(d => d.BookId)

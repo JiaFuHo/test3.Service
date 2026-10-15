@@ -29,6 +29,10 @@ public partial class Collection
 
     public DateTime PublishDate { get; set; }
 
+    public DateTime Ctime { get; set; }
+
+    public DateTime Stime { get; set; }
+
     public virtual ICollection<Book> Books { get; set; } = new List<Book>();
 
     public virtual ICollection<Favorite> Favorites { get; set; } = new List<Favorite>();

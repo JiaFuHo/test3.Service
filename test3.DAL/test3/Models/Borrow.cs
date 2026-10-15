@@ -23,6 +23,10 @@ public partial class Borrow
 
     public byte BorrowStatusId { get; set; }
 
+    public DateTime Ctime { get; set; }
+
+    public DateTime Stime { get; set; }
+
     public virtual Book Book { get; set; } = null!;
 
     public virtual BorrowStatus BorrowStatus { get; set; } = null!;

@@ -15,5 +15,9 @@ public partial class History
 
     public string? Feedback { get; set; }
 
+    public DateTime Ctime { get; set; }
+
+    public DateTime Stime { get; set; }
+
     public virtual Borrow Borrow { get; set; } = null!;
 }

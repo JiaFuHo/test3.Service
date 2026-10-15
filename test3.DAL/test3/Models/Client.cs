@@ -25,6 +25,10 @@ public partial class Client
 
     public byte Permission { get; set; }
 
+    public DateTime Ctime { get; set; }
+
+    public DateTime Stime { get; set; }
+
     public virtual ICollection<Borrow> Borrows { get; set; } = new List<Borrow>();
 
     public virtual ICollection<Favorite> Favorites { get; set; } = new List<Favorite>();

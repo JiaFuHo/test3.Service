@@ -13,6 +13,8 @@ public partial class Favorite
 
     public int CollectionId { get; set; }
 
+    public DateTime Ctime { get; set; }
+
     public virtual Client CidNavigation { get; set; } = null!;
 
     public virtual Collection Collection { get; set; } = null!;

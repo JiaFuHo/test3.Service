@@ -17,5 +17,9 @@ public partial class Notification
 
     public bool IsRead { get; set; }
 
+    public DateTime Ctime { get; set; }
+
+    public DateTime Stime { get; set; }
+
     public virtual Client CidNavigation { get; set; } = null!;
 }
