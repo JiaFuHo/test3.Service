@@ -290,6 +290,7 @@ namespace test3.BLL.Guest
                 };
 
                 _db.Favorites.Add(create);
+
                 await _db.SaveChangesAsync();
 
                 Res.Status = true;
@@ -344,6 +345,7 @@ namespace test3.BLL.Guest
             try
             {
                 _db.Favorites.Remove(deleteSrc);
+
                 await _db.SaveChangesAsync();
 
                 Res.Status = true;
@@ -490,6 +492,7 @@ namespace test3.BLL.Guest
                 };
 
                 _db.Reservations.Add(create);
+
                 await _db.SaveChangesAsync();
 
                 Res.Status = true;
@@ -544,6 +547,7 @@ namespace test3.BLL.Guest
             try
             {
                 updateSrc.ReservationStatusId = (Byte)Req.ReservationStatusId!;
+
                 await _db.SaveChangesAsync();
 
                 Res.Status = true;
