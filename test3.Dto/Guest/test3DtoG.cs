@@ -64,6 +64,18 @@ namespace test3.Dto.Guest
         public Guid? Guid { get; set; }
     }
 
+    #region InfoX
+    public class InfoXQueryReq : InfoQueryReqBase { }
+
+    public class InfoXQueryRes : ResBase
+    {
+        public Int32? FCnt { get; set; }
+        public Int32? RCnt { get; set; }
+        public Int32? HCnt { get; set; }
+        public Int32? MCnt { get; set; }
+    }
+    #endregion
+
     #region Fav
     public class FavQueryReq : InfoQueryReqBase { }
 
@@ -135,6 +147,7 @@ namespace test3.Dto.Guest
         public IEnumerable<AuthorInfo>? AuthorInfos { get; set; }
         public DateTime? BorrowDate { get; set; }
         public DateTime? DueDateB { get; set; }
+        public Byte? BorrowStatusId { get; set; }
         public String? BorrowStatus { get; set; }
         public Byte? Score { get; set; }
         public String? Feedback { get; set; }

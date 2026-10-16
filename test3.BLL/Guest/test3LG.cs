@@ -196,6 +196,42 @@ namespace test3.BLL.Guest
 
         #region Info
 
+        #region InfoX
+        public async Task<InfoXQueryRes> QueryInfoX(InfoXQueryReq Req)
+        {
+            var Res = new InfoXQueryRes();
+
+            var querySrc = _db.Clients.Where(x => x.Guid == Req.Guid);
+
+            try
+            {
+                var query1 = querySrc.SelectMany(x => x.Favorites);
+                var query2 = querySrc.SelectMany(x => x.Reservations).Where(y => y.ReservationStatusId == 3);
+                var query3 = querySrc.SelectMany(x => x.Borrows).Where(y => y.BorrowStatusId == 2);
+                var query4 = querySrc.SelectMany(x => x.Notifications).Where(y => y.IsRead == false);
+
+                Res.Status = true;
+                Res.StatusCode = "2000";
+                Res.Message = "查詢成功";
+                Res.FCnt = await query1.CountAsync();
+                Res.RCnt = await query2.CountAsync();
+                Res.HCnt = await query3.CountAsync();
+                Res.MCnt = await query4.CountAsync();
+            }
+            catch (Exception ex)
+            {
+                Res.Status = false;
+                Res.StatusCode = "5102";
+                Res.Message = $"System Error: {ex.Message}";
+
+                _logX.L1();
+                _logO.LogError(ex, $"QueryInfoX錯誤 - StatusCode = {Res.StatusCode}, Message = {Res.Message}, ex = ");
+            }
+
+            return Res;
+        }
+        #endregion
+
         #region Fav
         public async Task<FavQueryRes> QueryFav(FavQueryReq Req)
         {
@@ -286,7 +322,8 @@ namespace test3.BLL.Guest
                 var create = new Favorite
                 {
                     Cid = (Int32)Cid!,
-                    CollectionId = (Int32)Req.CollectionId!
+                    CollectionId = (Int32)Req.CollectionId!,
+                    Ctime = DateTime.Now
                 };
 
                 _db.Favorites.Add(create);
@@ -349,6 +386,7 @@ namespace test3.BLL.Guest
                 await _db.SaveChangesAsync();
 
                 Res.Status = true;
+                Res.StatusCode = "2000";
                 Res.Message = "刪除成功";
             }
             catch (Exception ex)
@@ -488,7 +526,9 @@ namespace test3.BLL.Guest
                     Cid = (Int32)Cid!,
                     CollectionId = (Int32)Req.CollectionId!,
                     ReservateDate = DateTime.Now,
-                    ReservationStatusId = (Byte)Req.ReservationStatusId!
+                    ReservationStatusId = (Byte)Req.ReservationStatusId!,
+                    Ctime = DateTime.Now,
+                    Stime = DateTime.Now
                 };
 
                 _db.Reservations.Add(create);
@@ -547,10 +587,12 @@ namespace test3.BLL.Guest
             try
             {
                 updateSrc.ReservationStatusId = (Byte)Req.ReservationStatusId!;
+                updateSrc.Stime = DateTime.Now;
 
                 await _db.SaveChangesAsync();
 
                 Res.Status = true;
+                Res.StatusCode = "2000";
                 Res.Message = "取消成功";
             }
             catch (Exception ex)
@@ -599,6 +641,7 @@ namespace test3.BLL.Guest
                     AuthorInfos = x.Book.Collection.Authors.Select(y => new AuthorInfo { Author = y.Author1 }),
                     BorrowDate = x.BorrowDate,
                     DueDateB = x.DueDateB,
+                    BorrowStatusId = x.BorrowStatusId,
                     BorrowStatus = x.BorrowStatus.BorrowStatus1,
                     Score = x.History!.Score,
                     Feedback = x.History!.Feedback,
@@ -665,9 +708,12 @@ namespace test3.BLL.Guest
 
                 var updateChk = (_db.Entry(updateSrc).State == EntityState.Modified);
 
+                if (updateChk) { updateSrc.Stime = DateTime.Now; }
+
                 await _db.SaveChangesAsync();
 
                 Res.Status = true;
+                Res.StatusCode = "2000";
                 Res.Message = (updateChk) ? "修改成功" : "查無相關修改";
             }
             catch (Exception ex)
@@ -774,9 +820,12 @@ namespace test3.BLL.Guest
 
                 var updateChk = (_db.Entry(updateSrc).State == EntityState.Modified);
 
+                if (updateChk) { updateSrc.Stime = DateTime.Now; }
+
                 await _db.SaveChangesAsync();
 
                 Res.Status = true;
+                Res.StatusCode = "2000";
                 Res.Message = (updateChk) ? "修改成功" : "查無相關修改";
             }
             catch (Exception ex)

@@ -151,6 +151,51 @@ namespace test3.API.Controllers.Portal.Guest
 
         #region Info
 
+        #region InfoX
+        [HttpGet("info/x")]
+        [Authorize]
+        public async Task<ActionResult<InfoXQueryRes>> GetInfoX([FromQuery] InfoXQueryReq model)
+        {
+            var Res = new InfoXQueryRes();
+
+            var (validation, Req, statusCode, message) = InfoQueryValid(model);
+
+            if (!validation)
+            {
+                Res.Status = false;
+                Res.StatusCode = statusCode!;
+                Res.Message = message!;
+
+                _logX.L1();
+                _logO.LogWarning($"GetInfoX驗證失敗 - StatusCode = {Res.StatusCode}, Message = {Res.Message}");
+
+                return Ok(Res);
+            }
+
+            try
+            {
+                Res = await _logicG.QueryInfoX(model);
+
+                if (Res.Status)
+                {
+                    _logX.L1();
+                    _logO.LogInformation($"GetInfoX成功 - StatusCode = {Res.StatusCode}, FCnt = {Res.FCnt}, RCnt = {Res.RCnt}, HCnt = {Res.HCnt}, MCnt = {Res.MCnt}");
+                }
+            }
+            catch (Exception ex)
+            {
+                Res.Status = false;
+                Res.StatusCode = "5101";
+                Res.Message = $"Service Error: {ex.Message}";
+
+                _logX.L1();
+                _logO.LogError(ex, $"GetInfoX錯誤 - StatusCode = {Res.StatusCode}, Message = {Res.Message}, ex = ");
+            }
+
+            return Ok(Res);
+        }
+        #endregion
+
         #region Fav
         [HttpGet("info/fav")]
         [Authorize]
