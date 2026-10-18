@@ -115,7 +115,7 @@ namespace test3.BLL.Guest
             {
                 Res.Status = false;
                 Res.StatusCode = "4003";
-                Res.Message = message!;
+                Res.Message = message;
 
                 _logX.L1();
                 _logO.LogWarning($"QueryCollection檢查失敗 - StatusCode = {Res.StatusCode}, Message = {Res.Message}");
@@ -230,6 +230,42 @@ namespace test3.BLL.Guest
 
             return Res;
         }
+
+        public async Task<InfoXSaveRes> UpdateInfoX(InfoXSaveReq Req)
+        {
+            var Res = new InfoXSaveRes();
+
+            var (check, Cid, message) = await InfoSaveChk(Req);
+
+            if (!check)
+            {
+                Res.Status = false;
+                Res.StatusCode = "4004";
+                Res.Message = message;
+
+                _logX.L1();
+                _logO.LogWarning($"UpdateInfoX檢查失敗 - StatusCode = {Res.StatusCode}, Message = {Res.Message}");
+
+                return Res;
+            }
+
+            try
+            {
+                // ???
+            }
+            catch (Exception ex)
+            {
+                Res.Status = false;
+                Res.StatusCode = "5102";
+                Res.Message = $"System Error: {ex.Message}";
+
+                _logX.L1();
+                _logO.LogError(ex, $"UpdateInfoX錯誤 - StatusCode = {Res.StatusCode}, Message = {Res.Message}, ex = ");
+            }
+
+            return Res;
+        }
+
         #endregion
 
         #region Fav
@@ -855,7 +891,7 @@ namespace test3.BLL.Guest
             {
                 Res.Status = false;
                 Res.StatusCode = "4003";
-                Res.Message = message!;
+                Res.Message = message;
 
                 _logX.L1();
                 _logO.LogWarning($"QueryBookInfo檢查失敗 - StatusCode = {Res.StatusCode}, Message = {Res.Message}");

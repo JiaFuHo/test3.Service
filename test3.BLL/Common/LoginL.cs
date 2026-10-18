@@ -74,6 +74,7 @@ namespace test3.BLL.Common
                 Res.CId = querySrc.Cid;
                 Res.Guid = querySrc.Guid;
                 Res.CName = querySrc.Cname;
+                Res.CAcc = querySrc.Cacc;
                 Res.CPhone = querySrc.Cphone;
                 Res.Permission = querySrc.Permission;
                 Res.Token = _authP.Login(Res);

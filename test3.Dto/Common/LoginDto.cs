@@ -12,6 +12,7 @@
         public Int32? CId { get; set; }
         public Guid? Guid { get; set; }
         public String? CName { get; set; }
+        public String? CAcc { get; set; }
         public String? CPhone { get; set; }
         public Byte? Permission { get; set; }
         public String? Token { get; set; }

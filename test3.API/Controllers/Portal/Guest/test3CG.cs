@@ -40,8 +40,8 @@ namespace test3.API.Controllers.Portal.Guest
             if (!validation)
             {
                 Res.Status = false;
-                Res.StatusCode = statusCode!;
-                Res.Message = message!;
+                Res.StatusCode = statusCode;
+                Res.Message = message;
 
                 _logX.L1();
                 _logO.LogWarning($"Login驗證失敗 - StatusCode = {Res.StatusCode}, Message = {Res.Message}");
@@ -84,8 +84,8 @@ namespace test3.API.Controllers.Portal.Guest
             if (!validation)
             {
                 Res.Status = false;
-                Res.StatusCode = statusCode!;
-                Res.Message = message!;
+                Res.StatusCode = statusCode;
+                Res.Message = message;
 
                 _logX.L1();
                 _logO.LogWarning($"GetBookList驗證失敗 - StatusCode = {Res.StatusCode}, Message = {Res.Message}");
@@ -163,8 +163,8 @@ namespace test3.API.Controllers.Portal.Guest
             if (!validation)
             {
                 Res.Status = false;
-                Res.StatusCode = statusCode!;
-                Res.Message = message!;
+                Res.StatusCode = statusCode;
+                Res.Message = message;
 
                 _logX.L1();
                 _logO.LogWarning($"GetInfoX驗證失敗 - StatusCode = {Res.StatusCode}, Message = {Res.Message}");
@@ -194,6 +194,49 @@ namespace test3.API.Controllers.Portal.Guest
 
             return Ok(Res);
         }
+
+        [HttpPut("info/x")]
+        [Authorize]
+        public async Task<ActionResult<InfoXSaveRes>> PutInfoX([FromBody] InfoXSaveReq model)
+        {
+            var Res = new InfoXSaveRes();
+
+            var (validation, Req, statusCode, message) = InfoSaveValid(model);
+
+            if (!validation)
+            {
+                Res.Status = false;
+                Res.StatusCode = statusCode;
+                Res.Message = message;
+
+                _logX.L1();
+                _logO.LogWarning($"PutInfoX驗證失敗 - StatusCode = {Res.StatusCode}, Message = {Res.Message}");
+
+                return Ok(Res);
+            }
+
+            try
+            {
+                Res = await _logicG.UpdateInfoX(model);
+
+                if (Res.Status)
+                {
+                    _logX.L1();
+                    _logO.LogInformation($"PutInfoX成功 - StatusCode = {Res.StatusCode}");
+                }
+            }
+            catch (Exception ex)
+            {
+                Res.Status = false;
+                Res.StatusCode = "5101";
+                Res.Message = $"Service Error: {ex.Message}";
+
+                _logX.L1();
+                _logO.LogError(ex, $"PutInfoX錯誤 - StatusCode = {Res.StatusCode}, Message = {Res.Message}, ex = ");
+            }
+
+            return Ok(Res);
+        }
         #endregion
 
         #region Fav
@@ -208,8 +251,8 @@ namespace test3.API.Controllers.Portal.Guest
             if (!validation)
             {
                 Res.Status = false;
-                Res.StatusCode = statusCode!;
-                Res.Message = message!;
+                Res.StatusCode = statusCode;
+                Res.Message = message;
 
                 _logX.L1();
                 _logO.LogWarning($"GetFav驗證失敗 - StatusCode = {Res.StatusCode}, Message = {Res.Message}");
@@ -251,8 +294,8 @@ namespace test3.API.Controllers.Portal.Guest
             if (!validation)
             {
                 Res.Status = false;
-                Res.StatusCode = statusCode!;
-                Res.Message = message!;
+                Res.StatusCode = statusCode;
+                Res.Message = message;
 
                 _logX.L1();
                 _logO.LogWarning($"PostFav驗證失敗 - StatusCode = {Res.StatusCode}, Message = {Res.Message}");
@@ -294,8 +337,8 @@ namespace test3.API.Controllers.Portal.Guest
             if (!validation)
             {
                 Res.Status = false;
-                Res.StatusCode = statusCode!;
-                Res.Message = message!;
+                Res.StatusCode = statusCode;
+                Res.Message = message;
 
                 _logX.L1();
                 _logO.LogWarning($"DeleteFav驗證失敗 - StatusCode = {Res.StatusCode}, Message = {Res.Message}");
@@ -339,8 +382,8 @@ namespace test3.API.Controllers.Portal.Guest
             if (!validation)
             {
                 Res.Status = false;
-                Res.StatusCode = statusCode!;
-                Res.Message = message!;
+                Res.StatusCode = statusCode;
+                Res.Message = message;
 
                 _logX.L1();
                 _logO.LogWarning($"GetRsv驗證失敗 - StatusCode = {Res.StatusCode}, Message = {Res.Message}");
@@ -382,8 +425,8 @@ namespace test3.API.Controllers.Portal.Guest
             if (!validation)
             {
                 Res.Status = false;
-                Res.StatusCode = statusCode!;
-                Res.Message = message!;
+                Res.StatusCode = statusCode;
+                Res.Message = message;
 
                 _logX.L1();
                 _logO.LogWarning($"PostRsv驗證失敗 - StatusCode = {Res.StatusCode}, Message = {Res.Message}");
@@ -425,8 +468,8 @@ namespace test3.API.Controllers.Portal.Guest
             if (!validation)
             {
                 Res.Status = false;
-                Res.StatusCode = statusCode!;
-                Res.Message = message!;
+                Res.StatusCode = statusCode;
+                Res.Message = message;
 
                 _logX.L1();
                 _logO.LogWarning($"PutRsv驗證失敗 - StatusCode = {Res.StatusCode}, Message = {Res.Message}");
@@ -470,8 +513,8 @@ namespace test3.API.Controllers.Portal.Guest
             if (!validation)
             {
                 Res.Status = false;
-                Res.StatusCode = statusCode!;
-                Res.Message = message!;
+                Res.StatusCode = statusCode;
+                Res.Message = message;
 
                 _logX.L1();
                 _logO.LogWarning($"GetHx驗證失敗 - StatusCode = {Res.StatusCode}, Message = {Res.Message}");
@@ -513,8 +556,8 @@ namespace test3.API.Controllers.Portal.Guest
             if (!validation)
             {
                 Res.Status = false;
-                Res.StatusCode = statusCode!;
-                Res.Message = message!;
+                Res.StatusCode = statusCode;
+                Res.Message = message;
 
                 _logX.L1();
                 _logO.LogWarning($"PutHx驗證失敗 - StatusCode = {Res.StatusCode}, Message = {Res.Message}");
@@ -558,8 +601,8 @@ namespace test3.API.Controllers.Portal.Guest
             if (!validation)
             {
                 Res.Status = false;
-                Res.StatusCode = statusCode!;
-                Res.Message = message!;
+                Res.StatusCode = statusCode;
+                Res.Message = message;
 
                 _logX.L1();
                 _logO.LogWarning($"GetMsg驗證失敗 - StatusCode = {Res.StatusCode}, Message = {Res.Message}");
@@ -601,8 +644,8 @@ namespace test3.API.Controllers.Portal.Guest
             if (!validation)
             {
                 Res.Status = false;
-                Res.StatusCode = statusCode!;
-                Res.Message = message!;
+                Res.StatusCode = statusCode;
+                Res.Message = message;
 
                 _logX.L1();
                 _logO.LogWarning($"PutMsg驗證失敗 - StatusCode = {Res.StatusCode}, Message = {Res.Message}");
@@ -647,8 +690,8 @@ namespace test3.API.Controllers.Portal.Guest
             if (!validation)
             {
                 Res.Status = false;
-                Res.StatusCode = statusCode!;
-                Res.Message = message!;
+                Res.StatusCode = statusCode;
+                Res.Message = message;
 
                 _logX.L1();
                 _logO.LogWarning($"GetBookInfo驗證失敗 - StatusCode = {Res.StatusCode}, Message = {Res.Message}");
@@ -733,6 +776,19 @@ namespace test3.API.Controllers.Portal.Guest
 
             switch (model)
             {
+                case InfoXSaveReq InfoX:
+                    if (String.IsNullOrWhiteSpace(InfoX.Mode)) { return (false, null, "4001", "System Required Error"); }
+
+                    if (InfoX.Mode == "cPwd")
+                    {
+                        if (String.IsNullOrWhiteSpace(InfoX.CPwd)) { return (false, null, "4001", "Client Required Error: 密碼"); }
+                    }
+                    else
+                    {
+                        if (String.IsNullOrWhiteSpace(InfoX.CPhone)) { return (false, null, "4001", "Client Required Error: 手機"); }
+                    }
+
+                    modelX = InfoX; break;
                 case FavSaveReq Fav:
                     if (Fav.CollectionId == null) { return (false, null, "4001", "System Required Error"); }
 

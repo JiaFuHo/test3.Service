@@ -74,6 +74,16 @@ namespace test3.Dto.Guest
         public Int32? HCnt { get; set; }
         public Int32? MCnt { get; set; }
     }
+
+    public class InfoXSaveReq : InfoSaveReqBase
+    {
+        public String? CPwd { get; set; }
+        public String? CPhone { get; set; }
+
+        public String? Mode { get; set; }
+    }
+
+    public class InfoXSaveRes : ResBase { }
     #endregion
 
     #region Fav
