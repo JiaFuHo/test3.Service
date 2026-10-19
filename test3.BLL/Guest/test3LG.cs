@@ -264,7 +264,7 @@ namespace test3.BLL.Guest
 
                 Res.Status = true;
                 Res.StatusCode = "2000";
-                Res.Message = "修改成功";
+                Res.Message = (updateChk) ? "修改成功" : "查無相關修改";
             }
             catch (Exception ex)
             {
