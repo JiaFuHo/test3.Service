@@ -77,10 +77,10 @@ namespace test3.BLL.Common
             {
                 Res.Status = false;
                 Res.StatusCode = "5102";
-                Res.Message = $"System Error: {ex.Message}";
+                Res.Message = "System Error";
 
                 _logX.L1();
-                _logO.LogError(ex, $"Lookup錯誤 - StatusCode = {Res.StatusCode}, Message = {Res.Message}, ex = ");
+                _logO.LogError(ex, $"Lookup錯誤 - StatusCode = {Res.StatusCode}, Message = {Res.Message}: {ex.Message}, ex = ");
             }
 
             return Res;

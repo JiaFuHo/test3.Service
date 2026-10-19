@@ -94,10 +94,10 @@ namespace test3.BLL.Guest
             {
                 Res.Status = false;
                 Res.StatusCode = "5102";
-                Res.Message = $"System Error: {ex.Message}";
+                Res.Message = "System Error";
 
                 _logX.L1();
-                _logO.LogError(ex, $"QueryBookList錯誤 - StatusCode = {Res.StatusCode}, Message = {Res.Message}, ex = ");
+                _logO.LogError(ex, $"QueryBookList錯誤 - StatusCode = {Res.StatusCode}, Message = {Res.Message}: {ex.Message}, ex = ");
             }
 
             return Res;
@@ -184,10 +184,10 @@ namespace test3.BLL.Guest
             {
                 Res.Status = false;
                 Res.StatusCode = "5102";
-                Res.Message = $"System Error: {ex.Message}";
+                Res.Message = "System Error";
 
                 _logX.L1();
-                _logO.LogError(ex, $"QueryCollection錯誤 - StatusCode = {Res.StatusCode}, Message = {Res.Message}, ex = ");
+                _logO.LogError(ex, $"QueryCollection錯誤 - StatusCode = {Res.StatusCode}, Message = {Res.Message}: {ex.Message}, ex = ");
             }
 
             return Res;
@@ -222,10 +222,10 @@ namespace test3.BLL.Guest
             {
                 Res.Status = false;
                 Res.StatusCode = "5102";
-                Res.Message = $"System Error: {ex.Message}";
+                Res.Message = "System Error";
 
                 _logX.L1();
-                _logO.LogError(ex, $"QueryInfoX錯誤 - StatusCode = {Res.StatusCode}, Message = {Res.Message}, ex = ");
+                _logO.LogError(ex, $"QueryInfoX錯誤 - StatusCode = {Res.StatusCode}, Message = {Res.Message}: {ex.Message}, ex = ");
             }
 
             return Res;
@@ -235,7 +235,7 @@ namespace test3.BLL.Guest
         {
             var Res = new InfoXSaveRes();
 
-            var (check, Cid, message) = await InfoSaveChk(Req);
+            var (check, updateSrc, message) = await InfoXSaveChk(Req);
 
             if (!check)
             {
@@ -244,23 +244,36 @@ namespace test3.BLL.Guest
                 Res.Message = message;
 
                 _logX.L1();
-                _logO.LogWarning($"UpdateInfoX檢查失敗 - StatusCode = {Res.StatusCode}, Message = {Res.Message}");
+
+                if (updateSrc == null) { _logO.LogWarning($"UpdateInfoX失敗 - StatusCode = {Res.StatusCode}, Message = {Res.Message}"); }
+                else { _logO.LogWarning($"UpdateInfoX檢查失敗 - StatusCode = {Res.StatusCode}, Message = {Res.Message}"); }
 
                 return Res;
             }
 
             try
             {
-                // ???
+                if (Req.Mode == "cPwd") { updateSrc!.Cpwd = HashHelper.Hash(Req.CPwd!)!; }
+                else { updateSrc!.Cphone = Req.CPhone!; }
+
+                var updateChk = (_db.Entry(updateSrc).State == EntityState.Modified);
+
+                if (updateChk) { updateSrc.Stime = DateTime.Now; }
+
+                await _db.SaveChangesAsync();
+
+                Res.Status = true;
+                Res.StatusCode = "2000";
+                Res.Message = "修改成功";
             }
             catch (Exception ex)
             {
                 Res.Status = false;
                 Res.StatusCode = "5102";
-                Res.Message = $"System Error: {ex.Message}";
+                Res.Message = "System Error";
 
                 _logX.L1();
-                _logO.LogError(ex, $"UpdateInfoX錯誤 - StatusCode = {Res.StatusCode}, Message = {Res.Message}, ex = ");
+                _logO.LogError(ex, $"UpdateInfoX錯誤 - StatusCode = {Res.StatusCode}, Message = {Res.Message}: {ex.Message}, ex = ");
             }
 
             return Res;
@@ -312,10 +325,10 @@ namespace test3.BLL.Guest
             {
                 Res.Status = false;
                 Res.StatusCode = "5102";
-                Res.Message = $"System Error: {ex.Message}";
+                Res.Message = "System Error";
 
                 _logX.L1();
-                _logO.LogError(ex, $"QueryFav錯誤 - StatusCode = {Res.StatusCode}, Message = {Res.Message}, ex = ");
+                _logO.LogError(ex, $"QueryFav錯誤 - StatusCode = {Res.StatusCode}, Message = {Res.Message}: {ex.Message}, ex = ");
             }
 
             return Res;
@@ -374,10 +387,10 @@ namespace test3.BLL.Guest
             {
                 Res.Status = false;
                 Res.StatusCode = "5102";
-                Res.Message = $"System Error: {ex.Message}";
+                Res.Message = "System Error";
 
                 _logX.L1();
-                _logO.LogError(ex, $"CreateFav錯誤 - StatusCode = {Res.StatusCode}, Message = {Res.Message}, ex = ");
+                _logO.LogError(ex, $"CreateFav錯誤 - StatusCode = {Res.StatusCode}, Message = {Res.Message}: {ex.Message}, ex = ");
             }
 
             return Res;
@@ -429,10 +442,10 @@ namespace test3.BLL.Guest
             {
                 Res.Status = false;
                 Res.StatusCode = "5102";
-                Res.Message = $"System Error: {ex.Message}";
+                Res.Message = "System Error";
 
                 _logX.L1();
-                _logO.LogError(ex, $"DeleteFav錯誤 - StatusCode = {Res.StatusCode}, Message = {Res.Message}, ex = ");
+                _logO.LogError(ex, $"DeleteFav錯誤 - StatusCode = {Res.StatusCode}, Message = {Res.Message}: {ex.Message}, ex = ");
             }
 
             return Res;
@@ -486,10 +499,10 @@ namespace test3.BLL.Guest
             {
                 Res.Status = false;
                 Res.StatusCode = "5102";
-                Res.Message = $"System Error: {ex.Message}";
+                Res.Message = "System Error";
 
                 _logX.L1();
-                _logO.LogError(ex, $"QueryRsv錯誤 - StatusCode = {Res.StatusCode}, Message = {Res.Message}, ex = ");
+                _logO.LogError(ex, $"QueryRsv錯誤 - StatusCode = {Res.StatusCode}, Message = {Res.Message}: {ex.Message}, ex = ");
             }
 
             return Res;
@@ -513,7 +526,7 @@ namespace test3.BLL.Guest
                 return Res;
             }
 
-            var (check2, message2) = await RsvChk((Int32)Cid!);
+            var (check2, message2) = await RsvSaveChk((Int32)Cid!);
 
             if (!check2)
             {
@@ -579,10 +592,10 @@ namespace test3.BLL.Guest
             {
                 Res.Status = false;
                 Res.StatusCode = "5102";
-                Res.Message = $"System Error: {ex.Message}";
+                Res.Message = "System Error";
 
                 _logX.L1();
-                _logO.LogError(ex, $"CreateRsv錯誤 - StatusCode = {Res.StatusCode}, Message = {Res.Message}, ex = ");
+                _logO.LogError(ex, $"CreateRsv錯誤 - StatusCode = {Res.StatusCode}, Message = {Res.Message}: {ex.Message}, ex = ");
             }
 
             return Res;
@@ -635,10 +648,10 @@ namespace test3.BLL.Guest
             {
                 Res.Status = false;
                 Res.StatusCode = "5102";
-                Res.Message = $"System Error: {ex.Message}";
+                Res.Message = "System Error";
 
                 _logX.L1();
-                _logO.LogError(ex, $"UpdateRsv錯誤 - StatusCode = {Res.StatusCode}, Message = {Res.Message}, ex = ");
+                _logO.LogError(ex, $"UpdateRsv錯誤 - StatusCode = {Res.StatusCode}, Message = {Res.Message}: {ex.Message}, ex = ");
             }
 
             return Res;
@@ -696,10 +709,10 @@ namespace test3.BLL.Guest
             {
                 Res.Status = false;
                 Res.StatusCode = "5102";
-                Res.Message = $"System Error: {ex.Message}";
+                Res.Message = "System Error";
 
                 _logX.L1();
-                _logO.LogError(ex, $"QueryHx錯誤 - StatusCode = {Res.StatusCode}, Message = {Res.Message}, ex = ");
+                _logO.LogError(ex, $"QueryHx錯誤 - StatusCode = {Res.StatusCode}, Message = {Res.Message}: {ex.Message}, ex = ");
             }
 
             return Res;
@@ -756,10 +769,10 @@ namespace test3.BLL.Guest
             {
                 Res.Status = false;
                 Res.StatusCode = "5102";
-                Res.Message = $"System Error: {ex.Message}";
+                Res.Message = "System Error";
 
                 _logX.L1();
-                _logO.LogError(ex, $"UpdateHx錯誤 - StatusCode = {Res.StatusCode}, Message = {Res.Message}, ex = ");
+                _logO.LogError(ex, $"UpdateHx錯誤 - StatusCode = {Res.StatusCode}, Message = {Res.Message}: {ex.Message}, ex = ");
             }
 
             return Res;
@@ -809,10 +822,10 @@ namespace test3.BLL.Guest
             {
                 Res.Status = false;
                 Res.StatusCode = "5102";
-                Res.Message = $"System Error: {ex.Message}";
+                Res.Message = "System Error";
 
                 _logX.L1();
-                _logO.LogError(ex, $"QueryMsg錯誤 - StatusCode = {Res.StatusCode}, Message = {Res.Message}, ex = ");
+                _logO.LogError(ex, $"QueryMsg錯誤 - StatusCode = {Res.StatusCode}, Message = {Res.Message}: {ex.Message}, ex = ");
             }
 
             return Res;
@@ -868,10 +881,10 @@ namespace test3.BLL.Guest
             {
                 Res.Status = false;
                 Res.StatusCode = "5102";
-                Res.Message = $"System Error: {ex.Message}";
+                Res.Message = "System Error";
 
                 _logX.L1();
-                _logO.LogError(ex, $"UpdateMsg錯誤 - StatusCode = {Res.StatusCode}, Message = {Res.Message}, ex = ");
+                _logO.LogError(ex, $"UpdateMsg錯誤 - StatusCode = {Res.StatusCode}, Message = {Res.Message}: {ex.Message}, ex = ");
             }
 
             return Res;
@@ -993,10 +1006,10 @@ namespace test3.BLL.Guest
             {
                 Res.Status = false;
                 Res.StatusCode = "5102";
-                Res.Message = $"System Error: {ex.Message}";
+                Res.Message = "System Error";
 
                 _logX.L1();
-                _logO.LogError(ex, $"QueryBookInfo錯誤 - StatusCode = {Res.StatusCode}, Message = {Res.Message}, ex = ");
+                _logO.LogError(ex, $"QueryBookInfo錯誤 - StatusCode = {Res.StatusCode}, Message = {Res.Message}: {ex.Message}, ex = ");
             }
 
             return Res;
@@ -1027,12 +1040,28 @@ namespace test3.BLL.Guest
 
             if (!await querySrc.AnyAsync()) { return (false, null, "查無相關使用者"); }
 
-            var query = await querySrc.Select(x => x.Cid).FirstAsync();
+            var Cid = await querySrc.Select(x => x.Cid).FirstAsync();
 
-            return (true, query, null);
+            return (true, Cid, null);
         }
 
-        private async Task<(Boolean check, String? message)> RsvChk(Int32 Cid)
+        private async Task<(Boolean check, Client? updateSrc, String? message)> InfoXSaveChk(InfoXSaveReq model)
+        {
+            var updateSrc = await _db.Clients.FirstOrDefaultAsync(x => x.Guid == model.Guid);
+
+            if (updateSrc == null) { return (false, null, "查無相關使用者"); }
+
+            if (model.Mode == "cPhone")
+            {
+                var updateChk = await _db.Clients.AnyAsync(x => x.Guid != model.Guid && x.Cphone == model.CPhone);
+
+                if (updateChk) { return (false, updateSrc, "查有重複手機"); }
+            }
+
+            return (true, updateSrc, null);
+        }
+
+        private async Task<(Boolean check, String? message)> RsvSaveChk(Int32 Cid)
         {
             var querySrc = _db.Reservations.Where(x => x.Cid == Cid && (x.ReservationStatusId == 1 || x.ReservationStatusId == 3));
 

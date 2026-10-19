@@ -65,10 +65,10 @@ namespace test3.API.Controllers.Portal.Admin
             {
                 Res.Status = false;
                 Res.StatusCode = "5101";
-                Res.Message = $"Service Error: {ex.Message}";
+                Res.Message = "Service Error";
 
                 _logX.L1();
-                _logO.LogError(ex, $"Login錯誤 - StatusCode = {Res.StatusCode}, Message = {Res.Message}, ex = ");
+                _logO.LogError(ex, $"Login錯誤 - StatusCode = {Res.StatusCode}, Message = {Res.Message}: {ex.Message}, ex = ");
             }
 
             return Ok(Res);

@@ -63,10 +63,10 @@ namespace test3.API.Controllers.Portal.Guest
             {
                 Res.Status = false;
                 Res.StatusCode = "5101";
-                Res.Message = $"Service Error: {ex.Message}";
+                Res.Message = "Service Error";
 
                 _logX.L1();
-                _logO.LogError(ex, $"Login錯誤 - StatusCode = {Res.StatusCode}, Message = {Res.Message}, ex = ");
+                _logO.LogError(ex, $"Login錯誤 - StatusCode = {Res.StatusCode}, Message = {Res.Message}: {ex.Message}, ex = ");
             }
 
             return Ok(Res);
@@ -109,10 +109,10 @@ namespace test3.API.Controllers.Portal.Guest
             {
                 Res.Status = false;
                 Res.StatusCode = "5101";
-                Res.Message = $"Service Error: {ex.Message}";
+                Res.Message = "Service Error";
 
                 _logX.L1();
-                _logO.LogError(ex, $"GetBookList錯誤 - StatusCode = {Res.StatusCode}, Message = {Res.Message}, ex = ");
+                _logO.LogError(ex, $"GetBookList錯誤 - StatusCode = {Res.StatusCode}, Message = {Res.Message}: {ex.Message}, ex = ");
             }
 
             return Ok(Res);
@@ -139,10 +139,10 @@ namespace test3.API.Controllers.Portal.Guest
             {
                 Res.Status = false;
                 Res.StatusCode = "5101";
-                Res.Message = $"Service Error: {ex.Message}";
+                Res.Message = "Service Error";
 
                 _logX.L1();
-                _logO.LogError(ex, $"GetCollection錯誤 - StatusCode = {Res.StatusCode}, Message = {Res.Message}, ex = ");
+                _logO.LogError(ex, $"GetCollection錯誤 - StatusCode = {Res.StatusCode}, Message = {Res.Message}: {ex.Message}, ex = ");
             }
 
             return Ok(Res);
@@ -186,10 +186,10 @@ namespace test3.API.Controllers.Portal.Guest
             {
                 Res.Status = false;
                 Res.StatusCode = "5101";
-                Res.Message = $"Service Error: {ex.Message}";
+                Res.Message = "Service Error";
 
                 _logX.L1();
-                _logO.LogError(ex, $"GetInfoX錯誤 - StatusCode = {Res.StatusCode}, Message = {Res.Message}, ex = ");
+                _logO.LogError(ex, $"GetInfoX錯誤 - StatusCode = {Res.StatusCode}, Message = {Res.Message}: {ex.Message}, ex = ");
             }
 
             return Ok(Res);
@@ -229,10 +229,10 @@ namespace test3.API.Controllers.Portal.Guest
             {
                 Res.Status = false;
                 Res.StatusCode = "5101";
-                Res.Message = $"Service Error: {ex.Message}";
+                Res.Message = "Service Error";
 
                 _logX.L1();
-                _logO.LogError(ex, $"PutInfoX錯誤 - StatusCode = {Res.StatusCode}, Message = {Res.Message}, ex = ");
+                _logO.LogError(ex, $"PutInfoX錯誤 - StatusCode = {Res.StatusCode}, Message = {Res.Message}: {ex.Message}, ex = ");
             }
 
             return Ok(Res);
@@ -274,10 +274,10 @@ namespace test3.API.Controllers.Portal.Guest
             {
                 Res.Status = false;
                 Res.StatusCode = "5101";
-                Res.Message = $"Service Error: {ex.Message}";
+                Res.Message = "Service Error";
 
                 _logX.L1();
-                _logO.LogError(ex, $"GetFav錯誤 - StatusCode = {Res.StatusCode}, Message = {Res.Message}, ex = ");
+                _logO.LogError(ex, $"GetFav錯誤 - StatusCode = {Res.StatusCode}, Message = {Res.Message}: {ex.Message}, ex = ");
             }
 
             return Ok(Res);
@@ -317,10 +317,10 @@ namespace test3.API.Controllers.Portal.Guest
             {
                 Res.Status = false;
                 Res.StatusCode = "5101";
-                Res.Message = $"Service Error: {ex.Message}";
+                Res.Message = "Service Error";
 
                 _logX.L1();
-                _logO.LogError(ex, $"PostFav錯誤 - StatusCode = {Res.StatusCode}, Message = {Res.Message}, ex = ");
+                _logO.LogError(ex, $"PostFav錯誤 - StatusCode = {Res.StatusCode}, Message = {Res.Message}: {ex.Message}, ex = ");
             }
 
             return Ok(Res);
@@ -360,10 +360,10 @@ namespace test3.API.Controllers.Portal.Guest
             {
                 Res.Status = false;
                 Res.StatusCode = "5101";
-                Res.Message = $"Service Error: {ex.Message}";
+                Res.Message = "Service Error";
 
                 _logX.L1();
-                _logO.LogError(ex, $"DeleteFav錯誤 - StatusCode = {Res.StatusCode}, Message = {Res.Message}, ex = ");
+                _logO.LogError(ex, $"DeleteFav錯誤 - StatusCode = {Res.StatusCode}, Message = {Res.Message}: {ex.Message}, ex = ");
             }
 
             return Ok(Res);
@@ -405,10 +405,10 @@ namespace test3.API.Controllers.Portal.Guest
             {
                 Res.Status = false;
                 Res.StatusCode = "5101";
-                Res.Message = $"Service Error: {ex.Message}";
+                Res.Message = "Service Error";
 
                 _logX.L1();
-                _logO.LogError(ex, $"GetRsv錯誤 - StatusCode = {Res.StatusCode}, Message = {Res.Message}, ex = ");
+                _logO.LogError(ex, $"GetRsv錯誤 - StatusCode = {Res.StatusCode}, Message = {Res.Message}: {ex.Message}, ex = ");
             }
 
             return Ok(Res);
@@ -448,10 +448,10 @@ namespace test3.API.Controllers.Portal.Guest
             {
                 Res.Status = false;
                 Res.StatusCode = "5101";
-                Res.Message = $"Service Error: {ex.Message}";
+                Res.Message = "Service Error";
 
                 _logX.L1();
-                _logO.LogError(ex, $"PostRsv錯誤 - StatusCode = {Res.StatusCode}, Message = {Res.Message}, ex = ");
+                _logO.LogError(ex, $"PostRsv錯誤 - StatusCode = {Res.StatusCode}, Message = {Res.Message}: {ex.Message}, ex = ");
             }
 
             return Ok(Res);
@@ -491,10 +491,10 @@ namespace test3.API.Controllers.Portal.Guest
             {
                 Res.Status = false;
                 Res.StatusCode = "5101";
-                Res.Message = $"Service Error: {ex.Message}";
+                Res.Message = "Service Error";
 
                 _logX.L1();
-                _logO.LogError(ex, $"PutRsv錯誤 - StatusCode = {Res.StatusCode}, Message = {Res.Message}, ex = ");
+                _logO.LogError(ex, $"PutRsv錯誤 - StatusCode = {Res.StatusCode}, Message = {Res.Message}: {ex.Message}, ex = ");
             }
 
             return Ok(Res);
@@ -536,10 +536,10 @@ namespace test3.API.Controllers.Portal.Guest
             {
                 Res.Status = false;
                 Res.StatusCode = "5101";
-                Res.Message = $"Service Error: {ex.Message}";
+                Res.Message = "Service Error";
 
                 _logX.L1();
-                _logO.LogError(ex, $"GetHx錯誤 - StatusCode = {Res.StatusCode}, Message = {Res.Message}, ex = ");
+                _logO.LogError(ex, $"GetHx錯誤 - StatusCode = {Res.StatusCode}, Message = {Res.Message}: {ex.Message}, ex = ");
             }
 
             return Ok(Res);
@@ -579,10 +579,10 @@ namespace test3.API.Controllers.Portal.Guest
             {
                 Res.Status = false;
                 Res.StatusCode = "5101";
-                Res.Message = $"Service Error: {ex.Message}";
+                Res.Message = "Service Error";
 
                 _logX.L1();
-                _logO.LogError(ex, $"PutHx錯誤 - StatusCode = {Res.StatusCode}, Message = {Res.Message}, ex = ");
+                _logO.LogError(ex, $"PutHx錯誤 - StatusCode = {Res.StatusCode}, Message = {Res.Message}: {ex.Message}, ex = ");
             }
 
             return Ok(Res);
@@ -624,10 +624,10 @@ namespace test3.API.Controllers.Portal.Guest
             {
                 Res.Status = false;
                 Res.StatusCode = "5101";
-                Res.Message = $"Service Error: {ex.Message}";
+                Res.Message = "Service Error";
 
                 _logX.L1();
-                _logO.LogError(ex, $"GetMsg錯誤 - StatusCode = {Res.StatusCode}, Message = {Res.Message}, ex = ");
+                _logO.LogError(ex, $"GetMsg錯誤 - StatusCode = {Res.StatusCode}, Message = {Res.Message}: {ex.Message}, ex = ");
             }
 
             return Ok(Res);
@@ -667,10 +667,10 @@ namespace test3.API.Controllers.Portal.Guest
             {
                 Res.Status = false;
                 Res.StatusCode = "5101";
-                Res.Message = $"Service Error: {ex.Message}";
+                Res.Message = "Service Error";
 
                 _logX.L1();
-                _logO.LogError(ex, $"PutMsg錯誤 - StatusCode = {Res.StatusCode}, Message = {Res.Message}, ex = ");
+                _logO.LogError(ex, $"PutMsg錯誤 - StatusCode = {Res.StatusCode}, Message = {Res.Message}: {ex.Message}, ex = ");
             }
 
             return Ok(Res);
@@ -713,10 +713,10 @@ namespace test3.API.Controllers.Portal.Guest
             {
                 Res.Status = false;
                 Res.StatusCode = "5101";
-                Res.Message = $"Service Error: {ex.Message}";
+                Res.Message = "Service Error";
 
                 _logX.L1();
-                _logO.LogError(ex, $"GetBookInfo錯誤 - StatusCode = {Res.StatusCode}, Message = {Res.Message}, ex = ");
+                _logO.LogError(ex, $"GetBookInfo錯誤 - StatusCode = {Res.StatusCode}, Message = {Res.Message}: {ex.Message}, ex = ");
             }
 
             return Ok(Res);
