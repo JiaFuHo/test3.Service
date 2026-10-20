@@ -13,11 +13,13 @@ public partial class Notification
 
     public string Message { get; set; } = null!;
 
-    public DateTime NotificationDate { get; set; }
+    public bool IsNotified { get; set; }
 
     public bool IsRead { get; set; }
 
     public DateTime Ctime { get; set; }
+
+    public DateTime? Ntime { get; set; }
 
     public DateTime Stime { get; set; }
 

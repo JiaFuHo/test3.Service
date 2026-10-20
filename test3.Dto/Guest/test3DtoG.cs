@@ -186,8 +186,8 @@ namespace test3.Dto.Guest
     {
         public Int32? NotificationId { get; set; }
         public String? Message { get; set; }
-        public DateTime? NotificationDate { get; set; }
         public Boolean IsRead { get; set; }
+        public DateTime? NTime { get; set; }
     }
 
     public class MsgSaveReq : InfoSaveReqBase

@@ -784,7 +784,7 @@ namespace test3.BLL.Guest
         {
             var Res = new MsgQueryRes();
 
-            var querySrc = _db.Clients.Where(x => x.Guid == Req.Guid).SelectMany(x => x.Notifications).OrderByDescending(x => x.NotificationDate);
+            var querySrc = _db.Clients.Where(x => x.Guid == Req.Guid).SelectMany(x => x.Notifications).OrderByDescending(x => x.Ntime);
 
             if (!await querySrc.AnyAsync())
             {
@@ -806,8 +806,8 @@ namespace test3.BLL.Guest
                 {
                     NotificationId = x.NotificationId,
                     Message = x.Message,
-                    NotificationDate = x.NotificationDate,
-                    IsRead = x.IsRead
+                    IsRead = x.IsRead,
+                    NTime = x.Ntime
                 });
 
                 var msgList = await query.ToListAsync();

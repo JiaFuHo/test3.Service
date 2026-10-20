@@ -79,6 +79,10 @@
          "ObjectType": 0
       },
       {
+         "Name": "[dbo].[SystemLog]",
+         "ObjectType": 0
+      },
+      {
          "Name": "[dbo].[SystemTime]",
          "ObjectType": 0
       },

@@ -42,6 +42,8 @@ public partial class test3Context : DbContext
 
     public virtual DbSet<Series> Series { get; set; }
 
+    public virtual DbSet<SystemLog> SystemLogs { get; set; }
+
     public virtual DbSet<SystemTime> SystemTimes { get; set; }
 
     public virtual DbSet<Models.Type> Types { get; set; }
@@ -355,12 +357,14 @@ public partial class test3Context : DbContext
             entity.Property(e => e.Cid).HasColumnName("CId");
             entity.Property(e => e.Ctime)
                 .HasPrecision(0)
-                .HasDefaultValueSql("(sysdatetime())")
+                .HasDefaultValueSql("(sysdatetime())", "DF__Notificat__CTime__00DF2177")
                 .HasColumnName("CTime");
-            entity.Property(e => e.NotificationDate).HasPrecision(0);
+            entity.Property(e => e.Ntime)
+                .HasPrecision(0)
+                .HasColumnName("NTime");
             entity.Property(e => e.Stime)
                 .HasPrecision(0)
-                .HasDefaultValueSql("(sysdatetime())")
+                .HasDefaultValueSql("(sysdatetime())", "DF__Notificat__STime__01D345B0")
                 .HasColumnName("STime");
 
             entity.HasOne(d => d.CidNavigation).WithMany(p => p.Notifications)
@@ -435,6 +439,24 @@ public partial class test3Context : DbContext
             entity.Property(e => e.Series1)
                 .HasMaxLength(100)
                 .HasColumnName("Series");
+        });
+
+        modelBuilder.Entity<SystemLog>(entity =>
+        {
+            entity.HasKey(e => e.ErrId).HasName("PK_SystemLog_ErrId");
+
+            entity.ToTable("SystemLog");
+
+            entity.Property(e => e.Ctime)
+                .HasPrecision(0)
+                .HasDefaultValueSql("(sysdatetime())", "DF__SystemLog__CTime__0880433F")
+                .HasColumnName("CTime");
+            entity.Property(e => e.ErrSrc).HasMaxLength(50);
+            entity.Property(e => e.ErrTime).HasPrecision(0);
+            entity.Property(e => e.Mtime)
+                .HasPrecision(0)
+                .HasColumnName("MTime");
+            entity.Property(e => e.StatusCode).HasMaxLength(50);
         });
 
         modelBuilder.Entity<SystemTime>(entity =>
