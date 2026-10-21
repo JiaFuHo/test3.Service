@@ -142,6 +142,8 @@ namespace test3.BLL.Guest
                 querySrc = querySrc.Where(x => x.PublishDate <= EDate);
             }
 
+            querySrc = querySrc.OrderBy(x => x.CollectionId);
+
             if (!await querySrc.AnyAsync())
             {
                 Res.Status = false;
@@ -286,7 +288,7 @@ namespace test3.BLL.Guest
         {
             var Res = new FavQueryRes();
 
-            var querySrc = _db.Clients.Where(x => x.Guid == Req.Guid).SelectMany(x => x.Favorites);
+            var querySrc = _db.Clients.Where(x => x.Guid == Req.Guid).SelectMany(x => x.Favorites).OrderByDescending(x => x.FavoriteId);
 
             if (!await querySrc.AnyAsync())
             {
