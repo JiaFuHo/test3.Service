@@ -457,7 +457,7 @@ namespace test3.BLL.Guest
         {
             var Res = new RsvQueryRes();
 
-            var querySrc = _db.Clients.Where(x => x.Guid == Req.Guid).SelectMany(x => x.Reservations).OrderByDescending(x => x.ReservateDate);
+            var querySrc = _db.Clients.Where(x => x.Guid == Req.Guid).SelectMany(x => x.Reservations).OrderByDescending(x => x.ReservationId);
 
             if (!await querySrc.AnyAsync())
             {
@@ -663,7 +663,7 @@ namespace test3.BLL.Guest
         {
             var Res = new HxQueryRes();
 
-            var querySrc = _db.Clients.Where(x => x.Guid == Req.Guid).SelectMany(x => x.Borrows).OrderByDescending(x => x.BorrowDate);
+            var querySrc = _db.Clients.Where(x => x.Guid == Req.Guid).SelectMany(x => x.Borrows).OrderByDescending(x => x.BorrowId);
 
             if (!await querySrc.AnyAsync())
             {
@@ -784,7 +784,7 @@ namespace test3.BLL.Guest
         {
             var Res = new MsgQueryRes();
 
-            var querySrc = _db.Clients.Where(x => x.Guid == Req.Guid).SelectMany(x => x.Notifications).OrderByDescending(x => x.Ntime);
+            var querySrc = _db.Clients.Where(x => x.Guid == Req.Guid).SelectMany(x => x.Notifications).OrderByDescending(x => x.NotificationId);
 
             if (!await querySrc.AnyAsync())
             {
@@ -807,7 +807,7 @@ namespace test3.BLL.Guest
                     NotificationId = x.NotificationId,
                     Message = x.Message,
                     IsRead = x.IsRead,
-                    NTime = x.Ntime
+                    CTime = x.Ctime
                 });
 
                 var msgList = await query.ToListAsync();
