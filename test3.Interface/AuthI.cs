@@ -1,4 +1,4 @@
-﻿using test3.Dto.Common;
+﻿using test3.DTO.Common;
 
 namespace test3.Interface
 {

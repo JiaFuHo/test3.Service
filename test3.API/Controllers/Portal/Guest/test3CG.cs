@@ -3,8 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 using test3.BLL.Common;
 using test3.BLL.Guest;
 using test3.Common;
-using test3.Dto.Common;
-using test3.Dto.Guest;
+using test3.DTO.Common;
+using test3.DTO.Guest;
 
 namespace test3.API.Controllers.Portal.Guest
 {

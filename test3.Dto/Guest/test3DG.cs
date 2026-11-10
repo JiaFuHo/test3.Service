@@ -1,6 +1,6 @@
-﻿using test3.Dto.Common;
+﻿using test3.DTO.Common;
 
-namespace test3.Dto.Guest
+namespace test3.DTO.Guest
 {
     public class AuthorInfo
     {

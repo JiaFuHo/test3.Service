@@ -2,7 +2,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using test3.Dto.Common;
+using test3.DTO.Common;
 using test3.Interface;
 
 namespace test3.API.Providers.System

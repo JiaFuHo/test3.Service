@@ -12,7 +12,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "test3.BLL", "test3.BLL\test
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "test3.DAL", "test3.DAL\test3.DAL.csproj", "{015996B3-BE5E-4ED3-9E64-808C7832AD00}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "test3.Dto", "test3.Dto\test3.Dto.csproj", "{967F1D29-A805-43C9-9F5D-FE6250DF2D89}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "test3.DTO", "test3.DTO\test3.DTO.csproj", "{967F1D29-A805-43C9-9F5D-FE6250DF2D89}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "test3.Common", "test3.Common\test3.Common.csproj", "{D6A33D6C-A559-4FF1-9A8F-BBFA8FD2DB9F}"
 EndProject

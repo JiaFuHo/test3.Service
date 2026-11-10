@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using test3.DAL.test3.Context;
-using test3.Dto.Admin;
+using test3.DTO.Admin;
 
 namespace test3.BLL.Admin
 {

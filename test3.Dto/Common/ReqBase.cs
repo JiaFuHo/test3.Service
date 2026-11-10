@@ -1,4 +1,4 @@
-﻿namespace test3.Dto.Common
+﻿namespace test3.DTO.Common
 {
     public abstract class QueryReqBase
     {

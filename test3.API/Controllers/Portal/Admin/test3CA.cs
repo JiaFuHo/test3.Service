@@ -3,8 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 using test3.BLL.Admin;
 using test3.BLL.Common;
 using test3.Common;
-using test3.Dto.Admin;
-using test3.Dto.Common;
+using test3.DTO.Admin;
+using test3.DTO.Common;
 
 namespace test3.API.Controllers.Portal.Admin
 {

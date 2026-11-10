@@ -2,7 +2,7 @@
 using Microsoft.Extensions.Logging;
 using test3.Common;
 using test3.DAL.test3.Context;
-using test3.Dto.Common;
+using test3.DTO.Common;
 using test3.Interface;
 
 namespace test3.BLL.Common
